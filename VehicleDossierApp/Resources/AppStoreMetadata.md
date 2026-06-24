@@ -1,7 +1,7 @@
-# App Store Metadata — Ruhsatım
+# App Store Metadata — Garajım
 
 ## App Name
-Ruhsatım — Araç Dijital Dosyası
+Garajım — Araç Dijital Dosyası
 
 ## Subtitle
 Araç bakım, masraf ve belge takibi
@@ -13,7 +13,7 @@ Muayene, sigorta, kasko, MTV, bakım, masraf ve belgeler tek yerde. Aracının d
 
 **Aracının dijital yaşam dosyası.**
 
-Ruhsatım, aracına ait her şeyi düzenli tutman için tasarlanmış premium bir iOS uygulamasıdır. Masraf defterinden fazlası — aracının eksiksiz geçmişi.
+Garajım, aracına ait her şeyi düzenli tutman için tasarlanmış premium bir iOS uygulamasıdır. Masraf defterinden fazlası — aracının eksiksiz geçmişi.
 
 **Neler Yapabilirsin?**
 
@@ -39,7 +39,7 @@ Aracının bakım geçmişini, masraf özetini, ekspertiz raporunu ve belgelerin
 
 Verilerin cihazında saklanır. Belgelerin yalnızca sen paylaşırsan paylaşılır. Üçüncü taraflarla veri paylaşımı yok.
 
-Ruhsatım bir resmi kurum uygulaması değildir. Hatırlatıcılar bilgilendirme amaçlıdır.
+Garajım bir resmi kurum uygulaması değildir. Hatırlatıcılar bilgilendirme amaçlıdır.
 
 ## Keywords (100 char limit)
 araç,bakım,muayene,mtv,sigorta,kasko,masraf,yakıt,oto,araba,ruhsat,ekspertiz,lastik,akü,belge
@@ -88,13 +88,13 @@ Bu uygulama:
 - Kullanıcı verileri cihaz üzerinde saklanır. Üçüncü taraflarla paylaşılmaz.
 
 ## Privacy Policy URL
-https://ruhsatim.app/privacy
+https://fatihdisci.github.io/ruhsatim/privacy.html
 
 ## Terms of Service URL
-https://ruhsatim.app/terms
+https://fatihdisci.github.io/ruhsatim/terms.html
 
 ## Support Email
-destek@ruhsatim.app
+behavest@proton.me
 
 ## App Category
 Primary: Utilities

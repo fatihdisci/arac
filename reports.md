@@ -1,4 +1,4 @@
-# QA Denetim Raporu — "Ruhsatım" Vehicle Dossier App
+# QA Denetim Raporu — "Garajım" Vehicle Dossier App
 
 **Tarih:** 24 Haziran 2026 (güncelleme: build/test doğrulaması eklendi)
 **Proje:** Araç Dijital Dosyası iOS Uygulaması
@@ -94,7 +94,7 @@
 
 ```
 1. UYGULAMA TANIMI:
-   "Ruhsatım, araç sahiplerinin kendi araç bilgilerini, bakım kayıtlarını,
+   "Garajım, araç sahiplerinin kendi araç bilgilerini, bakım kayıtlarını,
    masraflarını ve belgelerini yönetmesini sağlayan bir araç dijital dosya
    uygulamasıdır."
 

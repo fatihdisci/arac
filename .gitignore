@@ -1,4 +1,4 @@
-# Ruhsatım — Araç Dijital Dosyası
+# Garajım — Araç Dijital Dosyası
 
 # macOS
 .DS_Store
@@ -27,6 +27,7 @@ build/
 *.png
 *.jpg
 *.jpeg
+!Resources/Assets.xcassets/AppIcon.appiconset/*.png
 
 # XCBuildData
 *.xcbuilddata

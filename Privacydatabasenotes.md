@@ -1,4 +1,4 @@
-# Veri Saklama Mimarisi Denetimi — Ruhsatım
+# Veri Saklama Mimarisi Denetimi — Garajım
 
 **Tarih:** 24 Haziran 2026
 **Kapsam:** SwiftData, dosya sistemi, ödeme, dış bağımlılık, iCloud, gizlilik
@@ -221,7 +221,7 @@ var isDevMode: Bool { #if DEBUG return true #else return false #endif }
 ## 13. App Store Privacy Metni (Önerilen)
 
 ```
-Ruhsatım hiçbir kullanıcı verisini toplamaz, üçüncü taraflarla paylaşmaz
+Garajım hiçbir kullanıcı verisini toplamaz, üçüncü taraflarla paylaşmaz
 veya cihaz dışına çıkarmaz. Tüm veriler yalnızca cihazınızda saklanır.
 Uygulama tarafından oluşturulan belgeler (satış dosyası PDF'i) yalnızca
 sizin başlattığınız paylaşım işlemiyle iletilir.

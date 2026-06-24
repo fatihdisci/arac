@@ -174,7 +174,7 @@ Kontrol:
 
 Önerilen yön:
 
-- Ruhsatım
+- Garajım
 - Plaka
 - OtoKayıt
 - Vites

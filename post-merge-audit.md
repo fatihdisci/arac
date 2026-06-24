@@ -1,4 +1,4 @@
-# Post-Merge Doğrulama Denetimi — Ruhsatım
+# Post-Merge Doğrulama Denetimi — Garajım
 
 **Tarih:** 24 Haziran 2026
 **Commit:** `bc40c45`

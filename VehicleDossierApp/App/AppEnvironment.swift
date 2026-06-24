@@ -5,7 +5,7 @@ import Foundation
 // konfigürasyonların merkezi yönetimi.
 
 enum AppEnvironment {
-    static let appName = "Ruhsatım"
+    static let appName = "Garajım"
     static let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
     static let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
 

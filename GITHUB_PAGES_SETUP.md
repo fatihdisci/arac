@@ -1,6 +1,6 @@
-# GitHub Pages Kurulumu — Ruhsatım
+# GitHub Pages Kurulumu — Garajım
 
-Bu belge, Ruhsatım uygulamasının Gizlilik Politikası ve Kullanım Koşulları sayfalarını GitHub Pages üzerinde yayınlamak için gerekli adımları içerir.
+Bu belge, Garajım uygulamasının Gizlilik Politikası ve Kullanım Koşulları sayfalarını GitHub Pages üzerinde yayınlamak için gerekli adımları içerir.
 
 ## Ön Koşul
 

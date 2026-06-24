@@ -18,10 +18,10 @@ struct SettingsView: View {
     @State private var showDemoDeleteConfirmation = false
     @State private var demoSeedMessage: String?
 
-    // Privacy & Terms URL'leri — gerçek URL'ler ile değiştirilmeli
-    private let privacyURL = URL(string: "https://ruhsatim.app/privacy")!
-    private let termsURL = URL(string: "https://ruhsatim.app/terms")!
-    private let supportEmail = "destek@ruhsatim.app"
+    // Privacy & Terms URL'leri — GitHub Pages canlı URL'leri
+    private let privacyURL = URL(string: "https://fatihdisci.github.io/ruhsatim/privacy.html")!
+    private let termsURL = URL(string: "https://fatihdisci.github.io/ruhsatim/terms.html")!
+    private let supportEmail = "behavest@proton.me"
 
     var body: some View {
         NavigationStack {
@@ -208,7 +208,7 @@ struct SettingsView: View {
                         .font(AppTypography.captionMedium)
                         .foregroundColor(AppColors.warning)
                 }
-                Text("Ruhsatım bir resmi kurum uygulaması değildir. TÜVTÜRK, Gelir İdaresi Başkanlığı, sigorta şirketleri veya herhangi bir kamu kurumuyla bağlantısı yoktur. Hatırlatıcılar yalnızca bilgilendirme amaçlıdır.")
+                Text("Garajım bir resmi kurum uygulaması değildir. TÜVTÜRK, Gelir İdaresi Başkanlığı, sigorta şirketleri veya herhangi bir kamu kurumuyla bağlantısı yoktur. Hatırlatıcılar yalnızca bilgilendirme amaçlıdır.")
                     .font(AppTypography.caption)
                     .foregroundColor(AppColors.textSecondary)
             }
