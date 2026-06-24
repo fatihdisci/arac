@@ -62,6 +62,7 @@ struct ExpenseListView: View {
                 expenseListContent
             }
         }
+        .sheet(isPresented: $showAddExpense) { ExpenseFormView() }
     }
 
     // MARK: - Empty State

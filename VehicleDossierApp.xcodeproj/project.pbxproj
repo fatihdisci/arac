@@ -120,6 +120,10 @@
 		6D6D76344B3F47E7AF65D4C9 /* DemoDataSeeder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoDataSeeder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXContainerItemProxy section */
+		A1B2C3D4E5F6478899AABBCC /* PBXContainerItemProxy */ = {isa = PBXContainerItemProxy; containerPortal = DE688E4D /* Project object */; proxyType = 1; remoteGlobalIDString = B5B8540DBBC24CDD923D593D; remoteInfo = Ruhsatim; };
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		0AE3EF0003384D8ABFC293E2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -405,6 +409,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D1E2F3A4B5C6478899AABBCC /* PBXTargetDependency */,
 			);
 			name = RuhsatimTests;
 			productName = RuhsatimTests;
@@ -449,6 +454,10 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXTargetDependency section */
+		D1E2F3A4B5C6478899AABBCC /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = B5B8540DBBC24CDD923D593D /* Ruhsatim */; targetProxy = A1B2C3D4E5F6478899AABBCC /* PBXContainerItemProxy */; };
+/* End PBXTargetDependency section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D343D454246C4AF4A146BC74 /* Resources */ = {

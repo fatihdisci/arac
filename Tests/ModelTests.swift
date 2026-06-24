@@ -372,7 +372,6 @@ final class ReportCalculationTests: XCTestCase {
     func testMonthlyGrouping() {
         let vehicleId = UUID()
         let calendar = Calendar.current
-        let now = Date()
         let january = calendar.date(from: DateComponents(year: 2026, month: 1, day: 15))!
         let february = calendar.date(from: DateComponents(year: 2026, month: 2, day: 10))!
         let expenses = [
