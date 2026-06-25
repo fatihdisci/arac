@@ -50,6 +50,9 @@ struct PaywallView: View {
                     // Hero
                     heroSection
 
+                    // Free / Pro karşılaştırması
+                    planComparison
+
                     // Neden Pro?
                     proBenefits
 
@@ -147,6 +150,46 @@ struct PaywallView: View {
         }
         .padding(.horizontal, AppSpacing.screenMarginH)
     }
+
+
+
+    // MARK: - Free / Pro Comparison
+    private var planComparison: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            SectionHeader(title: "Free ve Pro")
+
+            HStack(alignment: .top, spacing: AppSpacing.sm) {
+                planColumn(title: "Free", features: PaywallService.freeFeatures, accent: AppColors.textSecondary)
+                planColumn(title: "Pro", features: PaywallService.proFeatures, accent: AppColors.accentPrimary)
+            }
+        }
+        .padding(.horizontal, AppSpacing.screenMarginH)
+    }
+
+    private func planColumn(title: String, features: [(icon: String, title: String)], accent: Color) -> some View {
+        VStack(alignment: .leading, spacing: AppSpacing.xs) {
+            Text(title)
+                .font(AppTypography.bodyMedium)
+                .foregroundColor(accent)
+
+            ForEach(features, id: \.title) { feature in
+                HStack(alignment: .top, spacing: AppSpacing.xs) {
+                    Image(systemName: feature.icon)
+                        .font(.caption)
+                        .foregroundColor(accent)
+                        .frame(width: 16)
+                    Text(feature.title)
+                        .font(AppTypography.caption)
+                        .foregroundColor(AppColors.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .padding(AppSpacing.sm)
+        .background(RoundedRectangle(cornerRadius: AppRadius.medium).fill(Color.appSurface))
+    }
+
 
     // MARK: - Pricing
     private var pricingSection: some View {

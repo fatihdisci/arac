@@ -60,6 +60,9 @@
 		EBDA1AE0B43D4361A52F05E3 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23FCD9019FAD4F6AA4CDB028 /* AppRouter.swift */; };
 		F1458ECF64EE45EBB6C42667 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D6DC889DE6440F1933134E5 /* LaunchScreen.storyboard */; };
 		85B5FB8C30734C0F854FD8C8 /* DemoDataSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D6D76344B3F47E7AF65D4C9 /* DemoDataSeeder.swift */; };
+		CCAT0002CCAT0002CCAT0002 /* CarCatalogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAT0001CCAT0001CCAT0001 /* CarCatalogService.swift */; };
+		CCAT0004CCAT0004CCAT0004 /* VehicleCatalogPickerViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAT0003CCAT0003CCAT0003 /* VehicleCatalogPickerViews.swift */; };
+		CCAT0006CCAT0006CCAT0006 /* CarCatalog.tr.json in Resources */ = {isa = PBXBuildFile; fileRef = CCAT0005CCAT0005CCAT0005 /* CarCatalog.tr.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -118,6 +121,9 @@
 		F2E23CA3F1604CC3A42758D6 /* DocumentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentListView.swift; sourceTree = "<group>"; };
 		F36BED4AAE2741B7962E8682 /* PDFExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFExportService.swift; sourceTree = "<group>"; };
 		6D6D76344B3F47E7AF65D4C9 /* DemoDataSeeder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoDataSeeder.swift; sourceTree = "<group>"; };
+		CCAT0001CCAT0001CCAT0001 /* CarCatalogService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarCatalogService.swift; sourceTree = "<group>"; };
+		CCAT0003CCAT0003CCAT0003 /* VehicleCatalogPickerViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleCatalogPickerViews.swift; sourceTree = "<group>"; };
+		CCAT0005CCAT0005CCAT0005 /* CarCatalog.tr.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = CarCatalog.tr.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXContainerItemProxy section */
@@ -234,6 +240,7 @@
 			children = (
 				458CAAD1C9EE4663B24E011A /* VehicleFormView.swift */,
 				BDF8A5FF5F314A8C897C56F4 /* GarageView.swift */,
+				CCAT0003CCAT0003CCAT0003 /* VehicleCatalogPickerViews.swift */,
 			);
 			path = Garage;
 			sourceTree = "<group>";
@@ -254,6 +261,7 @@
 				AD5A71876E6544B1A09B0FA9 /* Assets.xcassets */,
 				1B18C91C35FE4D8F85FF26AE /* Base.lproj */,
 				AAAA0001AAAA0001AAAA0001 /* PrivacyInfo.xcprivacy */,
+				CCAT0005CCAT0005CCAT0005 /* CarCatalog.tr.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -330,6 +338,7 @@
 				F046CE22CAFC48EF885F1813 /* PaywallService.swift */,
 				F36BED4AAE2741B7962E8682 /* PDFExportService.swift */,
 				6D6D76344B3F47E7AF65D4C9 /* DemoDataSeeder.swift */,
+				CCAT0001CCAT0001CCAT0001 /* CarCatalogService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -467,6 +476,7 @@
 				D16E81A8C17348298B0BEE9A /* Assets.xcassets in Resources */,
 				F1458ECF64EE45EBB6C42667 /* LaunchScreen.storyboard in Resources */,
 				BBBB0001BBBB0001BBBB0001 /* PrivacyInfo.xcprivacy in Resources */,
+				CCAT0006CCAT0006CCAT0006 /* CarCatalog.tr.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,6 +503,7 @@
 				267995CAA5EF4E4AB73225A9 /* VehicleHeroHeader.swift in Sources */,
 				62CFD3078AB54AE98354161B /* GarageView.swift in Sources */,
 				85B909F0A3694236A7C09766 /* VehicleFormView.swift in Sources */,
+				CCAT0004CCAT0004CCAT0004 /* VehicleCatalogPickerViews.swift in Sources */,
 				C9CEF06186644426ABAE5496 /* RemindersView.swift in Sources */,
 				3697DEB15F04490FB93586F9 /* ReminderListView.swift in Sources */,
 				0E788B0A99B34A0B96BEC5EB /* ReminderFormView.swift in Sources */,
@@ -526,6 +537,7 @@
 				D231D1E06738422FB8B904E2 /* PDFExportService.swift in Sources */,
 				90472D5EF3F44BE88AED1399 /* PaywallService.swift in Sources */,
 				85B5FB8C30734C0F854FD8C8 /* DemoDataSeeder.swift in Sources */,
+				CCAT0002CCAT0002CCAT0002 /* CarCatalogService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

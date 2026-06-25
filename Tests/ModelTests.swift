@@ -446,3 +446,99 @@ final class ReportCalculationTests: XCTestCase {
         XCTAssertEqual(total, 0)
     }
 }
+
+
+// MARK: - Car Catalog Tests
+final class CarCatalogTests: XCTestCase {
+    func testCatalogLoadsFromBundle() throws {
+        let catalog = try XCTUnwrap(CarCatalogService.shared.catalog)
+        XCTAssertGreaterThan(catalog.brands.count, 0)
+        XCTAssertGreaterThan(catalog.brands.reduce(0) { $0 + $1.models.count }, 0)
+    }
+
+    func testRequiredBrandsAreSearchable() {
+        let service = CarCatalogService.shared
+        XCTAssertEqual(service.searchBrands("Volkswagen").first?.displayName, "Volkswagen")
+        XCTAssertEqual(service.searchBrands("Renault").first?.displayName, "Renault")
+        XCTAssertEqual(service.searchBrands("Fiat").first?.displayName, "Fiat")
+    }
+
+    func testNormalizedAliasSearchFindsTurkishNames() {
+        let service = CarCatalogService.shared
+        XCTAssertEqual(service.searchBrands("citroen").first?.displayName, "Citroën")
+        XCTAssertEqual(service.searchBrands("tofas").first?.displayName, "Tofaş")
+    }
+
+    func testModelSearchWithinBrand() throws {
+        let service = CarCatalogService.shared
+        let volkswagen = try XCTUnwrap(service.searchBrands("Volkswagen").first)
+        let renault = try XCTUnwrap(service.searchBrands("Renault").first)
+        let fiat = try XCTUnwrap(service.searchBrands("Fiat").first)
+
+        XCTAssertEqual(service.searchModels(in: volkswagen, query: "Golf").first?.displayName, "Golf")
+        XCTAssertEqual(service.searchModels(in: renault, query: "Clio").first?.displayName, "Clio")
+        XCTAssertEqual(service.searchModels(in: fiat, query: "Egea").first?.displayName, "Egea")
+    }
+
+    func testModelResetWhenBrandChanges() {
+        var selection = VehicleCatalogSelection(brand: "Volkswagen", model: "Golf")
+        selection.selectBrand("Renault")
+        XCTAssertEqual(selection.brand, "Renault")
+        XCTAssertEqual(selection.model, "")
+    }
+
+    func testManualBrandModelValidation() {
+        XCTAssertEqual(VehicleCatalogSelection(brand: "", model: "").validationErrors(), ["Marka zorunludur.", "Model zorunludur."])
+        XCTAssertTrue(VehicleCatalogSelection(brand: "Özel Marka", model: "Özel Model").validationErrors().isEmpty)
+    }
+
+    func testCatalogDataQuality() throws {
+        let catalog = try XCTUnwrap(CarCatalogService.shared.catalog)
+        let brandIds = catalog.brands.map(\.id)
+        XCTAssertEqual(Set(brandIds).count, brandIds.count)
+        for brand in catalog.brands {
+            XCTAssertFalse(brand.displayName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            let modelIds = brand.models.map(\.id)
+            XCTAssertEqual(Set(modelIds).count, modelIds.count, "Duplicate model id in \(brand.displayName)")
+            for model in brand.models {
+                XCTAssertFalse(model.displayName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }
+        }
+    }
+}
+
+// MARK: - Paywall Limit Tests
+@MainActor
+final class PaywallLimitTests: XCTestCase {
+    func testFreeVehicleLimit() {
+        let service = PaywallService(isProForTesting: false)
+        XCTAssertTrue(service.canAddVehicle(currentCount: 0))
+        XCTAssertFalse(service.canAddVehicle(currentCount: 1))
+    }
+
+    func testProVehicleLimit() {
+        let service = PaywallService(isProForTesting: true)
+        XCTAssertTrue(service.canAddVehicle(currentCount: 99))
+    }
+
+    func testFreeDocumentLimit() {
+        let service = PaywallService(isProForTesting: false)
+        XCTAssertTrue(service.canAddDocument(currentCount: 4))
+        XCTAssertFalse(service.canAddDocument(currentCount: 5))
+    }
+
+    func testProDocumentLimit() {
+        let service = PaywallService(isProForTesting: true)
+        XCTAssertTrue(service.canAddDocument(currentCount: 100))
+    }
+
+    func testSaleFileAndAdvancedReportsAreProOnly() {
+        let free = PaywallService(isProForTesting: false)
+        XCTAssertFalse(free.canCreateSaleFile())
+        XCTAssertFalse(free.canAccessAdvancedReports())
+
+        let pro = PaywallService(isProForTesting: true)
+        XCTAssertTrue(pro.canCreateSaleFile())
+        XCTAssertTrue(pro.canAccessAdvancedReports())
+    }
+}

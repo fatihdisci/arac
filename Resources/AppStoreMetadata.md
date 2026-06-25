@@ -33,7 +33,6 @@ Aracının bakım geçmişini, masraf özetini, ekspertiz raporunu ve belgelerin
 - Satış dosyası PDF oluşturma ve paylaşma
 - Gelişmiş raporlar ve analiz
 - Ekspertiz raporu arşivi
-- iCloud yedekleme (yakında)
 
 **Güvenlik ve Gizlilik**
 

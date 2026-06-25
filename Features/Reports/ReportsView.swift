@@ -8,11 +8,13 @@ import Charts
 // Tasarım kuralı: Sakin, okunaklı, tek ana metrik.
 
 struct ReportsView: View {
+    @EnvironmentObject private var paywallService: PaywallService
     @Query(sort: \Expense.date, order: .reverse) private var allExpenses: [Expense]
     @Query(sort: \Vehicle.createdAt) private var vehicles: [Vehicle]
 
     @State private var selectedVehicleId: UUID?
     @State private var selectedYear: Int
+    @State private var showPaywall = false
 
     private let currentYear = Calendar.current.component(.year, from: Date())
 
@@ -82,6 +84,9 @@ struct ReportsView: View {
             }
             .navigationTitle("Raporlar")
             .background(Color.appBackground)
+            .sheet(isPresented: $showPaywall) {
+                PaywallView(feature: .advancedReports)
+            }
         }
     }
 
@@ -91,12 +96,16 @@ struct ReportsView: View {
             VStack(spacing: AppSpacing.lg) {
                 filters
                 primaryMetric
-                monthlyChart
-                categorySection
-                if costPerKm != nil {
-                    costPerKmCard
+                if paywallService.canAccessAdvancedReports() {
+                    monthlyChart
+                    categorySection
+                    if costPerKm != nil {
+                        costPerKmCard
+                    }
+                    topExpensesSection
+                } else {
+                    advancedReportsLockedCard
                 }
-                topExpensesSection
                 Spacer().frame(height: AppSpacing.xxl)
             }
             .padding(.vertical, AppSpacing.md)
@@ -209,6 +218,33 @@ struct ReportsView: View {
         .subtleShadow()
         .padding(.horizontal, AppSpacing.screenMarginH)
     }
+
+
+
+    // MARK: - Advanced Reports Paywall
+    private var advancedReportsLockedCard: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            Label("Gelişmiş raporlar Pro ile açılır", systemImage: "lock.fill")
+                .font(AppTypography.bodyMedium)
+                .foregroundColor(AppColors.textPrimary)
+            Text("Free planda yıllık toplamı görebilirsin. Aylık grafik, kategori dağılımı, km başı maliyet ve en yüksek masraflar Pro kapsamındadır.")
+                .font(AppTypography.secondary)
+                .foregroundColor(AppColors.textSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+            Button {
+                showPaywall = true
+            } label: {
+                Label("Pro'ya Geç", systemImage: "crown.fill")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.primary)
+        }
+        .padding(AppSpacing.md)
+        .background(RoundedRectangle(cornerRadius: AppRadius.card).fill(Color.appSurface))
+        .subtleShadow()
+        .padding(.horizontal, AppSpacing.screenMarginH)
+    }
+
 
     // MARK: - Category Breakdown
     private var categorySection: some View {
@@ -381,10 +417,12 @@ struct ReportsView: View {
 #Preview("Raporlar — Dolu") {
     ReportsView()
         .modelContainer(MockDataProvider.previewContainer)
+        .environmentObject(PaywallService.shared)
 }
 
 #Preview("Raporlar — Dark Mode") {
     ReportsView()
         .modelContainer(MockDataProvider.previewContainer)
+        .environmentObject(PaywallService.shared)
         .preferredColorScheme(.dark)
 }

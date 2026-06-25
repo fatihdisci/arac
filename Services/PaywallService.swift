@@ -48,6 +48,12 @@ final class PaywallService: ObservableObject {
         }
     }
 
+    #if DEBUG
+    init(isProForTesting: Bool) {
+        self.isPro = isProForTesting
+    }
+    #endif
+
     deinit {
         updatesTask?.cancel()
     }
@@ -189,9 +195,9 @@ final class PaywallService: ObservableObject {
     // MARK: - Feature display
     static let freeFeatures: [(icon: String, title: String)] = [
         ("car", "1 araç"),
-        ("bell", "Temel hatırlatıcılar"),
-        ("list.bullet", "Masraf takibi"),
         ("doc.text", "5 belge"),
+        ("bell", "Temel hatırlatıcılar"),
+        ("wrench.and.screwdriver", "Masraf ve bakım kayıtları"),
     ]
 
     static let proFeatures: [(icon: String, title: String)] = [
@@ -199,7 +205,6 @@ final class PaywallService: ObservableObject {
         ("folder", "Sınırsız belge"),
         ("doc.richtext", "Satış dosyası PDF"),
         ("chart.bar", "Gelişmiş raporlar"),
-        ("magnifyingglass", "Ekspertiz arşivi"),
-        ("icloud", "iCloud yedekleme"),
+        ("magnifyingglass", "Ekspertiz raporlarını satış dosyasına ekleme"),
     ]
 }

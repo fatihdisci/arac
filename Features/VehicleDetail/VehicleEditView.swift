@@ -24,6 +24,10 @@ struct VehicleEditView: View {
     @State private var purchaseOdometerText: String
     @State private var purchasePriceText: String
     @State private var notes: String
+    @State private var showBrandPicker = false
+    @State private var showModelPicker = false
+    @State private var isCustomBrand: Bool
+    @State private var isCustomModel: Bool
 
     @State private var validationErrors: [String] = []
     @State private var showErrors = false
@@ -43,6 +47,9 @@ struct VehicleEditView: View {
         _purchaseOdometerText = State(initialValue: vehicle.purchaseOdometer.map { String($0) } ?? "")
         _purchasePriceText = State(initialValue: vehicle.purchasePrice.map { String(Int($0)) } ?? "")
         _notes = State(initialValue: vehicle.notes)
+        let catalogBrand = CarCatalogService.shared.brand(named: vehicle.brand)
+        _isCustomBrand = State(initialValue: catalogBrand == nil)
+        _isCustomModel = State(initialValue: catalogBrand.flatMap { CarCatalogService.shared.model(named: vehicle.model, in: $0) } == nil)
     }
 
     private var year: Int? { Int(yearText.trimmingCharacters(in: .whitespaces)) }
@@ -56,6 +63,10 @@ struct VehicleEditView: View {
         return t.isEmpty ? nil : Double(t)
     }
 
+    private var selectedCatalogBrand: CarBrand? {
+        isCustomBrand ? nil : CarCatalogService.shared.brand(named: brand)
+    }
+
     var body: some View {
         NavigationStack {
             Form {
@@ -63,8 +74,38 @@ struct VehicleEditView: View {
                 Section {
                     labeledField("Plaka", icon: "number", text: $plate)
                         .textInputAutocapitalization(.characters)
-                    labeledField("Marka", icon: "car", text: $brand)
-                    labeledField("Model", icon: "tag", text: $model)
+
+                    VehicleCatalogSelectionField(
+                        title: "Marka",
+                        value: brand,
+                        placeholder: "Marka seç",
+                        systemImage: "car",
+                        action: { showBrandPicker = true }
+                    )
+
+                    if isCustomBrand {
+                        labeledField("Marka adı", icon: "pencil", text: $brand)
+                    }
+
+                    VehicleCatalogSelectionField(
+                        title: "Model",
+                        value: model,
+                        placeholder: brand.isEmpty ? "Önce marka seç" : "Model seç",
+                        systemImage: "tag",
+                        isDisabled: brand.isEmpty && !isCustomBrand,
+                        action: {
+                            if isCustomBrand {
+                                isCustomModel = true
+                            } else if selectedCatalogBrand != nil {
+                                showModelPicker = true
+                            }
+                        }
+                    )
+
+                    if isCustomModel || isCustomBrand {
+                        labeledField("Model adı", icon: "pencil", text: $model)
+                    }
+
                     labeledField("Yıl", icon: "calendar", text: $yearText, keyboard: .numberPad)
                     labeledField("Güncel Km", icon: "gauge.with.needle", text: $odometerText, keyboard: .numberPad)
                     labeledField("Takma ad", icon: "heart", text: $nickname)
@@ -139,6 +180,18 @@ struct VehicleEditView: View {
                         .foregroundColor(AppColors.accentPrimary)
                 }
             }
+            .sheet(isPresented: $showBrandPicker) {
+                CarBrandPickerSheet(service: CarCatalogService.shared, selectedBrand: brand) { selectedBrand in
+                    handleBrandSelection(selectedBrand)
+                }
+            }
+            .sheet(isPresented: $showModelPicker) {
+                if let selectedCatalogBrand {
+                    CarModelPickerSheet(service: CarCatalogService.shared, brand: selectedCatalogBrand, selectedModel: model) { selectedModel in
+                        handleModelSelection(selectedModel)
+                    }
+                }
+            }
         }
     }
 
@@ -167,6 +220,33 @@ struct VehicleEditView: View {
             Label(label, systemImage: icon)
                 .font(AppTypography.body)
                 .foregroundColor(AppColors.textPrimary)
+        }
+    }
+
+    // MARK: - Catalog Selection
+    private func handleBrandSelection(_ selectedBrand: CarBrand?) {
+        if let selectedBrand {
+            var selection = VehicleCatalogSelection(brand: brand, model: model)
+            selection.selectBrand(selectedBrand.displayName)
+            brand = selection.brand
+            model = selection.model
+            isCustomBrand = false
+            isCustomModel = false
+        } else {
+            brand = ""
+            model = ""
+            isCustomBrand = true
+            isCustomModel = true
+        }
+    }
+
+    private func handleModelSelection(_ selectedModel: CarModel?) {
+        if let selectedModel {
+            model = selectedModel.displayName
+            isCustomModel = false
+        } else {
+            model = ""
+            isCustomModel = true
         }
     }
 

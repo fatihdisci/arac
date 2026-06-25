@@ -15,8 +15,6 @@ struct SettingsView: View {
     @State private var showDeleteAllConfirmation = false
     @State private var isExporting = false
     @State private var exportMessage: String?
-    @State private var showDemoSeedConfirmation = false
-    @State private var showDemoDeleteConfirmation = false
     @State private var demoSeedMessage: String?
 
     // Privacy & Terms URL'leri — GitHub Pages canlı URL'leri
@@ -65,18 +63,6 @@ struct SettingsView: View {
                 Button("İptal", role: .cancel) {}
             } message: {
                 Text("Bu işlem geri alınamaz. Tüm araçlar, hatırlatıcılar, masraflar, bakım kayıtları, belgeler ve raporlar kalıcı olarak silinir.")
-            }
-            .confirmationDialog("Demo Verileri Yükle", isPresented: $showDemoSeedConfirmation) {
-                Button("Demo Verileri Yükle") { seedDemoData() }
-                Button("İptal", role: .cancel) {}
-            } message: {
-                Text("Demo verileri eklenecek. Mevcut verilerin korunacak; aynı demo verileri tekrar eklenmesin.")
-            }
-            .confirmationDialog("Tüm Demo Verileri Sil", isPresented: $showDemoDeleteConfirmation) {
-                Button("Tüm Verileri Sil", role: .destructive) { deleteAllDemoData() }
-                Button("İptal", role: .cancel) {}
-            } message: {
-                Text("Bu işlem geri alınamaz. Tüm araçlar, hatırlatıcılar, masraflar, bakım kayıtları, belgeler ve raporlar kalıcı olarak silinir. Devam etmek istediğine emin misin?")
             }
         }
     }
@@ -264,16 +250,32 @@ struct SettingsView: View {
     private var developerSection: some View {
         Section {
             Button {
-                showDemoSeedConfirmation = true
+                seedDemoData()
             } label: {
                 Label("Demo Verileri Yükle", systemImage: "laptopcomputer")
                     .foregroundColor(AppColors.accentPrimary)
             }
 
             Button(role: .destructive) {
-                showDemoDeleteConfirmation = true
+                deleteAllDemoData()
             } label: {
                 Label("Tüm Verileri Temizle", systemImage: "trash")
+            }
+
+            Divider()
+
+            Button {
+                paywallService.enableProForDev()
+            } label: {
+                Label("Dev: Pro’yu Aç", systemImage: "crown.fill")
+                    .foregroundColor(AppColors.accentPrimary)
+            }
+
+            Button {
+                paywallService.disableProForDev()
+            } label: {
+                Label("Dev: Free’ye Dön", systemImage: "arrow.uturn.backward")
+                    .foregroundColor(AppColors.textSecondary)
             }
 
             if let message = demoSeedMessage {

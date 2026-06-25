@@ -1,0 +1,4029 @@
+{
+    "version": 1,
+    "locale": "tr_TR",
+    "market": "TR",
+    "lastUpdated": "2026-06-25",
+    "sourceNotes": [
+        "Compiled from public brand/model information for Turkey-focused vehicle selection UX.",
+        "Not an official manufacturer database.",
+        "User can still enter custom brand/model if not listed."
+    ],
+    "brands": [
+        {
+            "id": "volkswagen",
+            "displayName": "Volkswagen",
+            "aliases": [
+                "VW"
+            ],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "golf",
+                    "displayName": "Golf",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "polo",
+                    "displayName": "Polo",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "passat",
+                    "displayName": "Passat",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "stationWagon"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "jetta",
+                    "displayName": "Jetta",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "vento",
+                    "displayName": "Vento",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "bora",
+                    "displayName": "Bora",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "tiguan",
+                    "displayName": "Tiguan",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "t-roc",
+                    "displayName": "T-Roc",
+                    "aliases": [
+                        "TRoc"
+                    ],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "t-cross",
+                    "displayName": "T-Cross",
+                    "aliases": [
+                        "TCross"
+                    ],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "taigo",
+                    "displayName": "Taigo",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "touareg",
+                    "displayName": "Touareg",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "scirocco",
+                    "displayName": "Scirocco",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "coupe"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "beetle",
+                    "displayName": "Beetle",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": false
+                },
+                {
+                    "id": "caddy",
+                    "displayName": "Caddy",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "lightCommercial",
+                        "van"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "transporter",
+                    "displayName": "Transporter",
+                    "aliases": [
+                        "T6",
+                        "T5"
+                    ],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "amarok",
+                    "displayName": "Amarok",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "pickup"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "id3",
+                    "displayName": "ID.3",
+                    "aliases": [
+                        "ID3"
+                    ],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "id4",
+                    "displayName": "ID.4",
+                    "aliases": [
+                        "ID4"
+                    ],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "renault",
+            "displayName": "Renault",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "clio",
+                    "displayName": "Clio",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "megane",
+                    "displayName": "Megane",
+                    "aliases": [
+                        "Megan"
+                    ],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "symbol",
+                    "displayName": "Symbol",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "fluence",
+                    "displayName": "Fluence",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "captur",
+                    "displayName": "Captur",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "austral",
+                    "displayName": "Austral",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "duster",
+                    "displayName": "Duster",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "kangoo",
+                    "displayName": "Kangoo",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "lightCommercial",
+                        "van"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "master",
+                    "displayName": "Master",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "trafic",
+                    "displayName": "Trafic",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "broadway",
+                    "displayName": "Broadway",
+                    "aliases": [
+                        "Renault 9"
+                    ],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "r11",
+                    "displayName": "Renault 11",
+                    "aliases": [
+                        "R11",
+                        "Flash"
+                    ],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "r12",
+                    "displayName": "Renault 12",
+                    "aliases": [
+                        "R12",
+                        "Toros"
+                    ],
+                    "bodyTypes": [
+                        "sedan",
+                        "stationWagon"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "r19",
+                    "displayName": "Renault 19",
+                    "aliases": [
+                        "R19",
+                        "Europa"
+                    ],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "laguna",
+                    "displayName": "Laguna",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "stationWagon"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "talisman",
+                    "displayName": "Talisman",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "scenic",
+                    "displayName": "Scenic",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "mpv",
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "twingo",
+                    "displayName": "Twingo",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "zoe",
+                    "displayName": "Zoe",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "fiat",
+            "displayName": "Fiat",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "egea",
+                    "displayName": "Egea",
+                    "aliases": [
+                        "Tipo"
+                    ],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback",
+                        "stationWagon"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "linea",
+                    "displayName": "Linea",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "punto",
+                    "displayName": "Punto",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "albea",
+                    "displayName": "Albea",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "palio",
+                    "displayName": "Palio",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "siena",
+                    "displayName": "Siena",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "tempra",
+                    "displayName": "Tempra",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "stationWagon"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "tipo-classic",
+                    "displayName": "Tipo (Klasik)",
+                    "aliases": [
+                        "Eski Tipo"
+                    ],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "uno",
+                    "displayName": "Uno",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "marea",
+                    "displayName": "Marea",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "stationWagon"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "stilo",
+                    "displayName": "Stilo",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "doblo",
+                    "displayName": "Doblo",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "lightCommercial",
+                        "van",
+                        "mpv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "fiorino",
+                    "displayName": "Fiorino",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "lightCommercial",
+                        "van"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "panda",
+                    "displayName": "Panda",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "500",
+                    "displayName": "500",
+                    "aliases": [
+                        "Fiat 500"
+                    ],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "ducato",
+                    "displayName": "Ducato",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "toyota",
+            "displayName": "Toyota",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "corolla",
+                    "displayName": "Corolla",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "c-hr",
+                    "displayName": "C-HR",
+                    "aliases": [
+                        "CHR"
+                    ],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "yaris",
+                    "displayName": "Yaris",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "yaris-cross",
+                    "displayName": "Yaris Cross",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "rav4",
+                    "displayName": "RAV4",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "camry",
+                    "displayName": "Camry",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "avensis",
+                    "displayName": "Avensis",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "stationWagon"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "auris",
+                    "displayName": "Auris",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "corolla-cross",
+                    "displayName": "Corolla Cross",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "hilux",
+                    "displayName": "Hilux",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "pickup"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "proace",
+                    "displayName": "Proace",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "land-cruiser",
+                    "displayName": "Land Cruiser",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "hyundai",
+            "displayName": "Hyundai",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "i20",
+                    "displayName": "i20",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "i10",
+                    "displayName": "i10",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "i30",
+                    "displayName": "i30",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "accent",
+                    "displayName": "Accent",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "accent-era",
+                    "displayName": "Accent Era",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "elantra",
+                    "displayName": "Elantra",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "bayon",
+                    "displayName": "Bayon",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "tucson",
+                    "displayName": "Tucson",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "kona",
+                    "displayName": "Kona",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "santa-fe",
+                    "displayName": "Santa Fe",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "ioniq",
+                    "displayName": "Ioniq",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback",
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "h100",
+                    "displayName": "H-100",
+                    "aliases": [
+                        "H100"
+                    ],
+                    "bodyTypes": [
+                        "lightCommercial",
+                        "van"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "starex",
+                    "displayName": "Starex",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "van",
+                        "minibus"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "opel",
+            "displayName": "Opel",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "corsa",
+                    "displayName": "Corsa",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "astra",
+                    "displayName": "Astra",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "vectra",
+                    "displayName": "Vectra",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "insignia",
+                    "displayName": "Insignia",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "mokka",
+                    "displayName": "Mokka",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "crossland",
+                    "displayName": "Crossland",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "grandland",
+                    "displayName": "Grandland",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "frontera",
+                    "displayName": "Frontera",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "combo",
+                    "displayName": "Combo",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "lightCommercial",
+                        "van"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "vivaro",
+                    "displayName": "Vivaro",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "kadett",
+                    "displayName": "Kadett",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "omega",
+                    "displayName": "Omega",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "peugeot",
+            "displayName": "Peugeot",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "208",
+                    "displayName": "208",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "301",
+                    "displayName": "301",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "308",
+                    "displayName": "308",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback",
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "408",
+                    "displayName": "408",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "2008",
+                    "displayName": "2008",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "3008",
+                    "displayName": "3008",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "5008",
+                    "displayName": "5008",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "mpv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "partner",
+                    "displayName": "Partner",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "lightCommercial",
+                        "van"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "boxer",
+                    "displayName": "Boxer",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "206",
+                    "displayName": "206",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "207",
+                    "displayName": "207",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "405",
+                    "displayName": "405",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "406",
+                    "displayName": "406",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "citroen",
+            "displayName": "Citro\u00ebn",
+            "aliases": [
+                "Citroen"
+            ],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "c3",
+                    "displayName": "C3",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "c-elysee",
+                    "displayName": "C-Elys\u00e9e",
+                    "aliases": [
+                        "C Elysee"
+                    ],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "c4",
+                    "displayName": "C4",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback",
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "c4-cactus",
+                    "displayName": "C4 Cactus",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "c5",
+                    "displayName": "C5",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "c-c5-aircross",
+                    "displayName": "C5 Aircross",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "berlingo",
+                    "displayName": "Berlingo",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "lightCommercial",
+                        "van"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "jumpy",
+                    "displayName": "Jumpy",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "jumper",
+                    "displayName": "Jumper",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "xsara",
+                    "displayName": "Xsara",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback",
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "saxo",
+                    "displayName": "Saxo",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "ford",
+            "displayName": "Ford",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "focus",
+                    "displayName": "Focus",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback",
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "fiesta",
+                    "displayName": "Fiesta",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "mondeo",
+                    "displayName": "Mondeo",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "kuga",
+                    "displayName": "Kuga",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "puma",
+                    "displayName": "Puma",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "courier",
+                    "displayName": "Courier",
+                    "aliases": [
+                        "Tourneo Courier",
+                        "Transit Courier"
+                    ],
+                    "bodyTypes": [
+                        "lightCommercial",
+                        "van"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "transit",
+                    "displayName": "Transit",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "tourneo-connect",
+                    "displayName": "Tourneo Connect",
+                    "aliases": [
+                        "Transit Connect"
+                    ],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "tourneo-custom",
+                    "displayName": "Tourneo Custom",
+                    "aliases": [
+                        "Transit Custom"
+                    ],
+                    "bodyTypes": [
+                        "van",
+                        "minibus"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "ranger",
+                    "displayName": "Ranger",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "pickup"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "ecosport",
+                    "displayName": "EcoSport",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "escort",
+                    "displayName": "Escort",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "honda",
+            "displayName": "Honda",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "civic",
+                    "displayName": "Civic",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "city",
+                    "displayName": "City",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "cr-v",
+                    "displayName": "CR-V",
+                    "aliases": [
+                        "CRV"
+                    ],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "hr-v",
+                    "displayName": "HR-V",
+                    "aliases": [
+                        "HRV"
+                    ],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "jazz",
+                    "displayName": "Jazz",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "accord",
+                    "displayName": "Accord",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "bmw",
+            "displayName": "BMW",
+            "aliases": [],
+            "category": "premium",
+            "models": [
+                {
+                    "id": "1-series",
+                    "displayName": "1 Serisi",
+                    "aliases": [
+                        "1 Series"
+                    ],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "2-series",
+                    "displayName": "2 Serisi",
+                    "aliases": [
+                        "2 Series"
+                    ],
+                    "bodyTypes": [
+                        "coupe",
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "3-series",
+                    "displayName": "3 Serisi",
+                    "aliases": [
+                        "3 Series"
+                    ],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "4-series",
+                    "displayName": "4 Serisi",
+                    "aliases": [
+                        "4 Series"
+                    ],
+                    "bodyTypes": [
+                        "coupe"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "5-series",
+                    "displayName": "5 Serisi",
+                    "aliases": [
+                        "5 Series"
+                    ],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "6-series",
+                    "displayName": "6 Serisi",
+                    "aliases": [
+                        "6 Series"
+                    ],
+                    "bodyTypes": [
+                        "coupe",
+                        "convertible"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "7-series",
+                    "displayName": "7 Serisi",
+                    "aliases": [
+                        "7 Series"
+                    ],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "x1",
+                    "displayName": "X1",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "x2",
+                    "displayName": "X2",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "x3",
+                    "displayName": "X3",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "x4",
+                    "displayName": "X4",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "x5",
+                    "displayName": "X5",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "x6",
+                    "displayName": "X6",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "z4",
+                    "displayName": "Z4",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "convertible"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "mercedes-benz",
+            "displayName": "Mercedes-Benz",
+            "aliases": [
+                "Mercedes",
+                "MB"
+            ],
+            "category": "premium",
+            "models": [
+                {
+                    "id": "a-class",
+                    "displayName": "A Serisi",
+                    "aliases": [
+                        "A Serisi",
+                        "A Class"
+                    ],
+                    "bodyTypes": [
+                        "hatchback",
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "b-class",
+                    "displayName": "B Serisi",
+                    "aliases": [
+                        "B Serisi",
+                        "B Class"
+                    ],
+                    "bodyTypes": [
+                        "mpv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "c-class",
+                    "displayName": "C Serisi",
+                    "aliases": [
+                        "C Serisi",
+                        "C Class"
+                    ],
+                    "bodyTypes": [
+                        "sedan",
+                        "stationWagon"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "e-class",
+                    "displayName": "E Serisi",
+                    "aliases": [
+                        "E Serisi",
+                        "E Class"
+                    ],
+                    "bodyTypes": [
+                        "sedan",
+                        "stationWagon"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "s-class",
+                    "displayName": "S Serisi",
+                    "aliases": [
+                        "S Serisi",
+                        "S Class"
+                    ],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "cla",
+                    "displayName": "CLA",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "coupe"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "gla",
+                    "displayName": "GLA",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "glb",
+                    "displayName": "GLB",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "glc",
+                    "displayName": "GLC",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "gle",
+                    "displayName": "GLE",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "vito",
+                    "displayName": "Vito",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "sprinter",
+                    "displayName": "Sprinter",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial",
+                        "minibus"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "audi",
+            "displayName": "Audi",
+            "aliases": [],
+            "category": "premium",
+            "models": [
+                {
+                    "id": "a1",
+                    "displayName": "A1",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "a3",
+                    "displayName": "A3",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback",
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "a4",
+                    "displayName": "A4",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "stationWagon"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "a5",
+                    "displayName": "A5",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "coupe",
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "a6",
+                    "displayName": "A6",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "stationWagon"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "a8",
+                    "displayName": "A8",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "q2",
+                    "displayName": "Q2",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "q3",
+                    "displayName": "Q3",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "q5",
+                    "displayName": "Q5",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "q7",
+                    "displayName": "Q7",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "tt",
+                    "displayName": "TT",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "coupe"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "skoda",
+            "displayName": "Skoda",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "fabia",
+                    "displayName": "Fabia",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "octavia",
+                    "displayName": "Octavia",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "superb",
+                    "displayName": "Superb",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "rapid",
+                    "displayName": "Rapid",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "scala",
+                    "displayName": "Scala",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "kamiq",
+                    "displayName": "Kamiq",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "karoq",
+                    "displayName": "Karoq",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "kodiaq",
+                    "displayName": "Kodiaq",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "seat",
+            "displayName": "Seat",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "ibiza",
+                    "displayName": "Ibiza",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "leon",
+                    "displayName": "Leon",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback",
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "toledo",
+                    "displayName": "Toledo",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "cordoba",
+                    "displayName": "Cordoba",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "arona",
+                    "displayName": "Arona",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "ateca",
+                    "displayName": "Ateca",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "dacia",
+            "displayName": "Dacia",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "sandero",
+                    "displayName": "Sandero",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "sandero-stepway",
+                    "displayName": "Sandero Stepway",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "logan",
+                    "displayName": "Logan",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "duster-dacia",
+                    "displayName": "Duster",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "jogger",
+                    "displayName": "Jogger",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "mpv",
+                        "stationWagon"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "spring",
+                    "displayName": "Spring",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "lodgy",
+                    "displayName": "Lodgy",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "mpv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "dokker",
+                    "displayName": "Dokker",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "lightCommercial",
+                        "van"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "nissan",
+            "displayName": "Nissan",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "qashqai",
+                    "displayName": "Qashqai",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "juke",
+                    "displayName": "Juke",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "x-trail",
+                    "displayName": "X-Trail",
+                    "aliases": [
+                        "XTrail"
+                    ],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "micra",
+                    "displayName": "Micra",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "almera",
+                    "displayName": "Almera",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "primera",
+                    "displayName": "Primera",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "navara",
+                    "displayName": "Navara",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "pickup"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "nv200",
+                    "displayName": "NV200",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "lightCommercial",
+                        "van"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "kia",
+            "displayName": "Kia",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "picanto",
+                    "displayName": "Picanto",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "rio",
+                    "displayName": "Rio",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback",
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "ceed",
+                    "displayName": "Ceed",
+                    "aliases": [
+                        "Cee'd"
+                    ],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "stonic",
+                    "displayName": "Stonic",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "sportage",
+                    "displayName": "Sportage",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "sorento",
+                    "displayName": "Sorento",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "xceed",
+                    "displayName": "XCeed",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "ev2",
+                    "displayName": "EV2",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "seltos",
+                    "displayName": "Seltos",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "volvo",
+            "displayName": "Volvo",
+            "aliases": [],
+            "category": "premium",
+            "models": [
+                {
+                    "id": "s60",
+                    "displayName": "S60",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "s90",
+                    "displayName": "S90",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "v40",
+                    "displayName": "V40",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "v60",
+                    "displayName": "V60",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "stationWagon"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "xc40",
+                    "displayName": "XC40",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "xc60",
+                    "displayName": "XC60",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "xc90",
+                    "displayName": "XC90",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "tofas",
+            "displayName": "Tofa\u015f",
+            "aliases": [
+                "Tofas"
+            ],
+            "category": "niche",
+            "models": [
+                {
+                    "id": "sahin",
+                    "displayName": "\u015eahin",
+                    "aliases": [
+                        "Sahin"
+                    ],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "dogan",
+                    "displayName": "Do\u011fan",
+                    "aliases": [
+                        "Dogan"
+                    ],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "kartal",
+                    "displayName": "Kartal",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "stationWagon"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "murat-131",
+                    "displayName": "Murat 131",
+                    "aliases": [
+                        "Murat 131"
+                    ],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "murat-124",
+                    "displayName": "Murat 124",
+                    "aliases": [
+                        "Hac\u0131 Murat",
+                        "Haci Murat"
+                    ],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "serce",
+                    "displayName": "Ser\u00e7e",
+                    "aliases": [
+                        "Serce"
+                    ],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "sahin-doblo",
+                    "displayName": "Doblo",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "lightCommercial",
+                        "van",
+                        "mpv"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "chevrolet",
+            "displayName": "Chevrolet",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "aveo",
+                    "displayName": "Aveo",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "cruze",
+                    "displayName": "Cruze",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "lacetti",
+                    "displayName": "Lacetti",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "captiva",
+                    "displayName": "Captiva",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "spark",
+                    "displayName": "Spark",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "epica",
+                    "displayName": "Epica",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "mitsubishi",
+            "displayName": "Mitsubishi",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "lancer",
+                    "displayName": "Lancer",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "colt",
+                    "displayName": "Colt",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "carisma",
+                    "displayName": "Carisma",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "outlander",
+                    "displayName": "Outlander",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "asx",
+                    "displayName": "ASX",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "l200",
+                    "displayName": "L200",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "pickup"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "suzuki",
+            "displayName": "Suzuki",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "swift",
+                    "displayName": "Swift",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "vitara",
+                    "displayName": "Vitara",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "s-cross",
+                    "displayName": "S-Cross",
+                    "aliases": [
+                        "SCross"
+                    ],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "baleno",
+                    "displayName": "Baleno",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "jimny",
+                    "displayName": "Jimny",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "mazda",
+            "displayName": "Mazda",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "mazda2",
+                    "displayName": "Mazda2",
+                    "aliases": [
+                        "2"
+                    ],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "mazda3",
+                    "displayName": "Mazda3",
+                    "aliases": [
+                        "3"
+                    ],
+                    "bodyTypes": [
+                        "hatchback",
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "cx-3",
+                    "displayName": "CX-3",
+                    "aliases": [
+                        "CX3"
+                    ],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "cx-5",
+                    "displayName": "CX-5",
+                    "aliases": [
+                        "CX5"
+                    ],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "cx-30",
+                    "displayName": "CX-30",
+                    "aliases": [
+                        "CX30"
+                    ],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "subaru",
+            "displayName": "Subaru",
+            "aliases": [],
+            "category": "niche",
+            "models": [
+                {
+                    "id": "impreza",
+                    "displayName": "Impreza",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "forester",
+                    "displayName": "Forester",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "xv",
+                    "displayName": "XV",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "outback",
+                    "displayName": "Outback",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "stationWagon",
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "mini",
+            "displayName": "Mini",
+            "aliases": [
+                "MINI"
+            ],
+            "category": "premium",
+            "models": [
+                {
+                    "id": "cooper",
+                    "displayName": "Cooper",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "countryman",
+                    "displayName": "Countryman",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "clubman",
+                    "displayName": "Clubman",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "stationWagon"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "land-rover",
+            "displayName": "Land Rover",
+            "aliases": [
+                "LandRover"
+            ],
+            "category": "luxury",
+            "models": [
+                {
+                    "id": "discovery",
+                    "displayName": "Discovery",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "discovery-sport",
+                    "displayName": "Discovery Sport",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "range-rover",
+                    "displayName": "Range Rover",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "range-rover-evoque",
+                    "displayName": "Range Rover Evoque",
+                    "aliases": [
+                        "Evoque"
+                    ],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "range-rover-sport",
+                    "displayName": "Range Rover Sport",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "defender",
+                    "displayName": "Defender",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "freelander",
+                    "displayName": "Freelander",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "jeep",
+            "displayName": "Jeep",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "compass",
+                    "displayName": "Compass",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "renegade",
+                    "displayName": "Renegade",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "cherokee",
+                    "displayName": "Cherokee",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "grand-cherokee",
+                    "displayName": "Grand Cherokee",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "wrangler",
+                    "displayName": "Wrangler",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "avenger",
+                    "displayName": "Avenger",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "alfa-romeo",
+            "displayName": "Alfa Romeo",
+            "aliases": [
+                "AlfaRomeo"
+            ],
+            "category": "premium",
+            "models": [
+                {
+                    "id": "giulietta",
+                    "displayName": "Giulietta",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "giulia",
+                    "displayName": "Giulia",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "stelvio",
+                    "displayName": "Stelvio",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "146",
+                    "displayName": "146",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "156",
+                    "displayName": "156",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "chery",
+            "displayName": "Chery",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "tiggo-4",
+                    "displayName": "Tiggo 4",
+                    "aliases": [
+                        "Tiggo4"
+                    ],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "tiggo-7",
+                    "displayName": "Tiggo 7",
+                    "aliases": [
+                        "Tiggo7"
+                    ],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "tiggo-8",
+                    "displayName": "Tiggo 8",
+                    "aliases": [
+                        "Tiggo8"
+                    ],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "arrizo-6",
+                    "displayName": "Arrizo 6",
+                    "aliases": [
+                        "Arrizo6"
+                    ],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "mg",
+            "displayName": "MG",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "zs",
+                    "displayName": "ZS",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "hs",
+                    "displayName": "HS",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "5",
+                    "displayName": "MG5",
+                    "aliases": [
+                        "MG5"
+                    ],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "4",
+                    "displayName": "MG4",
+                    "aliases": [
+                        "MG4"
+                    ],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "byd",
+            "displayName": "BYD",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "atto-3",
+                    "displayName": "Atto 3",
+                    "aliases": [
+                        "Atto3"
+                    ],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "atto-2",
+                    "displayName": "Atto 2",
+                    "aliases": [
+                        "Atto2"
+                    ],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "seal",
+                    "displayName": "Seal",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "seal-u",
+                    "displayName": "Seal U",
+                    "aliases": [
+                        "SealU"
+                    ],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "dolphin",
+                    "displayName": "Dolphin",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "han",
+                    "displayName": "Han",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "tesla",
+            "displayName": "Tesla",
+            "aliases": [],
+            "category": "premium",
+            "models": [
+                {
+                    "id": "model-3",
+                    "displayName": "Model 3",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "model-y",
+                    "displayName": "Model Y",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "model-s",
+                    "displayName": "Model S",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "model-x",
+                    "displayName": "Model X",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "cupra",
+            "displayName": "Cupra",
+            "aliases": [],
+            "category": "premium",
+            "models": [
+                {
+                    "id": "formentor",
+                    "displayName": "Formentor",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "leon-cupra",
+                    "displayName": "Leon",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "born",
+                    "displayName": "Born",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "ateca-cupra",
+                    "displayName": "Ateca",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "ds-automobiles",
+            "displayName": "DS Automobiles",
+            "aliases": [
+                "DS"
+            ],
+            "category": "premium",
+            "models": [
+                {
+                    "id": "ds3",
+                    "displayName": "DS 3",
+                    "aliases": [
+                        "DS3"
+                    ],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "ds4",
+                    "displayName": "DS 4",
+                    "aliases": [
+                        "DS4"
+                    ],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "ds7",
+                    "displayName": "DS 7",
+                    "aliases": [
+                        "DS7"
+                    ],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "isuzu",
+            "displayName": "Isuzu",
+            "aliases": [],
+            "category": "lightCommercial",
+            "models": [
+                {
+                    "id": "d-max",
+                    "displayName": "D-Max",
+                    "aliases": [
+                        "DMax"
+                    ],
+                    "bodyTypes": [
+                        "pickup"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "npr",
+                    "displayName": "NPR",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "lightCommercial"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "iveco",
+            "displayName": "Iveco",
+            "aliases": [],
+            "category": "lightCommercial",
+            "models": [
+                {
+                    "id": "daily",
+                    "displayName": "Daily",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial",
+                        "minibus"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "lexus",
+            "displayName": "Lexus",
+            "aliases": [],
+            "category": "luxury",
+            "models": [
+                {
+                    "id": "is",
+                    "displayName": "IS",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "es",
+                    "displayName": "ES",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "nx",
+                    "displayName": "NX",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "rx",
+                    "displayName": "RX",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "ux",
+                    "displayName": "UX",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "porsche",
+            "displayName": "Porsche",
+            "aliases": [],
+            "category": "luxury",
+            "models": [
+                {
+                    "id": "911",
+                    "displayName": "911",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "coupe"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "cayenne",
+                    "displayName": "Cayenne",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "macan",
+                    "displayName": "Macan",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "panamera",
+                    "displayName": "Panamera",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "taycan",
+                    "displayName": "Taycan",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "jaguar",
+            "displayName": "Jaguar",
+            "aliases": [],
+            "category": "luxury",
+            "models": [
+                {
+                    "id": "xe",
+                    "displayName": "XE",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "xf",
+                    "displayName": "XF",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "f-pace",
+                    "displayName": "F-Pace",
+                    "aliases": [
+                        "FPace"
+                    ],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "e-pace",
+                    "displayName": "E-Pace",
+                    "aliases": [
+                        "EPace"
+                    ],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "genesis",
+            "displayName": "Genesis",
+            "aliases": [],
+            "category": "luxury",
+            "models": [
+                {
+                    "id": "g70",
+                    "displayName": "G70",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "g80",
+                    "displayName": "G80",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "gv70",
+                    "displayName": "GV70",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "gv80",
+                    "displayName": "GV80",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "ssangyong",
+            "displayName": "SsangYong",
+            "aliases": [
+                "KG Mobility",
+                "Ssangyong"
+            ],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "tivoli",
+                    "displayName": "Tivoli",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "korando",
+                    "displayName": "Korando",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "torres",
+                    "displayName": "Torres",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "musso",
+                    "displayName": "Musso",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "pickup"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "actyon",
+                    "displayName": "Actyon",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "togg",
+            "displayName": "Togg",
+            "aliases": [
+                "TOGG"
+            ],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "t10x",
+                    "displayName": "T10X",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "t10f",
+                    "displayName": "T10F",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "karsan",
+            "displayName": "Karsan",
+            "aliases": [],
+            "category": "lightCommercial",
+            "models": [
+                {
+                    "id": "j10",
+                    "displayName": "J10",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "minibus",
+                        "van"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "jest",
+                    "displayName": "Jest",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "minibus"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "atak",
+                    "displayName": "Atak",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "minibus"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "star",
+                    "displayName": "Star",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "minibus",
+                        "van"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "otokar",
+            "displayName": "Otokar",
+            "aliases": [],
+            "category": "lightCommercial",
+            "models": [
+                {
+                    "id": "centro",
+                    "displayName": "Centro",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "minibus"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "navigo",
+                    "displayName": "Navigo",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "minibus"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "atlas",
+                    "displayName": "Atlas",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "minibus"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "tenax",
+            "displayName": "Tenax",
+            "aliases": [],
+            "category": "lightCommercial",
+            "models": [
+                {
+                    "id": "tenax-van",
+                    "displayName": "Tenax Van",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "lightCommercial",
+                        "van"
+                    ],
+                    "isCommonInTurkey": false
+                }
+            ]
+        },
+        {
+            "id": "maxus",
+            "displayName": "Maxus",
+            "aliases": [],
+            "category": "lightCommercial",
+            "models": [
+                {
+                    "id": "deliver-9",
+                    "displayName": "Deliver 9",
+                    "aliases": [
+                        "Deliver9"
+                    ],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "t60",
+                    "displayName": "T60",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "pickup"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "euniq-6",
+                    "displayName": "Euniq 6",
+                    "aliases": [
+                        "Euniq6"
+                    ],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": false
+                }
+            ]
+        },
+        {
+            "id": "jac",
+            "displayName": "JAC",
+            "aliases": [],
+            "category": "lightCommercial",
+            "models": [
+                {
+                    "id": "x200",
+                    "displayName": "X200",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "pickup"
+                    ],
+                    "isCommonInTurkey": false
+                },
+                {
+                    "id": "sunray",
+                    "displayName": "Sunray",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "van",
+                        "minibus"
+                    ],
+                    "isCommonInTurkey": false
+                }
+            ]
+        },
+        {
+            "id": "foton",
+            "displayName": "Foton",
+            "aliases": [],
+            "category": "lightCommercial",
+            "models": [
+                {
+                    "id": "tunland",
+                    "displayName": "Tunland",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "pickup"
+                    ],
+                    "isCommonInTurkey": false
+                },
+                {
+                    "id": "view",
+                    "displayName": "View",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "van",
+                        "lightCommercial"
+                    ],
+                    "isCommonInTurkey": false
+                }
+            ]
+        },
+        {
+            "id": "dfsk",
+            "displayName": "DFSK",
+            "aliases": [
+                "DFM"
+            ],
+            "category": "lightCommercial",
+            "models": [
+                {
+                    "id": "c31",
+                    "displayName": "C31",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "lightCommercial",
+                        "van"
+                    ],
+                    "isCommonInTurkey": false
+                },
+                {
+                    "id": "k01h",
+                    "displayName": "K01H",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "lightCommercial",
+                        "van"
+                    ],
+                    "isCommonInTurkey": false
+                }
+            ]
+        },
+        {
+            "id": "lada",
+            "displayName": "Lada",
+            "aliases": [],
+            "category": "niche",
+            "models": [
+                {
+                    "id": "samara",
+                    "displayName": "Samara",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback",
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "niva",
+                    "displayName": "Niva",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "110",
+                    "displayName": "110",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "seres",
+            "displayName": "Seres",
+            "aliases": [],
+            "category": "niche",
+            "models": [
+                {
+                    "id": "seres-3",
+                    "displayName": "Seres 3",
+                    "aliases": [
+                        "Seres3"
+                    ],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": false
+                }
+            ]
+        },
+        {
+            "id": "omoda",
+            "displayName": "Omoda",
+            "aliases": [],
+            "category": "mainstream",
+            "models": [
+                {
+                    "id": "omoda-5",
+                    "displayName": "Omoda 5",
+                    "aliases": [
+                        "Omoda5"
+                    ],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "jetour",
+            "displayName": "Jetour",
+            "aliases": [],
+            "category": "niche",
+            "models": [
+                {
+                    "id": "dashing",
+                    "displayName": "Dashing",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": false
+                },
+                {
+                    "id": "x70",
+                    "displayName": "X70",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": false
+                }
+            ]
+        },
+        {
+            "id": "geely",
+            "displayName": "Geely",
+            "aliases": [],
+            "category": "niche",
+            "models": [
+                {
+                    "id": "coolray",
+                    "displayName": "Coolray",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": false
+                },
+                {
+                    "id": "emgrand",
+                    "displayName": "Emgrand",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": false
+                }
+            ]
+        },
+        {
+            "id": "great-wall",
+            "displayName": "Great Wall",
+            "aliases": [
+                "GWM"
+            ],
+            "category": "niche",
+            "models": [
+                {
+                    "id": "haval-jolion",
+                    "displayName": "Haval Jolion",
+                    "aliases": [
+                        "Jolion"
+                    ],
+                    "bodyTypes": [
+                        "suv",
+                        "crossover"
+                    ],
+                    "isCommonInTurkey": false
+                },
+                {
+                    "id": "haval-h6",
+                    "displayName": "Haval H6",
+                    "aliases": [
+                        "H6"
+                    ],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": false
+                }
+            ]
+        },
+        {
+            "id": "smart",
+            "displayName": "Smart",
+            "aliases": [],
+            "category": "niche",
+            "models": [
+                {
+                    "id": "fortwo",
+                    "displayName": "Fortwo",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "forfour",
+                    "displayName": "Forfour",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "daihatsu",
+            "displayName": "Daihatsu",
+            "aliases": [],
+            "category": "niche",
+            "models": [
+                {
+                    "id": "terios",
+                    "displayName": "Terios",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "charade",
+                    "displayName": "Charade",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": false
+                }
+            ]
+        },
+        {
+            "id": "saab",
+            "displayName": "Saab",
+            "aliases": [],
+            "category": "niche",
+            "models": [
+                {
+                    "id": "9-3",
+                    "displayName": "9-3",
+                    "aliases": [
+                        "93"
+                    ],
+                    "bodyTypes": [
+                        "sedan",
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": true
+                },
+                {
+                    "id": "9-5",
+                    "displayName": "9-5",
+                    "aliases": [
+                        "95"
+                    ],
+                    "bodyTypes": [
+                        "sedan"
+                    ],
+                    "isCommonInTurkey": true
+                }
+            ]
+        },
+        {
+            "id": "infiniti",
+            "displayName": "Infiniti",
+            "aliases": [],
+            "category": "luxury",
+            "models": [
+                {
+                    "id": "q30",
+                    "displayName": "Q30",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "hatchback"
+                    ],
+                    "isCommonInTurkey": false
+                },
+                {
+                    "id": "qx70",
+                    "displayName": "QX70",
+                    "aliases": [],
+                    "bodyTypes": [
+                        "suv"
+                    ],
+                    "isCommonInTurkey": false
+                }
+            ]
+        }
+    ]
+}
