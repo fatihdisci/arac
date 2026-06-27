@@ -2,22 +2,23 @@ import SwiftUI
 
 // MARK: - App Router
 // Ana tab navigation yapısı.
-// 5 sekme: Garaj, İşler, Kayıtlar, Belgeler, Raporlar
+// 5 sekme: Garaj, İşler, Kayıtlar, Raporlar, Topluluk
+// Not: Belgeler sekmesi kaldırıldı — belge erişimi Araç Detay'da.
 
 enum AppTab: String, CaseIterable {
     case garage
     case reminders
     case records
-    case documents
     case reports
+    case community
 
     var title: LocalizedStringKey {
         switch self {
         case .garage: return "Garaj"
         case .reminders: return "İşler"
         case .records: return "Kayıtlar"
-        case .documents: return "Belgeler"
         case .reports: return "Raporlar"
+        case .community: return "Topluluk"
         }
     }
 
@@ -26,8 +27,8 @@ enum AppTab: String, CaseIterable {
         case .garage: return "car"
         case .reminders: return "bell"
         case .records: return "list.bullet"
-        case .documents: return "folder"
         case .reports: return "chart.bar"
+        case .community: return "person.3"
         }
     }
 }
@@ -57,10 +58,10 @@ struct AppRouter: View {
             RemindersView()
         case .records:
             RecordsView()
-        case .documents:
-            DocumentsView()
         case .reports:
             ReportsView()
+        case .community:
+            CommunityFeedView()
         }
     }
 }

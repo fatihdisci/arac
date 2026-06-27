@@ -9,6 +9,7 @@ import SwiftData
 struct VehicleDossierApp: App {
     let modelContainer: ModelContainer
     @StateObject private var paywallService = PaywallService.shared
+    @StateObject private var communityAuthService = CommunityAuthService.shared
 
     init() {
         Self.configureAppearance()
@@ -119,8 +120,10 @@ struct VehicleDossierApp: App {
             AppRouter()
                 .modelContainer(modelContainer)
                 .environmentObject(paywallService)
+                .environmentObject(communityAuthService)
                 .environment(\.locale, Locale(identifier: "tr_TR"))
                 .task {
+                    await communityAuthService.restoreSession()
                     await scheduleRetentionNotifications()
                 }
         }

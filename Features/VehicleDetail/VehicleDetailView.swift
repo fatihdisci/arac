@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import QuickLook
 
 // MARK: - Vehicle Detail View
 // Aracın ana dashboard ekranı.
@@ -9,6 +10,7 @@ import SwiftData
 struct VehicleDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var paywallService: PaywallService
 
     let vehicle: Vehicle
 
@@ -16,12 +18,17 @@ struct VehicleDetailView: View {
     @Query private var allExpenses: [Expense]
     @Query private var allServiceRecords: [ServiceRecord]
     @Query private var allInspectionReports: [InspectionReport]
+    @Query(sort: \VehicleDocument.createdAt, order: .reverse) private var allDocuments: [VehicleDocument]
 
     @State private var showEditSheet = false
     @State private var showDeleteConfirmation = false
     @State private var showArchiveConfirmation = false
     @State private var showAddInspection = false
     @State private var showSaleFile = false
+    @State private var showAddDocument = false
+    @State private var showDocumentPreview = false
+    @State private var showPaywall = false
+    @State private var previewDocumentURL: URL?
 
     // Filtered data
     private var reminders: [Reminder] {
@@ -39,6 +46,10 @@ struct VehicleDetailView: View {
     private var inspectionReports: [InspectionReport] {
         allInspectionReports.filter { $0.vehicleId == vehicle.id }
             .sorted { $0.reportDate > $1.reportDate }
+    }
+
+    private var documents: [VehicleDocument] {
+        allDocuments.filter { $0.vehicleId == vehicle.id }
     }
 
     private var activeReminders: [Reminder] {
@@ -74,6 +85,10 @@ struct VehicleDetailView: View {
 
                 // MARK: Inspection Report
                 inspectionReportSection
+                    .padding(.horizontal, AppSpacing.screenMarginH)
+
+                // MARK: Documents (Belgeler)
+                documentsSection
                     .padding(.horizontal, AppSpacing.screenMarginH)
 
                 // MARK: Recent Records
@@ -136,6 +151,13 @@ struct VehicleDetailView: View {
         .sheet(isPresented: $showSaleFile) {
             SaleFileView(vehicle: vehicle)
         }
+        .sheet(isPresented: $showAddDocument) {
+            DocumentFormView()
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView(feature: .documentLimit)
+        }
+        .quickLookPreview($previewDocumentURL)
         .confirmationDialog("Aracı Arşivle", isPresented: $showArchiveConfirmation) {
             Button("Arşivle") { archiveVehicle() }
             Button("İptal", role: .cancel) {}
@@ -215,6 +237,157 @@ struct VehicleDetailView: View {
                 .fill(Color.appSurface)
         )
         .subtleShadow()
+    }
+
+    // MARK: - Documents Section (Belgeler)
+    private var documentsSection: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            SectionHeader(
+                title: "Belgeler",
+                actionTitle: documents.isEmpty ? nil : "Ekle",
+                action: {
+                    if paywallService.canAddDocument(currentCount: allDocuments.count) {
+                        showAddDocument = true
+                    } else {
+                        showPaywall = true
+                    }
+                }
+            )
+
+            if documents.isEmpty {
+                Button {
+                    if paywallService.canAddDocument(currentCount: allDocuments.count) {
+                        showAddDocument = true
+                    } else {
+                        showPaywall = true
+                    }
+                } label: {
+                    HStack(spacing: AppSpacing.sm) {
+                        Image(systemName: "doc.text")
+                            .font(.body)
+                            .foregroundColor(AppColors.textTertiary)
+                            .frame(width: 32)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Henüz belge yok")
+                                .font(AppTypography.secondary)
+                                .foregroundColor(AppColors.textPrimary)
+                            Text("Belgelerini eklemek için tıkla.")
+                                .font(AppTypography.caption)
+                                .foregroundColor(AppColors.textSecondary)
+                        }
+                        Spacer()
+                        Image(systemName: "plus.circle")
+                            .foregroundColor(AppColors.accentPrimary)
+                    }
+                    .padding(AppSpacing.md)
+                    .background(
+                        RoundedRectangle(cornerRadius: AppRadius.medium)
+                            .fill(Color.appSurface)
+                    )
+                }
+                .buttonStyle(.plain)
+            } else {
+                VStack(spacing: 0) {
+                    ForEach(documents.prefix(5)) { doc in
+                        documentRow(doc)
+                    }
+                }
+                .background(
+                    RoundedRectangle(cornerRadius: AppRadius.medium)
+                        .fill(Color.appSurface)
+                )
+
+                if documents.count > 5 {
+                    Text("+\(documents.count - 5) belge daha")
+                        .font(AppTypography.caption)
+                        .foregroundColor(AppColors.textTertiary)
+                        .padding(.top, AppSpacing.xxs)
+                }
+            }
+        }
+    }
+
+    private func documentRow(_ doc: VehicleDocument) -> some View {
+        HStack(spacing: AppSpacing.sm) {
+            Image(systemName: doc.type.defaultIcon)
+                .font(.body)
+                .foregroundColor(AppColors.document)
+                .frame(width: 28)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(doc.title.isEmpty ? doc.type.displayName : doc.title)
+                    .font(AppTypography.secondary)
+                    .foregroundColor(AppColors.textPrimary)
+                    .lineLimit(1)
+
+                HStack(spacing: AppSpacing.xxs) {
+                    if doc.isExpired {
+                        Text("Süresi Geçti")
+                            .font(.system(size: 10, weight: .medium))
+                            .foregroundColor(AppColors.critical)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(
+                                Capsule()
+                                    .fill(AppColors.critical.opacity(0.12))
+                            )
+                    } else if doc.isExpiringSoon {
+                        Text("\(doc.daysUntilExpiry) gün")
+                            .font(.system(size: 10, weight: .medium))
+                            .foregroundColor(AppColors.warning)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(
+                                Capsule()
+                                    .fill(AppColors.warning.opacity(0.12))
+                            )
+                    }
+
+                    if let size = doc.fileSizeDisplay {
+                        Text(size)
+                            .font(AppTypography.caption)
+                            .foregroundColor(AppColors.textTertiary)
+                    }
+                }
+            }
+
+            Spacer()
+
+            if doc.includeInSaleFile {
+                Image(systemName: "doc.richtext.fill")
+                    .font(.caption)
+                    .foregroundColor(AppColors.accentPrimary)
+            }
+        }
+        .padding(.horizontal, AppSpacing.md)
+        .padding(.vertical, AppSpacing.sm)
+        .frame(minHeight: AppSpacing.minimumTapTarget)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            previewDocument(doc)
+        }
+        .swipeActions(edge: .trailing) {
+            Button(role: .destructive) {
+                deleteDocument(doc)
+            } label: {
+                Label("Sil", systemImage: "trash")
+            }
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(doc.title.isEmpty ? doc.type.displayName : doc.title)
+        .accessibilityHint(doc.isExpired ? "Süresi geçmiş belge" : "Görüntülemek için iki kere dokun")
+    }
+
+    private func previewDocument(_ doc: VehicleDocument) {
+        guard let url = DocumentStorageService.shared.fileURL(for: doc.localFileName) else { return }
+        previewDocumentURL = url
+        showDocumentPreview = true
+    }
+
+    private func deleteDocument(_ doc: VehicleDocument) {
+        try? DocumentStorageService.shared.deleteFile(doc.localFileName)
+        modelContext.delete(doc)
+        try? modelContext.save()
     }
 
     // MARK: - Inspection Report Card

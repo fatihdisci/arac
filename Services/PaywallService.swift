@@ -192,6 +192,14 @@ final class PaywallService: ObservableObject {
         isPro
     }
 
+    func canCreateCommunityPost() -> Bool {
+        isPro
+    }
+
+    func canWriteComment() -> Bool {
+        isPro
+    }
+
     // MARK: - Feature display
     static let freeFeatures: [(icon: String, title: String)] = [
         ("car", "1 araç"),
@@ -206,5 +214,6 @@ final class PaywallService: ObservableObject {
         ("doc.richtext", "Satış dosyası PDF"),
         ("chart.bar", "Gelişmiş raporlar"),
         ("magnifyingglass", "Ekspertiz raporlarını satış dosyasına ekleme"),
+        ("square.and.pencil", "Toplulukta gönderi ve yorum yazma"),
     ]
 }

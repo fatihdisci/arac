@@ -36,6 +36,7 @@ struct PaywallView: View {
         case documentLimit
         case saleFile
         case advancedReports
+        case communityWrite
 
         var title: String {
             switch self {
@@ -43,6 +44,7 @@ struct PaywallView: View {
             case .documentLimit: return "Belge Limitini Kaldır"
             case .saleFile: return "Satış Dosyası Oluştur"
             case .advancedReports: return "Gelişmiş Raporlar"
+            case .communityWrite: return "Toplulukta Paylaşım Yap"
             }
         }
 
@@ -56,6 +58,8 @@ struct PaywallView: View {
                 return "Aracının eksiksiz satış dosyasını PDF olarak oluştur ve paylaş."
             case .advancedReports:
                 return "Yıllık trend, araç karşılaştırma ve detaylı maliyet analizi."
+            case .communityWrite:
+                return "Toplulukta gönderi oluştur ve yorum yaparak diğer araç sahipleriyle etkileşime geç."
             }
         }
     }

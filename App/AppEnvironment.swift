@@ -19,6 +19,7 @@ enum AppEnvironment {
     static let isCloudKitSyncEnabled = false
     static let isPartnerVerificationEnabled = false
     static let isSupabaseEnabled = false
+    static let isCommunityEnabled = true
 
     // MARK: Limits
     enum Free {
