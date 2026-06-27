@@ -186,6 +186,7 @@
 		F2E23CA3F1604CC3A42758D6 /* DocumentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentListView.swift; sourceTree = "<group>"; };
 		F36BED4AAE2741B7962E8682 /* PDFExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFExportService.swift; sourceTree = "<group>"; };
 		FF3B5437AE1506219424594F /* ReportReasonSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportReasonSheet.swift; sourceTree = "<group>"; };
+		18F7B1E47658C83D66A35FD1 /* Supabase-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Configuration/Supabase-Info.plist; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -484,7 +485,8 @@
 				D518D23EAA7F4A46B948F363 /* Features */,
 				543B85B6A6FB427199354DDB /* Models */,
 				EE9C55D3F077466882452649 /* Services */,
-				8C0A5405E8DB451CB3666CFD /* Resources */,
+								18F7B1E47658C83D66A35FD1 /* Supabase-Info.plist */,
+8C0A5405E8DB451CB3666CFD /* Resources */,
 				FF765E8DA84A464EA4C8BABF /* Tests */,
 				4E15B7A2088A4B77AFD21461 /* Products */,
 				3DFEAF852FEFEC2300295F98 /* Recovered References */,
@@ -792,6 +794,7 @@
 				DEVELOPMENT_TEAM = 8XPP7Z37GF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Configuration/Supabase-Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Garajım";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -822,6 +825,7 @@
 				DEVELOPMENT_TEAM = 8XPP7Z37GF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Configuration/Supabase-Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Garajım";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
