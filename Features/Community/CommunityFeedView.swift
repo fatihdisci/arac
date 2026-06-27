@@ -2,12 +2,24 @@ import SwiftUI
 
 // MARK: - Community Feed View
 // Topluluk ana ekranı. Auth state'e göre farklı durumlar gösterir.
-// Phase 0.5: Spike — auth zincirini test etmek için minimal UI.
 
 struct CommunityFeedView: View {
     @EnvironmentObject private var communityAuth: CommunityAuthService
+    @EnvironmentObject private var paywallService: PaywallService
 
-    @State private var showProfileSheet = false
+    @State private var posts: [CommunityPost] = []
+    @State private var isLoading = true
+    @State private var error: String?
+    @State private var selectedType: PostType?
+    @State private var selectedTags: Set<String> = []
+    @State private var showProfile = false
+    @State private var showCreatePost = false
+    @State private var showPostDetail = false
+    @State private var selectedPostId: UUID?
+    @State private var showModeration = false
+    @State private var showPaywall = false
+
+    // Profile creation (first-time)
     @State private var usernameInput = ""
     @State private var displayNameInput = ""
     @State private var profileValidationError: String?
@@ -25,38 +37,73 @@ struct CommunityFeedView: View {
                 } else if communityAuth.needsProfileCreation {
                     profileCreationView
                 } else {
-                    authenticatedView
+                    feedView
                 }
             }
             .navigationTitle("Topluluk")
             .toolbar {
                 if communityAuth.isAuthenticated && !communityAuth.needsProfileCreation {
                     ToolbarItem(placement: .primaryAction) {
-                        Button {
-                            showProfileSheet = true
-                        } label: {
-                            Image(systemName: "person.crop.circle")
-                                .foregroundColor(AppColors.accentPrimary)
+                        HStack(spacing: AppSpacing.sm) {
+                            // Moderation (admin/moderator only)
+                            if communityAuth.profile?.isModerator == true {
+                                Button {
+                                    showModeration = true
+                                } label: {
+                                    Image(systemName: "shield")
+                                        .foregroundColor(AppColors.accentPrimary)
+                                }
+                                .accessibilityLabel("Moderasyon")
+                            }
+
+                            // Create post
+                            Button {
+                                handleCreatePostTap()
+                            } label: {
+                                Image(systemName: "square.and.pencil")
+                                    .foregroundColor(AppColors.accentPrimary)
+                            }
+                            .accessibilityLabel("Yeni Gönderi")
+
+                            // Profile
+                            Button {
+                                showProfile = true
+                            } label: {
+                                Image(systemName: "person.crop.circle")
+                                    .foregroundColor(AppColors.accentPrimary)
+                            }
+                            .accessibilityLabel("Profil")
                         }
-                        .accessibilityLabel("Profil")
                     }
                 }
             }
-            .sheet(isPresented: $showProfileSheet) {
-                // Phase 3'te CommunityProfileView ile değişecek
-                profilePreviewSheet
+            .sheet(isPresented: $showProfile) {
+                CommunityProfileView()
+            }
+            .sheet(isPresented: $showCreatePost, onDismiss: {
+                Task { await refreshPosts() }
+            }) {
+                CommunityCreatePostView()
+            }
+            .sheet(isPresented: $showPostDetail) {
+                if let postId = selectedPostId {
+                    CommunityPostDetailView(postId: postId)
+                }
+            }
+            .sheet(isPresented: $showModeration) {
+                CommunityModerationView()
+            }
+            .sheet(isPresented: $showPaywall) {
+                PaywallView(feature: .communityWrite)
             }
         }
+        .environmentObject(communityAuth)
     }
 
     // MARK: - Config Missing
 
     private var configMissingView: some View {
-        EmptyStateView(
-            icon: "gearshape.2",
-            title: "Topluluk hazırlanıyor",
-            description: "Topluluk özelliği şu anda yapılandırılıyor. Lütfen daha sonra tekrar kontrol et."
-        )
+        CommunityEmptyStateView(state: .configMissing)
     }
 
     // MARK: - Signing In
@@ -99,14 +146,13 @@ struct CommunityFeedView: View {
         }
     }
 
-    // MARK: - Profile Creation
+    // MARK: - Profile Creation (inline)
 
     private var profileCreationView: some View {
         ScrollView {
             VStack(spacing: AppSpacing.lg) {
                 Spacer().frame(height: AppSpacing.xl)
 
-                // Header
                 VStack(spacing: AppSpacing.xs) {
                     Image(systemName: "person.crop.circle.badge.plus")
                         .font(.system(size: 48, weight: .light))
@@ -123,8 +169,8 @@ struct CommunityFeedView: View {
                 }
                 .padding(.horizontal, AppSpacing.screenMarginH)
 
-                // Form
                 VStack(spacing: AppSpacing.md) {
+                    // Username field
                     VStack(alignment: .leading, spacing: AppSpacing.xxs) {
                         HStack(spacing: AppSpacing.sm) {
                             Image(systemName: "at")
@@ -153,6 +199,7 @@ struct CommunityFeedView: View {
                             .padding(.horizontal, 4)
                     }
 
+                    // Display name field
                     VStack(alignment: .leading, spacing: AppSpacing.xxs) {
                         HStack(spacing: AppSpacing.sm) {
                             Image(systemName: "person.text.rectangle")
@@ -174,7 +221,6 @@ struct CommunityFeedView: View {
                         )
                     }
 
-                    // Validation error
                     if let error = profileValidationError {
                         Label(error, systemImage: "exclamationmark.circle.fill")
                             .font(AppTypography.caption)
@@ -183,7 +229,6 @@ struct CommunityFeedView: View {
                 }
                 .padding(.horizontal, AppSpacing.screenMarginH)
 
-                // CTA
                 Button {
                     createProfile()
                 } label: {
@@ -207,118 +252,146 @@ struct CommunityFeedView: View {
         .background(Color.appBackground)
     }
 
-    // MARK: - Authenticated + Has Profile
+    // MARK: - Feed View
 
-    private var authenticatedView: some View {
-        VStack(spacing: AppSpacing.lg) {
-            Spacer()
+    private var feedView: some View {
+        VStack(spacing: 0) {
+            // Filter chips
+            CommunityFilterChips(selectedType: $selectedType, selectedTags: $selectedTags)
+                .padding(.vertical, AppSpacing.xs)
+                .onChange(of: selectedType) { _, _ in
+                    Task { await loadPosts() }
+                }
 
-            VStack(spacing: AppSpacing.xs) {
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: 48, weight: .light))
-                    .foregroundColor(AppColors.success)
-
-                Text("Auth OK")
-                    .font(AppTypography.sectionTitle)
-                    .foregroundColor(AppColors.textPrimary)
-
-                if let profile = communityAuth.profile {
-                    Text("Kullanıcı: @\(profile.username)")
-                        .font(AppTypography.secondary)
-                        .foregroundColor(AppColors.textSecondary)
-
-                    if profile.role == .admin {
-                        HStack(spacing: 4) {
-                            Image(systemName: "checkmark.seal.fill")
-                                .font(.caption)
-                                .foregroundColor(AppColors.accentPrimary)
-                            Text("Garajım Editörü")
-                                .font(AppTypography.caption)
-                                .foregroundColor(AppColors.accentPrimary)
+            // Content
+            if isLoading {
+                Spacer()
+                ProgressView()
+                    .scaleEffect(1.2)
+                Text("Gönderiler yükleniyor...")
+                    .font(AppTypography.secondary)
+                    .foregroundColor(AppColors.textSecondary)
+                    .padding(.top, AppSpacing.md)
+                Spacer()
+            } else if let error = error {
+                Spacer()
+                ErrorStateView(
+                    title: "Yükleme Hatası",
+                    message: "\(error)",
+                    retryAction: { Task { await loadPosts() } }
+                )
+                Spacer()
+            } else if posts.isEmpty {
+                Spacer()
+                CommunityEmptyStateView(state: .noPosts)
+                Spacer()
+            } else {
+                List {
+                    ForEach(posts) { post in
+                        PostCard(
+                            post: post,
+                            onLike: { Task { await handleLike(post) } },
+                            onSave: { Task { await handleSave(post) } },
+                            onReport: { handleReport(post) },
+                            onBlock: { Task { await handleBlock(post) } }
+                        )
+                        .listRowInsets(EdgeInsets(
+                            top: AppSpacing.xs,
+                            leading: AppSpacing.screenMarginH,
+                            bottom: AppSpacing.xs,
+                            trailing: AppSpacing.screenMarginH
+                        ))
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            selectedPostId = post.id
+                            showPostDetail = true
                         }
                     }
-
-                    if profile.isPro {
-                        Text("Pro Üye")
-                            .font(AppTypography.caption)
-                            .foregroundColor(AppColors.success)
-                    }
                 }
+                .listStyle(.plain)
+                .refreshable {
+                    await refreshPosts()
+                }
+                .scrollContentBackground(.hidden)
             }
-
-            // Phase 3 - Phase 4'te gerçek feed buraya gelecek
-            Text("Topluluk akışı yakında burada olacak.")
-                .font(AppTypography.secondary)
-                .foregroundColor(AppColors.textTertiary)
-                .padding(.top, AppSpacing.lg)
-
-            Spacer()
-
-            // Sign Out
-            Button {
-                Task { await communityAuth.signOut() }
-            } label: {
-                Text("Çıkış Yap")
-                    .font(AppTypography.secondary)
-                    .foregroundColor(AppColors.critical)
-            }
-            .padding(.bottom, AppSpacing.xl)
         }
         .background(Color.appBackground)
-    }
-
-    // MARK: - Profile Preview Sheet
-
-    private var profilePreviewSheet: some View {
-        NavigationStack {
-            VStack(spacing: AppSpacing.lg) {
-                if let profile = communityAuth.profile {
-                    List {
-                        Section {
-                            HStack(spacing: AppSpacing.md) {
-                                Image(systemName: "person.crop.circle.fill")
-                                    .font(.system(size: 48))
-                                    .foregroundColor(AppColors.textTertiary)
-
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(profile.effectiveDisplayName)
-                                        .font(AppTypography.cardTitle)
-                                    Text("@\(profile.username)")
-                                        .font(AppTypography.secondary)
-                                        .foregroundColor(AppColors.textSecondary)
-                                }
-                            }
-                            .padding(.vertical, AppSpacing.xs)
-                        }
-
-                        Section("Hesap") {
-                            Button(role: .destructive) {
-                                Task { await communityAuth.signOut() }
-                            } label: {
-                                Label("Çıkış Yap", systemImage: "rectangle.portrait.and.arrow.right")
-                            }
-                        }
-                    }
-                }
-            }
-            .navigationTitle("Profil")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Kapat") {
-                        showProfileSheet = false
-                    }
-                }
-            }
+        .task {
+            await loadPosts()
         }
     }
 
     // MARK: - Actions
 
+    private func loadPosts() async {
+        isLoading = true
+        error = nil
+        do {
+            posts = try await CommunityService.shared.fetchPosts(type: selectedType)
+        } catch {
+            self.error = error.localizedDescription
+        }
+        isLoading = false
+    }
+
+    private func refreshPosts() async {
+        do {
+            posts = try await CommunityService.shared.fetchPosts(type: selectedType)
+            error = nil
+        } catch {
+            // Keep existing posts on refresh error
+        }
+    }
+
+    private func handleLike(_ post: CommunityPost) async {
+        do {
+            let isLiked = try await CommunityService.shared.toggleLike(postId: post.id)
+            if let index = posts.firstIndex(where: { $0.id == post.id }) {
+                posts[index].isLikedByCurrentUser = isLiked
+                posts[index].likeCount += isLiked ? 1 : -1
+            }
+        } catch {
+            // Silently fail — user can retry
+        }
+    }
+
+    private func handleSave(_ post: CommunityPost) async {
+        do {
+            let isSaved = try await CommunityService.shared.toggleSave(postId: post.id)
+            if let index = posts.firstIndex(where: { $0.id == post.id }) {
+                posts[index].isSavedByCurrentUser = isSaved
+                posts[index].saveCount += isSaved ? 1 : -1
+            }
+        } catch {
+            // Silently fail
+        }
+    }
+
+    private func handleReport(_ post: CommunityPost) {
+        // Open report sheet — handled by PostCard context menu
+    }
+
+    private func handleBlock(_ post: CommunityPost) async {
+        do {
+            try await CommunityModerationService.shared.blockUser(userId: post.authorId)
+        } catch {
+            // Silently fail
+        }
+    }
+
+    private func handleCreatePostTap() {
+        if paywallService.isPro || communityAuth.profile?.isPro == true {
+            showCreatePost = true
+        } else {
+            showPaywall = true
+        }
+    }
+
     private func createProfile() {
         let trimmedUsername = usernameInput.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        // Client-side validation
         if let error = CommunityProfile.validateUsername(trimmedUsername) {
             profileValidationError = error
             return
@@ -351,9 +424,7 @@ struct CommunityFeedView: View {
                     displayName: displayName.isEmpty ? nil : displayName
                 )
 
-                // Profili yeniden çek
                 await communityAuth.fetchProfile(userId: userId)
-
                 isCreatingProfile = false
             } catch {
                 profileValidationError = "Profil oluşturulamadı: \(error.localizedDescription)"
@@ -368,9 +439,11 @@ struct CommunityFeedView: View {
 #Preview("Signed Out") {
     CommunityFeedView()
         .environmentObject(CommunityAuthService.shared)
+        .environmentObject(PaywallService.shared)
 }
 
 #Preview("Config Missing") {
     CommunityFeedView()
         .environmentObject(CommunityAuthService.shared)
+        .environmentObject(PaywallService.shared)
 }
