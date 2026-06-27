@@ -20,11 +20,19 @@ struct CommunityPostDetailView: View {
     @State private var reportTarget: (type: String, id: UUID)?
 
     var body: some View {
-        ScrollView {
+        Group {
             if isLoading {
-                ProgressView()
-                    .frame(maxHeight: .infinity)
-                    .padding(.top, 100)
+                VStack {
+                    Spacer()
+                    ProgressView()
+                        .scaleEffect(1.2)
+                    Text("Gönderi yükleniyor...")
+                        .font(AppTypography.secondary)
+                        .foregroundColor(AppColors.textSecondary)
+                        .padding(.top, AppSpacing.md)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if let error = error {
                 ErrorStateView(
                     title: "Yükleme Hatası",
@@ -33,9 +41,22 @@ struct CommunityPostDetailView: View {
                 )
             } else if let post = post {
                 if post.isDeleted || post.isHidden {
-                    CommunityEmptyStateView(state: .deletedPost)
+                    VStack {
+                        Spacer()
+                        CommunityEmptyStateView(state: .deletedPost)
+                        Spacer()
+                    }
                 } else {
-                    contentView(post)
+                    ScrollView {
+                        contentView(post)
+                    }
+                }
+            } else {
+                // post nil + no error → not found
+                VStack {
+                    Spacer()
+                    CommunityEmptyStateView(state: .deletedPost)
+                    Spacer()
                 }
             }
         }

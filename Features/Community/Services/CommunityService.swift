@@ -16,7 +16,7 @@ final class CommunityService {
 
     // MARK: - Fetch Posts
 
-    /// Gönderileri sayfalandırarak getir. Filtreleme parametreleri opsiyoneldir.
+    /// Gönderileri sayfalandırarak getir, yazar profilleriyle zenginleştir.
     func fetchPosts(
         type: PostType? = nil,
         tags: [String] = [],
@@ -28,7 +28,6 @@ final class CommunityService {
             throw CommunityServiceError.configMissing
         }
 
-        // Önce düz select dene — join olmadan, decode garantili.
         let posts: [CommunityPost] = try await client
             .from("community_posts")
             .select("*")
@@ -40,8 +39,10 @@ final class CommunityService {
             .execute()
             .value
 
-        // Filtreleri client-side uygula (join olmadığı için server-side filtre limitli)
-        var result = posts
+        // Profilleri toplu çek, post'lara işle
+        let enriched = try await enrichPosts(posts)
+
+        var result = enriched
         if let type = type {
             result = result.filter { $0.postType == type }
         }
@@ -57,7 +58,7 @@ final class CommunityService {
         return result
     }
 
-    /// Tek bir gönderiyi getir.
+    /// Tek bir gönderiyi getir, yazar profiliyle zenginleştir.
     func fetchPost(id: UUID) async throws -> CommunityPost? {
         guard let client = client else {
             throw CommunityServiceError.configMissing
@@ -71,7 +72,80 @@ final class CommunityService {
             .execute()
             .value
 
-        return posts.first
+        guard let post = posts.first else { return nil }
+        return try await enrichPosts([post]).first
+    }
+
+    /// Gönderiye ait yorumları getir, yazar profilleriyle zenginleştir.
+    func fetchComments(postId: UUID) async throws -> [CommunityComment] {
+        guard let client = client else {
+            throw CommunityServiceError.configMissing
+        }
+
+        let comments: [CommunityComment] = try await client
+            .from("community_comments")
+            .select("*")
+            .eq("post_id", value: postId.uuidString)
+            .eq("is_hidden", value: false)
+            .is("deleted_at", value: nil)
+            .order("created_at", ascending: true)
+            .execute()
+            .value
+
+        return try await enrichComments(comments)
+    }
+
+    // MARK: - Profile Enrichment
+
+    /// Toplu profil çek: verilen userId listesine göre profiles tablosundan getir.
+    private func fetchProfiles(userIds: [UUID]) async throws -> [UUID: CommunityProfile] {
+        guard let client = client, !userIds.isEmpty else { return [:] }
+
+        let idStrings = userIds.map { $0.uuidString }
+        let profiles: [CommunityProfile] = try await client
+            .from("profiles")
+            .select()
+            .in("id", values: idStrings)
+            .execute()
+            .value
+
+        return Dictionary(uniqueKeysWithValues: profiles.map { ($0.id, $0) })
+    }
+
+    /// Post'lara yazar profillerini işle.
+    private func enrichPosts(_ posts: [CommunityPost]) async throws -> [CommunityPost] {
+        let authorIds = Array(Set(posts.map(\.authorId)))
+        let profiles = try await fetchProfiles(userIds: authorIds)
+
+        return posts.map { post in
+            var enriched = post
+            if let profile = profiles[post.authorId] {
+                enriched.authorUsername = profile.username
+                enriched.authorDisplayName = profile.displayName
+                enriched.authorAvatarURL = profile.avatarURL
+                enriched.authorIsVerified = profile.isVerified
+                enriched.authorRole = profile.role
+            }
+            return enriched
+        }
+    }
+
+    /// Yorumlara yazar profillerini işle.
+    private func enrichComments(_ comments: [CommunityComment]) async throws -> [CommunityComment] {
+        let authorIds = Array(Set(comments.map(\.authorId)))
+        let profiles = try await fetchProfiles(userIds: authorIds)
+
+        return comments.map { comment in
+            var enriched = comment
+            if let profile = profiles[comment.authorId] {
+                enriched.authorUsername = profile.username
+                enriched.authorDisplayName = profile.displayName
+                enriched.authorAvatarURL = profile.avatarURL
+                enriched.authorIsVerified = profile.isVerified
+                enriched.authorRole = profile.role
+            }
+            return enriched
+        }
     }
 
     // MARK: - Create / Update / Delete Post
@@ -252,22 +326,6 @@ final class CommunityService {
     }
 
     // MARK: - Comments
-
-    func fetchComments(postId: UUID) async throws -> [CommunityComment] {
-        guard let client = client else {
-            throw CommunityServiceError.configMissing
-        }
-
-        return try await client
-            .from("community_comments")
-            .select("*")
-            .eq("post_id", value: postId.uuidString)
-            .eq("is_hidden", value: false)
-            .is("deleted_at", value: nil)
-            .order("created_at", ascending: true)
-            .execute()
-            .value
-    }
 
     func createComment(postId: UUID, body: String) async throws {
         guard let client = client else {
