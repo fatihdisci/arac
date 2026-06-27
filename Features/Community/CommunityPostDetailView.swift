@@ -322,12 +322,26 @@ struct CommunityPostDetailView: View {
     private func load() async {
         isLoading = true
         error = nil
+
+        // Fetch post and comments concurrently — comment failure must not hide the post.
+        async let postTask = CommunityService.shared.fetchPost(id: postId)
+        async let commentsTask = CommunityService.shared.fetchComments(postId: postId)
+
         do {
-            post = try await CommunityService.shared.fetchPost(id: postId)
-            comments = try await CommunityService.shared.fetchComments(postId: postId)
+            post = try await postTask
         } catch {
             self.error = error.localizedDescription
+            isLoading = false
+            return
         }
+
+        do {
+            comments = try await commentsTask
+        } catch {
+            // Post loaded fine — show it even if comments fail.
+            comments = []
+        }
+
         isLoading = false
     }
 

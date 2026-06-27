@@ -102,6 +102,12 @@ enum ReportStatus: String, Codable, Equatable {
     }
 }
 
+// MARK: - UUID Identifiable Conformance
+
+extension UUID: Identifiable {
+    public var id: UUID { self }
+}
+
 // MARK: - Predefined Tags
 
 enum CommunityTag {

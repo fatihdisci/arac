@@ -14,7 +14,6 @@ struct CommunityFeedView: View {
     @State private var selectedTags: Set<String> = []
     @State private var showProfile = false
     @State private var showCreatePost = false
-    @State private var showPostDetail = false
     @State private var selectedPostId: UUID?
     @State private var showModeration = false
     @State private var showPaywall = false
@@ -85,10 +84,8 @@ struct CommunityFeedView: View {
             }) {
                 CommunityCreatePostView()
             }
-            .sheet(isPresented: $showPostDetail) {
-                if let postId = selectedPostId {
-                    CommunityPostDetailView(postId: postId)
-                }
+            .sheet(item: $selectedPostId) { postId in
+                CommunityPostDetailView(postId: postId)
             }
             .sheet(isPresented: $showModeration) {
                 CommunityModerationView()
@@ -306,7 +303,6 @@ struct CommunityFeedView: View {
                         .contentShape(Rectangle())
                         .onTapGesture {
                             selectedPostId = post.id
-                            showPostDetail = true
                         }
                     }
                 }
