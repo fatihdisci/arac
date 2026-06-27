@@ -1,13 +1,43 @@
-# Araç Dijital Dosyası — Markdown Product Pack
+# Garajım — Araç Dijital Dosyası
 
-Bu paket, SwiftUI iOS-only araç sahipliği uygulaması için hazırlanmış çalışma dosyalarıdır.
+**Aracının dijital yaşam dosyası.**
 
-Ürün fikri:  
-**Aracın bakım, masraf, belge, ekspertiz ve satış güven dosyasını tek yerde tutan premium iOS uygulaması.**
+SwiftUI iOS uygulaması. Otomobil ve motosiklet için bakım, masraf, belge, ekspertiz ve satış güven dosyasını tek yerde tutar.
 
-Bu dosyalar coding agentına, tasarım agentına veya Hermes/Claude/Codex workflow’una doğrudan verilebilir.
+**Son güncelleme:** 27 Haziran 2026
+**Durum:** TestFlight öncesi final düzeltmeler tamamlandı. Supabase SQL manuel çalıştırma gerekiyor.
+**Kapsam:** Otomobil + Motosiklet desteği, Topluluk (Supabase), StoreKit 2 Paywall, 89 unit test
 
-## Dosyalar
+## Hızlı Başlangıç
+
+1. `Config.xcconfig` oluştur (bkz. `Configuration/Config.example.xcconfig`)
+2. Xcode'da Sign in with Apple capability'yi aktif et
+3. Supabase'te `docs/SUPABASE_FINAL_DEPLOY.sql` çalıştır
+4. Debug build al → çalıştır
+
+## Tab Yapısı
+
+| Tab | İkon | İçerik |
+|-----|------|--------|
+| Garaj | `car` | Ana ekran: araç kartı, hızlı işlemler, dosya tamlığı |
+| Yapılacaklar | `checklist` | Gelecek işler: muayene, sigorta, bakım, MTV |
+| Geçmiş | `clock.arrow.circlepath` | Yapılmış işlemler: masraf, bakım, belge, ekspertiz |
+| Raporlar | `chart.bar` | Maliyet analizi, sahiplik içgörüleri |
+| Topluluk | `person.3` | Kontrollü forum (Supabase + Apple Sign-In) |
+
+## Son Commit'ler
+
+| Commit | Konu |
+|--------|------|
+| `7fb51f4` | Final düzeltme: ReminderFormView edit, HistoryView tap/swipe, onboarding, tips, motosiklet ikon |
+| `d4492a5` | Bilgi mimarisi: Yapılacaklar/Geçmiş, ReminderDetailView, HistoryView |
+| `d24bd3f` | Motosiklet desteği: VehicleType, MotorcycleType, özel enum'lar |
+| `9792d0f` | Design Polish + Bug fix + App Store hazırlık + Supabase SQL |
+
+Detaylı rapor: `docs/LAST_4_COMMIT_REPORT.md`
+Son durum: `docs/lastchecks.md`
+
+## Tasarım Dosyaları
 
 1. `01_DESIGN.md`  
    Uygulamanın tasarım anayasası. AI-slop/generic görünümü engelleyen tasarım kuralları.

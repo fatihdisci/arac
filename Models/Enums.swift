@@ -295,6 +295,19 @@ enum DocumentType: String, Codable, CaseIterable {
         case .other: return "folder"
         }
     }
+
+    /// Belirtilen vehicleType için uygun belge türlerini döndürür.
+    static func availableTypes(for vehicleType: VehicleType?) -> [DocumentType] {
+        let all = allCases.filter { $0 != .other }
+        guard let vt = vehicleType else { return all }
+        let mcTypes: Set<DocumentType> = [.equipmentInvoice, .helmetGearWarranty, .accessoryMounting]
+        switch vt {
+        case .car:
+            return all.filter { !mcTypes.contains($0) }
+        case .motorcycle:
+            return all
+        }
+    }
 }
 
 // MARK: - Service Type

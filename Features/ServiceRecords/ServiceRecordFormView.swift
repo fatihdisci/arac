@@ -375,8 +375,14 @@ struct ServiceRecordFormView: View {
             Task { await NotificationService.shared.scheduleReminder(reminder) }
         }
 
-        try? modelContext.save()
-        dismiss()
+        do {
+            try modelContext.save()
+            let impact = UINotificationFeedbackGenerator()
+            impact.notificationOccurred(.success)
+            dismiss()
+        } catch {
+            validationErrors = ["Kaydedilemedi: \(error.localizedDescription)"]
+        }
     }
 }
 

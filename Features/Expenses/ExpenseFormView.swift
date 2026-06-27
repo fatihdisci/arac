@@ -58,6 +58,12 @@ struct ExpenseFormView: View {
             }
             .scrollContentBackground(.hidden)
             .background(Color.appBackground)
+            .onChange(of: selectedVehicleId) { _, _ in
+                // Araç değişince geçersiz kategoriyi safe default'a döndür
+                if !availableCategories.contains(selectedCategory) {
+                    selectedCategory = .other
+                }
+            }
             .navigationTitle(isEditing ? "Masraf Düzenle" : "Masraf Ekle")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -80,10 +86,18 @@ struct ExpenseFormView: View {
     }
 
     // MARK: - Category Section
+    /// Seçili aracın vehicleType'ına göre filtrelenmiş kategoriler.
+    private var availableCategories: [ExpenseCategory] {
+        guard let vid = selectedVehicleId, let vehicle = vehicles.first(where: { $0.id == vid }) else {
+            return ExpenseCategory.categories(for: nil) + [.other]
+        }
+        return ExpenseCategory.categories(for: vehicle.vehicleType) + [.other]
+    }
+
     private var categorySection: some View {
         Section {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 64))], spacing: AppSpacing.xs) {
-                ForEach(ExpenseCategory.allCases, id: \.self) { category in
+                ForEach(availableCategories, id: \.self) { category in
                     categoryButton(category)
                 }
             }
@@ -254,8 +268,14 @@ struct ExpenseFormView: View {
             modelContext.insert(expense)
         }
 
-        try? modelContext.save()
-        dismiss()
+        do {
+            try modelContext.save()
+            let impact = UINotificationFeedbackGenerator()
+            impact.notificationOccurred(.success)
+            dismiss()
+        } catch {
+            validationErrors = ["Kaydedilemedi: \(error.localizedDescription)"]
+        }
     }
 }
 

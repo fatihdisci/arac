@@ -113,10 +113,18 @@ struct DocumentFormView: View {
     }
 
     // MARK: - Type
+    /// Seçili aracın vehicleType'ına göre filtrelenmiş belge türleri.
+    private var availableDocumentTypes: [DocumentType] {
+        guard let vid = selectedVehicleId, let vehicle = vehicles.first(where: { $0.id == vid }) else {
+            return DocumentType.availableTypes(for: nil) + [.other]
+        }
+        return DocumentType.availableTypes(for: vehicle.vehicleType) + [.other]
+    }
+
     private var typeSection: some View {
         Section {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))], spacing: AppSpacing.xs) {
-                ForEach(DocumentType.allCases, id: \.self) { type in
+                ForEach(availableDocumentTypes, id: \.self) { type in
                     docTypeButton(type)
                 }
             }

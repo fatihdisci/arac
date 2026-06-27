@@ -157,7 +157,21 @@ struct GarageView: View {
                 // 2. Quick Action Rail
                 quickActionRail
 
-                // 3. Dossier Completeness
+                // 3. Dosyanı Tamamla Checklist (eksik kriter varsa göster)
+                if let vehicle = primaryVehicle {
+                    let checklistItemsDone = checklistDoneCount(vehicle)
+                    if checklistItemsDone < 5 {
+                        DosyaniTamamlaChecklist(
+                            vehicle: vehicle,
+                            hasInspectionReminder: hasReminderType(vehicle, .inspection),
+                            hasInsuranceReminder: hasReminderType(vehicle, .trafficInsurance) || hasReminderType(vehicle, .casco),
+                            hasAnyExpenseOrService: !recentExpenses(for: vehicle).isEmpty || !recentServices(for: vehicle).isEmpty,
+                            hasAnyDocument: !recentDocuments(for: vehicle).isEmpty
+                        )
+                    }
+                }
+
+                // 4. Dossier Completeness
                 if let vehicle = primaryVehicle {
                     DossierCompletenessCard(
                         score: computeFileScore(for: vehicle),
@@ -167,7 +181,7 @@ struct GarageView: View {
                     .padding(.horizontal, AppSpacing.screenMarginH)
                 }
 
-                // 4. Recent activity preview
+                // 5. Recent activity preview
                 if let vehicle = primaryVehicle {
                     recentActivitySection(vehicle: vehicle)
                 }
@@ -534,6 +548,24 @@ struct GarageView: View {
 
     private func recentServices(for vehicle: Vehicle) -> [ServiceRecord] {
         (try? modelContext.fetch(FetchDescriptor<ServiceRecord>()))?.filter { $0.vehicleId == vehicle.id } ?? []
+    }
+
+    private func recentDocuments(for vehicle: Vehicle) -> [VehicleDocument] {
+        (try? modelContext.fetch(FetchDescriptor<VehicleDocument>()))?.filter { $0.vehicleId == vehicle.id } ?? []
+    }
+
+    private func hasReminderType(_ vehicle: Vehicle, _ type: ReminderType) -> Bool {
+        activeReminders.contains { $0.vehicleId == vehicle.id && $0.type == type }
+    }
+
+    private func checklistDoneCount(_ vehicle: Vehicle) -> Int {
+        var count = 0
+        if !vehicle.brand.isEmpty && vehicle.currentOdometer > 0 { count += 1 }
+        if hasReminderType(vehicle, .inspection) { count += 1 }
+        if hasReminderType(vehicle, .trafficInsurance) || hasReminderType(vehicle, .casco) { count += 1 }
+        if !recentExpenses(for: vehicle).isEmpty || !recentServices(for: vehicle).isEmpty { count += 1 }
+        if !recentDocuments(for: vehicle).isEmpty { count += 1 }
+        return count
     }
 
     private func criteriaMet(for vehicle: Vehicle) -> [String] {
