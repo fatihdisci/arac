@@ -75,24 +75,53 @@ struct ReminderDetailView: View {
 
     // MARK: - Snooze Sheet
     private var snoozeSheet: some View {
-        NavigationStack {
-            VStack(spacing: AppSpacing.lg) {
+        VStack(spacing: AppSpacing.md) {
+            // Header
+            VStack(spacing: AppSpacing.xxs) {
+                Image(systemName: "clock.badge.questionmark")
+                    .font(.title2)
+                    .foregroundColor(AppColors.accentPrimary)
+                    .frame(width: 48, height: 48)
+                    .background(
+                        Circle().fill(AppColors.accentPrimary.opacity(0.1))
+                    )
+
                 Text("Kaç gün ertelemek istersin?")
                     .font(AppTypography.sectionTitle)
                     .foregroundColor(AppColors.textPrimary)
-                    .padding(.top, AppSpacing.xl)
+            }
+            .padding(.top, AppSpacing.md)
 
-                Picker("Gün", selection: $snoozeDays) {
-                    ForEach([1, 3, 7, 14, 30], id: \.self) { days in
-                        Text("\(days) gün").tag(days)
-                    }
+            // Day Picker — wheel
+            Picker("Gün", selection: $snoozeDays) {
+                ForEach([1, 3, 7, 14, 30], id: \.self) { days in
+                    Text("\(days) gün").tag(days)
                 }
-                .pickerStyle(.wheel)
-                .frame(height: 150)
+            }
+            .pickerStyle(.wheel)
+            .frame(height: 140)
+            .clipped()
 
+            // Preview
+            HStack(spacing: AppSpacing.xs) {
+                Image(systemName: "calendar")
+                    .font(.caption)
+                    .foregroundColor(AppColors.textTertiary)
                 Text("Yeni tarih: \(snoozePreviewDate)")
                     .font(AppTypography.secondary)
                     .foregroundColor(AppColors.textSecondary)
+            }
+            .padding(.vertical, AppSpacing.xs)
+
+            Divider()
+
+            // Actions
+            HStack(spacing: AppSpacing.sm) {
+                Button("Vazgeç") {
+                    showSnoozeSheet = false
+                }
+                .buttonStyle(.secondary)
+                .frame(maxWidth: .infinity)
 
                 Button {
                     snoozeReminder()
@@ -102,14 +131,13 @@ struct ReminderDetailView: View {
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.primary)
-                .padding(.horizontal, AppSpacing.xxl)
-
-                Button("Vazgeç") { showSnoozeSheet = false }
-                    .foregroundColor(AppColors.textSecondary)
-                    .padding(.bottom, AppSpacing.xl)
+                .frame(maxWidth: .infinity)
             }
-            .presentationDetents([.medium])
+            .padding(.horizontal, AppSpacing.screenMarginH)
+            .padding(.bottom, AppSpacing.md)
         }
+        .padding(.horizontal, AppSpacing.screenMarginH)
+        .presentationDetents([.height(400)])
     }
 
     // MARK: - Status Header
@@ -316,8 +344,8 @@ struct ReminderDetailView: View {
 
     // MARK: - Actions
 
-    /// addToHistory true ise completedAt set edilir; HistoryView bu kayıtları timeline'da gösterir.
-    /// addToHistory false ise sadece status completed olur.
+    /// addToHistory true ise completedAt ve addedToHistoryAt set edilir; HistoryView'da görünür.
+    /// addToHistory false ise sadece status completed olur, Geçmiş'te gösterilmez.
     private func complete(addToHistory: Bool) {
         let impact = UINotificationFeedbackGenerator()
         impact.notificationOccurred(.success)
@@ -326,6 +354,7 @@ struct ReminderDetailView: View {
         let oldDueOdometer = reminder.dueOdometer
         reminder.statusRaw = ReminderStatus.completed.rawValue
         reminder.completedAt = addToHistory ? Date() : nil
+        reminder.addedToHistoryAt = addToHistory ? Date() : nil
         try? modelContext.save()
         NotificationService.shared.cancelReminder(reminder)
 

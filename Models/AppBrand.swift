@@ -6,13 +6,10 @@ import Foundation
 
 enum AppBrand {
     /// Uygulamanın görünen adı
-    static let appName = "Garajım"
-
-    /// Geçici alternatif isim (ileride kullanılabilir)
-    static let alternativeName = "Arvia"
+    static let appName = "Arvia"
 
     /// Tagline / slogan
-    static let tagline = "Aracının dijital yaşam dosyası"
+    static let tagline = "Aracına iyi bak."
 
     /// Bundle identifier (değişmez)
     static let bundleIdentifier = "com.ruhsatim.app"

@@ -15,6 +15,7 @@ final class Reminder {
     var priorityRaw: String = ReminderPriority.info.rawValue
     var statusRaw: String = ReminderStatus.active.rawValue
     var completedAt: Date?
+    var addedToHistoryAt: Date?
     var notes: String = ""
     var createdAt: Date = Date()
 

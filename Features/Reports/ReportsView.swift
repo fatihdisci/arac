@@ -13,6 +13,8 @@ struct ReportsView: View {
 
     @State private var selectedVehicleId: UUID?
     @State private var selectedYear: Int
+    @State private var showSaleFile = false
+    @State private var saleFileVehicle: Vehicle?
 
     private let currentYear = Calendar.current.component(.year, from: Date())
 
@@ -122,6 +124,9 @@ struct ReportsView: View {
             }
             .navigationTitle("Raporlar")
             .background(Color.appBackground)
+            .sheet(item: $saleFileVehicle) { vehicle in
+                SaleFileView(vehicle: vehicle)
+            }
         }
     }
 
@@ -416,7 +421,10 @@ struct ReportsView: View {
 
     // MARK: - Sale File CTA
     private var saleFileCTA: some View {
-        VStack(spacing: AppSpacing.sm) {
+        Button {
+            let target = selectedVehicle ?? vehicles.first
+            saleFileVehicle = target
+        } label: {
             HStack(spacing: AppSpacing.md) {
                 ZStack {
                     RoundedRectangle(cornerRadius: AppRadius.medium)
@@ -437,15 +445,20 @@ struct ReportsView: View {
                 }
 
                 Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundColor(AppColors.textTertiary)
             }
+            .padding(AppSpacing.md)
+            .background(
+                RoundedRectangle(cornerRadius: AppRadius.card)
+                    .fill(Color.appSurface)
+            )
+            .subtleShadow()
+            .padding(.horizontal, AppSpacing.screenMarginH)
         }
-        .padding(AppSpacing.md)
-        .background(
-            RoundedRectangle(cornerRadius: AppRadius.card)
-                .fill(Color.appSurface)
-        )
-        .subtleShadow()
-        .padding(.horizontal, AppSpacing.screenMarginH)
+        .buttonStyle(.plain)
     }
 
     // MARK: - Helpers

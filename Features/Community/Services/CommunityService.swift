@@ -100,7 +100,7 @@ final class CommunityService {
         vehicleBrand: String? = nil,
         vehicleModel: String? = nil,
         vehicleYear: Int? = nil
-    ) async throws -> CommunityPost {
+    ) async throws {
         guard let client = client else {
             throw CommunityServiceError.configMissing
         }
@@ -120,13 +120,11 @@ final class CommunityService {
             "vehicle_year": vehicleYear.map { AnyJSON.integer($0) } ?? AnyJSON.null,
         ]
 
-        return try await client
+        // Insert only — don't decode response (joined kolonlar dönmediği için decode başarısız olmaz).
+        try await client
             .from("community_posts")
             .insert(payload)
-            .select()
-            .single()
             .execute()
-            .value
     }
 
     func updatePost(

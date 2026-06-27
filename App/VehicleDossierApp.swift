@@ -40,6 +40,8 @@ struct VehicleDossierApp: App {
                 for: schema,
                 configurations: modelConfiguration
             )
+            // Backfill addedToHistoryAt for existing completed reminders
+            migrateCompletedReminderHistoryFlags(context: modelContainer.mainContext)
         } catch {
             fatalError("SwiftData ModelContainer başlatılamadı: \(error.localizedDescription)")
         }
@@ -162,5 +164,19 @@ struct VehicleDossierApp: App {
             vehicles: vehicles,
             fileScores: fileScores
         )
+    }
+
+    // MARK: - Migrate
+    /// Backfill addedToHistoryAt for pre-existing completed reminders.
+    /// Yeni addedToHistoryAt alanı SwiftData'da optional → nil default.
+    /// Eskiden completedAt set olanlar otomatik olarak Geçmiş'te görünsün.
+    private func migrateCompletedReminderHistoryFlags(context: ModelContext) {
+        let predicate = #Predicate<Reminder> { $0.completedAt != nil && $0.addedToHistoryAt == nil }
+        let descriptor = FetchDescriptor<Reminder>(predicate: predicate)
+        guard let pending = try? context.fetch(descriptor), !pending.isEmpty else { return }
+        for reminder in pending {
+            reminder.addedToHistoryAt = reminder.completedAt
+        }
+        try? context.save()
     }
 }

@@ -15,6 +15,9 @@ final class Reminder {
     var priorityRaw: String = ReminderPriority.info.rawValue
     var statusRaw: String = ReminderStatus.active.rawValue
     var completedAt: Date?
+    /// addedToHistoryAt != nil → Geçmiş tabında görünür.
+    /// addedToHistoryAt == nil → sadece tamamlandı, Geçmiş'te gösterilmez.
+    var addedToHistoryAt: Date?
     var notes: String = ""
     var createdAt: Date = Date()
 
@@ -115,6 +118,7 @@ final class Reminder {
         priority: ReminderPriority = .info,
         status: ReminderStatus = .active,
         completedAt: Date? = nil,
+        addedToHistoryAt: Date? = nil,
         notes: String = "",
         createdAt: Date = Date()
     ) {
@@ -128,6 +132,7 @@ final class Reminder {
         self.priorityRaw = priority.rawValue
         self.statusRaw = status.rawValue
         self.completedAt = completedAt
+        self.addedToHistoryAt = addedToHistoryAt
         self.notes = notes
         self.createdAt = createdAt
     }

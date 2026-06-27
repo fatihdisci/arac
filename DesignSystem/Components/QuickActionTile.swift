@@ -31,9 +31,11 @@ struct QuickActionTile: View {
                     )
 
                 Text(label)
-                    .font(AppTypography.captionMedium)
+                    .font(.system(size: 11, weight: .medium))
                     .foregroundColor(AppColors.textPrimary)
-                    .lineLimit(1)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.8)
+                    .multilineTextAlignment(.center)
             }
             .frame(maxWidth: .infinity)
             .frame(minHeight: AppSpacing.minimumTapTarget)
@@ -47,7 +49,7 @@ struct QuickActionTile: View {
 }
 
 // MARK: - Quick Action Rail
-// Yatay sıralı quick action butonları grubu.
+// Yatay kayan quick action butonları grubu. 5 buton dar ekranlara sığar.
 
 struct QuickActionRail: View {
     let actions: [QuickAction]
@@ -61,17 +63,19 @@ struct QuickActionRail: View {
     }
 
     var body: some View {
-        HStack(spacing: AppSpacing.sm) {
-            ForEach(actions) { action in
-                QuickActionTile(
-                    icon: action.icon,
-                    label: action.label,
-                    color: action.color,
-                    action: action.action
-                )
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: AppSpacing.xs) {
+                ForEach(actions) { action in
+                    QuickActionTile(
+                        icon: action.icon,
+                        label: action.label,
+                        color: action.color,
+                        action: action.action
+                    )
+                }
             }
+            .padding(.horizontal, AppSpacing.screenMarginH)
         }
-        .padding(.horizontal, AppSpacing.screenMarginH)
     }
 }
 

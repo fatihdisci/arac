@@ -14,11 +14,12 @@ struct HistoryView: View {
     @Query(sort: \VehicleDocument.createdAt, order: .reverse) private var allDocuments: [VehicleDocument]
     @Query(sort: \InspectionReport.reportDate, order: .reverse) private var allInspections: [InspectionReport]
     @Query(sort: \Vehicle.createdAt) private var vehicles: [Vehicle]
-    @Query(filter: #Predicate<Reminder> { $0.statusRaw == "completed" },
+    @Query(filter: #Predicate<Reminder> { $0.statusRaw == "Tamamlandı" && $0.completedAt != nil },
            sort: \Reminder.completedAt, order: .reverse)
     private var completedReminders: [Reminder]
 
     @State private var selectedFilter: HistoryFilter = .all
+    @State private var selectedDateRange: DateRange = .all
     @State private var showAddExpense = false
     @State private var showAddService = false
     @State private var showAddDocument = false
@@ -37,11 +38,28 @@ struct HistoryView: View {
         case inspections = "Ekspertiz"
     }
 
+    enum DateRange: String, CaseIterable {
+        case all = "Tüm Zaman"
+        case oneMonth = "Son 1 Ay"
+        case sixMonths = "Son 6 Ay"
+        case oneYear = "Son 1 Yıl"
+
+        var calendarValue: Int? {
+            switch self {
+            case .all: return nil
+            case .oneMonth: return -1
+            case .sixMonths: return -6
+            case .oneYear: return -12
+            }
+        }
+    }
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
                 // Filtre çipleri
                 filterRail
+                dateFilterRail
 
                 // İçerik
                 Group {
@@ -91,7 +109,7 @@ struct HistoryView: View {
         }
     }
 
-    // MARK: - Filter Rail
+    // MARK: - Filter Rails
     private var filterRail: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: AppSpacing.xs) {
@@ -117,14 +135,61 @@ struct HistoryView: View {
         }
     }
 
+    // MARK: - Date Range Filter Rail
+    private var dateFilterRail: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: AppSpacing.xs) {
+                ForEach(DateRange.allCases, id: \.self) { range in
+                    Button {
+                        selectedDateRange = range
+                    } label: {
+                        Text(range.rawValue)
+                            .font(AppTypography.caption)
+                            .foregroundColor(selectedDateRange == range ? AppColors.accentPrimary : AppColors.textTertiary)
+                            .padding(.horizontal, AppSpacing.sm)
+                            .padding(.vertical, AppSpacing.xxs)
+                            .background(
+                                Capsule()
+                                    .stroke(selectedDateRange == range ? AppColors.accentPrimary : Color.clear, lineWidth: 1)
+                                    .background(
+                                        Capsule()
+                                            .fill(selectedDateRange == range ? AppColors.accentPrimary.opacity(0.08) : Color.clear)
+                                    )
+                            )
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.horizontal, AppSpacing.screenMarginH)
+            .padding(.vertical, AppSpacing.xxs)
+        }
+    }
+
+    // MARK: - Date Range Helper
+    private var dateRangeCutoff: Date? {
+        guard let months = selectedDateRange.calendarValue else { return nil }
+        return Calendar.current.date(byAdding: .month, value: months, to: Date())
+    }
+
+    private func isWithinDateRange(_ date: Date) -> Bool {
+        guard let cutoff = dateRangeCutoff else { return true }
+        return date >= cutoff
+    }
+
     // MARK: - Empty State
     private var isEmpty: Bool {
         switch selectedFilter {
-        case .all: return allExpenses.isEmpty && allServiceRecords.isEmpty && allDocuments.isEmpty && allInspections.isEmpty && completedReminders.isEmpty
-        case .expenses: return allExpenses.isEmpty
-        case .services: return allServiceRecords.isEmpty
-        case .documents: return allDocuments.isEmpty
-        case .inspections: return allInspections.isEmpty
+        case .all:
+            let hasItems = allExpenses.contains { isWithinDateRange($0.date) }
+                || allServiceRecords.contains { isWithinDateRange($0.date) }
+                || allDocuments.contains { isWithinDateRange($0.createdAt) }
+                || allInspections.contains { isWithinDateRange($0.reportDate) }
+                || completedReminders.contains { isWithinDateRange($0.completedAt ?? .distantPast) }
+            return !hasItems
+        case .expenses: return allExpenses.filter { isWithinDateRange($0.date) }.isEmpty
+        case .services: return allServiceRecords.filter { isWithinDateRange($0.date) }.isEmpty
+        case .documents: return allDocuments.filter { isWithinDateRange($0.createdAt) }.isEmpty
+        case .inspections: return allInspections.filter { isWithinDateRange($0.reportDate) }.isEmpty
         }
     }
 
@@ -223,7 +288,7 @@ struct HistoryView: View {
 
     // MARK: - Expense Section
     private var expenseSection: some View {
-        ForEach(allExpenses) { expense in
+        ForEach(allExpenses.filter { isWithinDateRange($0.date) }) { expense in
             Button {
                 editingExpense = expense
             } label: {
@@ -257,7 +322,7 @@ struct HistoryView: View {
 
     // MARK: - Service Section
     private var serviceSection: some View {
-        ForEach(allServiceRecords) { record in
+        ForEach(allServiceRecords.filter { isWithinDateRange($0.date) }) { record in
             Button {
                 editingService = record
             } label: {
@@ -292,7 +357,7 @@ struct HistoryView: View {
 
     // MARK: - Document Section
     private var documentSection: some View {
-        ForEach(allDocuments) { doc in
+        ForEach(allDocuments.filter { isWithinDateRange($0.createdAt) }) { doc in
             Button {
                 if let url = DocumentStorageService.shared.materializeFileIfNeeded(localFileName: doc.localFileName, data: doc.fileData) {
                     previewURL = url
@@ -341,7 +406,7 @@ struct HistoryView: View {
 
     // MARK: - Inspection Section
     private var inspectionSection: some View {
-        ForEach(allInspections) { report in
+        ForEach(allInspections.filter { isWithinDateRange($0.reportDate) }) { report in
             HStack(spacing: AppSpacing.sm) {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(AppColors.accentPrimary).frame(width: 24)
@@ -366,35 +431,38 @@ struct HistoryView: View {
         let icon: String
         let title: String
         let subtitle: String
+        let date: Date
         let dateDisplay: String
         let color: Color
     }
 
     private func buildTimeline() -> [HistoryTimelineItem] {
         var items: [HistoryTimelineItem] = []
-        for e in allExpenses {
-            items.append(HistoryTimelineItem(icon: e.category.defaultIcon, title: e.category.displayName, subtitle: e.vendorName ?? "", dateDisplay: e.dateDisplay, color: AppColors.accentPrimary))
+        for e in allExpenses where isWithinDateRange(e.date) {
+            items.append(HistoryTimelineItem(icon: e.category.defaultIcon, title: e.category.displayName, subtitle: e.vendorName ?? "", date: e.date, dateDisplay: e.dateDisplay, color: AppColors.accentPrimary))
         }
-        for s in allServiceRecords {
-            items.append(HistoryTimelineItem(icon: "wrench.and.screwdriver", title: s.serviceType.displayName, subtitle: s.vendorName ?? "", dateDisplay: s.date.formatted(date: .numeric, time: .omitted), color: AppColors.warning))
+        for s in allServiceRecords where isWithinDateRange(s.date) {
+            items.append(HistoryTimelineItem(icon: "wrench.and.screwdriver", title: s.serviceType.displayName, subtitle: s.vendorName ?? "", date: s.date, dateDisplay: s.date.formatted(date: .numeric, time: .omitted), color: AppColors.warning))
         }
-        for d in allDocuments {
-            items.append(HistoryTimelineItem(icon: d.type.defaultIcon, title: d.title.isEmpty ? d.type.displayName : d.title, subtitle: d.fileSizeDisplay ?? "", dateDisplay: d.createdAt.formatted(date: .numeric, time: .omitted), color: AppColors.document))
+        for d in allDocuments where isWithinDateRange(d.createdAt) {
+            items.append(HistoryTimelineItem(icon: d.type.defaultIcon, title: d.title.isEmpty ? d.type.displayName : d.title, subtitle: d.fileSizeDisplay ?? "", date: d.createdAt, dateDisplay: d.createdAt.formatted(date: .numeric, time: .omitted), color: AppColors.document))
         }
-        for i in allInspections {
-            items.append(HistoryTimelineItem(icon: "magnifyingglass", title: i.providerName, subtitle: i.branchName ?? "", dateDisplay: i.dateDisplay, color: AppColors.accentPrimary))
+        for i in allInspections where isWithinDateRange(i.reportDate) {
+            items.append(HistoryTimelineItem(icon: "magnifyingglass", title: i.providerName, subtitle: i.branchName ?? "", date: i.reportDate, dateDisplay: i.dateDisplay, color: AppColors.accentPrimary))
         }
-        for r in completedReminders {
-            guard r.completedAt != nil else { continue }
+        for r in completedReminders where isWithinDateRange(r.completedAt ?? .distantPast) {
+            let vehicle = vehicles.first { $0.id == r.vehicleId }
+            let vehicleText = vehicle.map { $0.plate.isEmpty ? $0.fullName : $0.plate } ?? ""
             items.append(HistoryTimelineItem(
-                icon: r.type.defaultIcon,
+                icon: "checkmark.circle",
                 title: r.title,
-                subtitle: "Yapılacak tamamlandı",
+                subtitle: vehicleText.isEmpty ? "Yapılacak tamamlandı" : "\(vehicleText) · Yapılacak tamamlandı",
+                date: r.completedAt ?? .distantPast,
                 dateDisplay: r.completedAt?.formatted(date: .numeric, time: .omitted) ?? "",
                 color: AppColors.success
             ))
         }
-        return items.sorted { $0.dateDisplay > $1.dateDisplay }.prefix(50).map { $0 }
+        return items.sorted { $0.date > $1.date }.prefix(50).map { $0 }
     }
 
     // MARK: - Vehicle helper

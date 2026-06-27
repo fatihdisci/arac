@@ -47,7 +47,7 @@ struct OwnershipInsightCard: View {
             }
         }
         .padding(AppSpacing.md)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, minHeight: 110, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: AppRadius.card)
                 .fill(Color.appSurface)

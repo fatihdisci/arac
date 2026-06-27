@@ -188,7 +188,7 @@ final class RetentionNotificationService {
 
         let content = UNMutableNotificationContent()
         content.title = "Aylık Garaj Özetin"
-        content.body = "Bu ay araçlarının masraf ve bakım özetini görüntülemek için Garajım'a göz at."
+        content.body = "Bu ay araçlarının masraf ve bakım özetini görüntülemek için \(AppBrand.appName) uygulamasına göz at."
         content.sound = .default
         content.interruptionLevel = .active
         content.userInfo = ["deepLink": "records"]

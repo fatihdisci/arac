@@ -99,7 +99,7 @@ final class PDFExportService {
         drawCenteredText(dateStr, at: y, font: .systemFont(ofSize: 12, weight: .regular), color: .gray)
 
         // Footer: app name
-        drawCenteredText("Garajım — Aracının Dijital Dosyası", at: pageHeight - margin - 20, font: .systemFont(ofSize: 10, weight: .light), color: .lightGray)
+        drawCenteredText("\(AppBrand.appName) — Aracının Dijital Dosyası", at: pageHeight - margin - 20, font: .systemFont(ofSize: 10, weight: .light), color: .lightGray)
     }
 
     // MARK: - Vehicle Summary
@@ -236,7 +236,7 @@ final class PDFExportService {
         drawWrappedText(SaleFile.legalDisclaimer, at: CGPoint(x: margin, y: y + 10), font: .systemFont(ofSize: 10, weight: .regular), color: .darkGray, maxWidth: contentWidth)
 
         let footerY = pageHeight - margin - 20
-        drawCenteredText("Bu dosya Garajım uygulaması tarafından oluşturulmuştur.", at: footerY, font: .systemFont(ofSize: 9, weight: .light), color: .lightGray)
+        drawCenteredText("Bu dosya \(AppBrand.appName) uygulaması tarafından oluşturulmuştur.", at: footerY, font: .systemFont(ofSize: 9, weight: .light), color: .lightGray)
     }
 
     // MARK: - Drawing Helpers

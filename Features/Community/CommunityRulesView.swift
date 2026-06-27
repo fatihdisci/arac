@@ -12,7 +12,7 @@ struct CommunityRulesView: View {
                 VStack(alignment: .leading, spacing: AppSpacing.lg) {
                     // Intro
                     VStack(alignment: .leading, spacing: AppSpacing.xs) {
-                        Text("Toplulukta paylaşılan içerikler kullanıcı deneyimi ve kişisel görüş niteliğindedir. Garajım, kullanıcı paylaşımlarındaki teknik, hukuki veya ticari iddiaların doğruluğunu garanti etmez.")
+                        Text("Toplulukta paylaşılan içerikler kullanıcı deneyimi ve kişisel görüş niteliğindedir. \(AppBrand.appName), kullanıcı paylaşımlarındaki teknik, hukuki veya ticari iddiaların doğruluğunu garanti etmez.")
                             .font(AppTypography.secondary)
                             .foregroundColor(AppColors.textSecondary)
                     }

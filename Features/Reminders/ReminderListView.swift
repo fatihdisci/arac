@@ -239,6 +239,7 @@ struct ReminderListView: View {
 
         reminder.statusRaw = ReminderStatus.completed.rawValue
         reminder.completedAt = Date()
+        reminder.addedToHistoryAt = Date()
         try? modelContext.save()
 
         // Bildirimleri iptal et

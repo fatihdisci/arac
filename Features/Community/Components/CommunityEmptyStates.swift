@@ -40,7 +40,7 @@ enum CommunityEmptyState: Equatable {
         case .noProfile:
             return "Toplulukta güvenli bir deneyim için kullanıcı adını belirle."
         case .noPosts:
-            return "Garajım topluluğunda haberler, tavsiyeler ve kullanıcı deneyimleri burada görünecek."
+            return "\(AppBrand.appName) topluluğunda haberler, tavsiyeler ve kullanıcı deneyimleri burada görünecek."
         case .configMissing:
             return "Topluluk özelliği şu anda yapılandırılıyor. Lütfen daha sonra tekrar kontrol et."
         case .networkError(let message):

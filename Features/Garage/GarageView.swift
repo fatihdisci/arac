@@ -379,13 +379,13 @@ struct GarageView: View {
     // MARK: - Quick Action Rail
     private var quickActionRail: some View {
         QuickActionRail(actions: [
-            .init(icon: "turkishlirasign.circle", label: "Masraf Ekle", color: AppColors.accentPrimary) {
+            .init(icon: "turkishlirasign.circle", label: "Masraf", color: AppColors.accentPrimary) {
                 showAddExpense = true
             },
-            .init(icon: "wrench.and.screwdriver", label: "Bakım Ekle", color: AppColors.warning) {
+            .init(icon: "wrench.and.screwdriver", label: "Bakım", color: AppColors.warning) {
                 showAddService = true
             },
-            .init(icon: "doc.text.viewfinder", label: "Belge Ekle", color: AppColors.document) {
+            .init(icon: "doc.text.viewfinder", label: "Belge", color: AppColors.document) {
                 if paywallService.canAddDocument(currentCount: allDocumentsCount) {
                     showAddDocument = true
                 } else {
@@ -393,10 +393,10 @@ struct GarageView: View {
                     showPaywall = true
                 }
             },
-            .init(icon: "bell.badge", label: "Hatırlatıcı Ekle", color: AppColors.vehicle) {
+            .init(icon: "bell.badge", label: "Hatırlatıcı", color: AppColors.vehicle) {
                 showAddReminder = true
             },
-            .init(icon: "doc.richtext", label: "Satış Dosyası", color: AppColors.success) {
+            .init(icon: "doc.richtext", label: "Satış", color: AppColors.success) {
                 if paywallService.canCreateSaleFile() {
                     showSaleFile = true
                 } else {

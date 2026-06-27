@@ -75,7 +75,7 @@ struct BrandIntroView<Content: View>: View {
                         .font(.system(size: 34, weight: .bold, design: .default))
                         .foregroundColor(AppColors.textPrimary)
 
-                    Text("Aracının dijital yaşam dosyası")
+                    Text(AppBrand.tagline)
                         .font(AppTypography.body)
                         .foregroundColor(AppColors.textSecondary)
                 }
