@@ -379,7 +379,7 @@ struct VehicleDetailView: View {
     }
 
     private func previewDocument(_ doc: VehicleDocument) {
-        guard let url = DocumentStorageService.shared.fileURL(for: doc.localFileName) else { return }
+        let url = DocumentStorageService.shared.fileURL(for: doc.localFileName)
         previewDocumentURL = url
         showDocumentPreview = true
     }

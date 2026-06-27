@@ -31,12 +31,12 @@ final class CommunityModerationService {
             throw CommunityServiceError.notAuthenticated
         }
 
-        let payload: [String: any JSONValue] = [
-            "reporter_id": .string(session.user.id.uuidString),
-            "target_type": .string(targetType),
-            "target_id": .string(targetId.uuidString),
-            "reason": .string(reason.rawValue),
-            "description": description.map { .string($0) } ?? .null,
+        let payload: JSONObject = [
+            "reporter_id": AnyJSON.string(session.user.id.uuidString),
+            "target_type": AnyJSON.string(targetType),
+            "target_id": AnyJSON.string(targetId.uuidString),
+            "reason": AnyJSON.string(reason.rawValue),
+            "description": description.map { AnyJSON.string($0) } ?? AnyJSON.null,
         ]
 
         try await client
@@ -59,8 +59,8 @@ final class CommunityModerationService {
         try await client
             .from("community_blocks")
             .insert([
-                "blocker_id": .string(session.user.id.uuidString),
-                "blocked_id": .string(userId.uuidString),
+                "blocker_id": AnyJSON.string(session.user.id.uuidString),
+                "blocked_id": AnyJSON.string(userId.uuidString),
             ])
             .execute()
 
@@ -123,13 +123,15 @@ final class CommunityModerationService {
         var query = client
             .from("community_reports")
             .select()
-            .order("created_at", ascending: false)
 
         if let status = status {
             query = query.eq("status", value: status.rawValue)
         }
 
-        return try await query.execute().value
+        return try await query
+            .order("created_at", ascending: false)
+            .execute()
+            .value
     }
 
     func markReportReviewed(_ reportId: UUID) async throws {
@@ -144,9 +146,9 @@ final class CommunityModerationService {
         try await client
             .from("community_reports")
             .update([
-                "status": .string("reviewed"),
-                "reviewed_at": .string(Date().ISO8601Format()),
-                "reviewer_id": .string(session.user.id.uuidString),
+                "status": AnyJSON.string("reviewed"),
+                "reviewed_at": AnyJSON.string(Date().ISO8601Format()),
+                "reviewer_id": AnyJSON.string(session.user.id.uuidString),
             ])
             .eq("id", value: reportId.uuidString)
             .execute()
@@ -159,7 +161,7 @@ final class CommunityModerationService {
 
         try await client
             .from("community_posts")
-            .update(["is_hidden": .bool(true)])
+            .update(["is_hidden": AnyJSON.bool(true)])
             .eq("id", value: postId.uuidString)
             .execute()
     }
@@ -183,7 +185,7 @@ final class CommunityModerationService {
 
         try await client
             .from("profiles")
-            .update(["is_banned": .bool(true)])
+            .update(["is_banned": AnyJSON.bool(true)])
             .eq("id", value: userId.uuidString)
             .execute()
     }
@@ -195,7 +197,7 @@ final class CommunityModerationService {
 
         try await client
             .from("profiles")
-            .update(["is_banned": .bool(false)])
+            .update(["is_banned": AnyJSON.bool(false)])
             .eq("id", value: userId.uuidString)
             .execute()
     }

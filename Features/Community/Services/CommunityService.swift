@@ -39,9 +39,7 @@ final class CommunityService {
                 author_role:author_id(role)
             """)
             .eq("is_hidden", value: false)
-            .is("deleted_at", value: nil as String?)
-            .order("is_pinned", ascending: false)
-            .order("created_at", ascending: false)
+            .is("deleted_at", value: nil)
 
         if let type = type {
             query = query.eq("post_type", value: type.rawValue)
@@ -59,10 +57,12 @@ final class CommunityService {
             query = query.eq("vehicle_model", value: model)
         }
 
-        query = query
+        let posts: [CommunityPost] = try await query
+            .order("is_pinned", ascending: false)
+            .order("created_at", ascending: false)
             .range(from: page * pageSize, to: (page + 1) * pageSize - 1)
-
-        let posts: [CommunityPost] = try await query.execute().value
+            .execute()
+            .value
         return posts
     }
 
@@ -109,15 +109,15 @@ final class CommunityService {
             throw CommunityServiceError.notAuthenticated
         }
 
-        let payload: [String: any JSONValue] = [
-            "author_id": .string(session.user.id.uuidString),
-            "title": .string(title),
-            "body": .string(body),
-            "post_type": .string(postType.rawValue),
-            "tags": .array(tags.map { .string($0) }),
-            "vehicle_brand": vehicleBrand.map { .string($0) } ?? .null,
-            "vehicle_model": vehicleModel.map { .string($0) } ?? .null,
-            "vehicle_year": vehicleYear.map { .integer($0) } ?? .null,
+        let payload: JSONObject = [
+            "author_id": AnyJSON.string(session.user.id.uuidString),
+            "title": AnyJSON.string(title),
+            "body": AnyJSON.string(body),
+            "post_type": AnyJSON.string(postType.rawValue),
+            "tags": .array(tags.map { AnyJSON.string($0) }),
+            "vehicle_brand": vehicleBrand.map { AnyJSON.string($0) } ?? AnyJSON.null,
+            "vehicle_model": vehicleModel.map { AnyJSON.string($0) } ?? AnyJSON.null,
+            "vehicle_year": vehicleYear.map { AnyJSON.integer($0) } ?? AnyJSON.null,
         ]
 
         return try await client
@@ -143,14 +143,14 @@ final class CommunityService {
             throw CommunityServiceError.configMissing
         }
 
-        let payload: [String: any JSONValue] = [
-            "title": .string(title),
-            "body": .string(body),
-            "post_type": .string(postType.rawValue),
-            "tags": .array(tags.map { .string($0) }),
-            "vehicle_brand": vehicleBrand.map { .string($0) } ?? .null,
-            "vehicle_model": vehicleModel.map { .string($0) } ?? .null,
-            "vehicle_year": vehicleYear.map { .integer($0) } ?? .null,
+        let payload: JSONObject = [
+            "title": AnyJSON.string(title),
+            "body": AnyJSON.string(body),
+            "post_type": AnyJSON.string(postType.rawValue),
+            "tags": .array(tags.map { AnyJSON.string($0) }),
+            "vehicle_brand": vehicleBrand.map { AnyJSON.string($0) } ?? AnyJSON.null,
+            "vehicle_model": vehicleModel.map { AnyJSON.string($0) } ?? AnyJSON.null,
+            "vehicle_year": vehicleYear.map { AnyJSON.integer($0) } ?? AnyJSON.null,
         ]
 
         try await client
@@ -170,9 +170,9 @@ final class CommunityService {
             throw CommunityServiceError.notAuthenticated
         }
 
-        let payload: [String: any JSONValue] = [
-            "deleted_at": .string(Date().ISO8601Format()),
-            "deleted_by": .string(session.user.id.uuidString),
+        let payload: JSONObject = [
+            "deleted_at": AnyJSON.string(Date().ISO8601Format()),
+            "deleted_by": AnyJSON.string(session.user.id.uuidString),
         ]
 
         try await client
@@ -210,8 +210,8 @@ final class CommunityService {
             try await client
                 .from("community_post_likes")
                 .insert([
-                    "post_id": .string(postId.uuidString),
-                    "user_id": .string(userId),
+                    "post_id": AnyJSON.string(postId.uuidString),
+                    "user_id": AnyJSON.string(userId),
                 ])
                 .execute()
             return true
@@ -253,8 +253,8 @@ final class CommunityService {
             try await client
                 .from("community_post_saves")
                 .insert([
-                    "post_id": .string(postId.uuidString),
-                    "user_id": .string(userId),
+                    "post_id": AnyJSON.string(postId.uuidString),
+                    "user_id": AnyJSON.string(userId),
                 ])
                 .execute()
             return true
@@ -288,7 +288,7 @@ final class CommunityService {
             """)
             .eq("post_id", value: postId.uuidString)
             .eq("is_hidden", value: false)
-            .is("deleted_at", value: nil as String?)
+            .is("deleted_at", value: nil)
             .order("created_at", ascending: true)
             .execute()
             .value
@@ -303,10 +303,10 @@ final class CommunityService {
             throw CommunityServiceError.notAuthenticated
         }
 
-        let payload: [String: any JSONValue] = [
-            "post_id": .string(postId.uuidString),
-            "author_id": .string(session.user.id.uuidString),
-            "body": .string(body),
+        let payload: JSONObject = [
+            "post_id": AnyJSON.string(postId.uuidString),
+            "author_id": AnyJSON.string(session.user.id.uuidString),
+            "body": AnyJSON.string(body),
         ]
 
         return try await client
@@ -327,9 +327,9 @@ final class CommunityService {
             throw CommunityServiceError.notAuthenticated
         }
 
-        let payload: [String: any JSONValue] = [
-            "deleted_at": .string(Date().ISO8601Format()),
-            "deleted_by": .string(session.user.id.uuidString),
+        let payload: JSONObject = [
+            "deleted_at": AnyJSON.string(Date().ISO8601Format()),
+            "deleted_by": AnyJSON.string(session.user.id.uuidString),
         ]
 
         try await client

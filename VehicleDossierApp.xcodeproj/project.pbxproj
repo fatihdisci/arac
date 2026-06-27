@@ -65,6 +65,29 @@
 		CCAT0002CCAT0002CCAT0002 /* CarCatalogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAT0001CCAT0001CCAT0001 /* CarCatalogService.swift */; };
 		CCAT0004CCAT0004CCAT0004 /* VehicleCatalogPickerViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAT0003CCAT0003CCAT0003 /* VehicleCatalogPickerViews.swift */; };
 		CCAT0006CCAT0006CCAT0006 /* CarCatalog.tr.json in Resources */ = {isa = PBXBuildFile; fileRef = CCAT0005CCAT0005CCAT0005 /* CarCatalog.tr.json */; };
+		FA0EC5BDE270E1A661988B3B /* CommunityCreatePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4211CAC644864893A910F6F2 /* CommunityCreatePostView.swift */; };
+		39762DB519787236282EFDF1 /* CommunityFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184A535D307090C964A75727 /* CommunityFeedView.swift */; };
+		8D72147ECB53A4AC3E2D4DCF /* CommunityModerationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90533F411C469C215397BF9A /* CommunityModerationView.swift */; };
+		9BCDECEC7EDCE7BB35E8AE29 /* CommunityPostDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94F45A97B502D5EBCF9228B /* CommunityPostDetailView.swift */; };
+		07860DC6FB685B472A228BB6 /* CommunityProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F2CC53672C2CCEFA92B275 /* CommunityProfileView.swift */; };
+		30966FC584248E33E03B504C /* CommunityRulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6145ECA81043106F6EF7D91A /* CommunityRulesView.swift */; };
+		3300E35820F26DEBAE34D8B7 /* CommentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBAF09A197FF98B56068848 /* CommentRow.swift */; };
+		2336CEB5BC41218AC5F2B8FC /* CommunityEmptyStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172F0844A2F37F667AD8C5F9 /* CommunityEmptyStates.swift */; };
+		F21C068E443DCD2D99966317 /* CommunityFilterChips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1C5BB29F17D32FC16C38D5 /* CommunityFilterChips.swift */; };
+		18161EA37BAE902FA1E37876 /* PostCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA11741656C9B0E520A8014 /* PostCard.swift */; };
+		AC350C7B52C3C091CEDBD142 /* ReportReasonSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3B5437AE1506219424594F /* ReportReasonSheet.swift */; };
+		8A128467B94BF543DBD633E5 /* CommunityComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B82ED1B3C1D76EE5917AB30 /* CommunityComment.swift */; };
+		D720170EE189493215C1A451 /* CommunityEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3A76F4FA6D84C19DABB119 /* CommunityEnums.swift */; };
+		2064E7FA4D845625599CB7A3 /* CommunityPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55E4D9980909222F1E5DD1C8 /* CommunityPost.swift */; };
+		46C63EE762FDBB17C37F4113 /* CommunityProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DA36FB1DE4FC7982F2BC9 /* CommunityProfile.swift */; };
+		4FDFACF60A322BF674506A60 /* CommunityReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567D9A83B65DE309E9382DF3 /* CommunityReport.swift */; };
+		6E4F15EC825DD51789AEA4EF /* CommunityModerationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DA6DE871B4644854A7BD2D /* CommunityModerationService.swift */; };
+		AE9D2905D838444DDB3772B4 /* CommunityProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC4760FF478512AA639E5A8 /* CommunityProfileService.swift */; };
+		5D86C6F64B63EC25AFC76308 /* CommunityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AC7A48AE3C9D1D89DAED0A /* CommunityService.swift */; };
+		BAF1DFDCDD3E58F7E9441214 /* CommunityAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E7B058261181D37B36F7C8 /* CommunityAuthService.swift */; };
+		71DD89397F1ADA6DFD3236EE /* SupabaseClientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BE9314E675A029DA58430B /* SupabaseClientProvider.swift */; };
+		5AA1F995EAC2702BA402B5E0 /* SupabaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057834D6DB120B50E147467B /* SupabaseConfig.swift */; };
+		2DB927F9BFC27F98C25211F7 /* Supabase in Frameworks */ = {isa = PBXBuildFile; fileRef = 921F32F152B20505593AD8E1 /* Supabase */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -128,6 +151,29 @@
 		CCAT0001CCAT0001CCAT0001 /* CarCatalogService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarCatalogService.swift; sourceTree = "<group>"; };
 		CCAT0003CCAT0003CCAT0003 /* VehicleCatalogPickerViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleCatalogPickerViews.swift; sourceTree = "<group>"; };
 		CCAT0005CCAT0005CCAT0005 /* CarCatalog.tr.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = CarCatalog.tr.json; sourceTree = "<group>"; };
+		4211CAC644864893A910F6F2 /* CommunityCreatePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityCreatePostView.swift; sourceTree = "<group>"; };
+		184A535D307090C964A75727 /* CommunityFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityFeedView.swift; sourceTree = "<group>"; };
+		90533F411C469C215397BF9A /* CommunityModerationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityModerationView.swift; sourceTree = "<group>"; };
+		A94F45A97B502D5EBCF9228B /* CommunityPostDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostDetailView.swift; sourceTree = "<group>"; };
+		10F2CC53672C2CCEFA92B275 /* CommunityProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityProfileView.swift; sourceTree = "<group>"; };
+		6145ECA81043106F6EF7D91A /* CommunityRulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRulesView.swift; sourceTree = "<group>"; };
+		BCBAF09A197FF98B56068848 /* CommentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRow.swift; sourceTree = "<group>"; };
+		172F0844A2F37F667AD8C5F9 /* CommunityEmptyStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityEmptyStates.swift; sourceTree = "<group>"; };
+		0A1C5BB29F17D32FC16C38D5 /* CommunityFilterChips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityFilterChips.swift; sourceTree = "<group>"; };
+		CCA11741656C9B0E520A8014 /* PostCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCard.swift; sourceTree = "<group>"; };
+		FF3B5437AE1506219424594F /* ReportReasonSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportReasonSheet.swift; sourceTree = "<group>"; };
+		3B82ED1B3C1D76EE5917AB30 /* CommunityComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityComment.swift; sourceTree = "<group>"; };
+		9A3A76F4FA6D84C19DABB119 /* CommunityEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityEnums.swift; sourceTree = "<group>"; };
+		55E4D9980909222F1E5DD1C8 /* CommunityPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPost.swift; sourceTree = "<group>"; };
+		B67DA36FB1DE4FC7982F2BC9 /* CommunityProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityProfile.swift; sourceTree = "<group>"; };
+		567D9A83B65DE309E9382DF3 /* CommunityReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityReport.swift; sourceTree = "<group>"; };
+		B7DA6DE871B4644854A7BD2D /* CommunityModerationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityModerationService.swift; sourceTree = "<group>"; };
+		CAC4760FF478512AA639E5A8 /* CommunityProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityProfileService.swift; sourceTree = "<group>"; };
+		E4AC7A48AE3C9D1D89DAED0A /* CommunityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityService.swift; sourceTree = "<group>"; };
+		80E7B058261181D37B36F7C8 /* CommunityAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityAuthService.swift; sourceTree = "<group>"; };
+		64BE9314E675A029DA58430B /* SupabaseClientProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseClientProvider.swift; sourceTree = "<group>"; };
+		057834D6DB120B50E147467B /* SupabaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseConfig.swift; sourceTree = "<group>"; };
+		921F32F152B20505593AD8E1 /* Supabase */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Supabase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXContainerItemProxy section */
@@ -146,6 +192,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DB927F9BFC27F98C25211F7 /* Supabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,6 +358,7 @@
 				33E1132B2E9041B999B6CF05 /* Settings */,
 				A2C60AF5041A4BD2BCA574F8 /* Reports */,
 				451856CC67004B5C8B808ECC /* VehicleDetail */,
+				1DCB387D9AB8BA3B2B3AF803 /* Community */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -345,6 +393,9 @@
 				F36BED4AAE2741B7962E8682 /* PDFExportService.swift */,
 				6D6D76344B3F47E7AF65D4C9 /* DemoDataSeeder.swift */,
 				CCAT0001CCAT0001CCAT0001 /* CarCatalogService.swift */,
+				80E7B058261181D37B36F7C8 /* CommunityAuthService.swift */,
+				64BE9314E675A029DA58430B /* SupabaseClientProvider.swift */,
+				057834D6DB120B50E147467B /* SupabaseConfig.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -394,12 +445,65 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
+		1DCB387D9AB8BA3B2B3AF803 /* Community */ = {
+			isa = PBXGroup;
+			children = (
+				7644F08ADCC4D292C66B1A2E /* Components */,
+				13809DF00717896C13A4DC0E /* Models */,
+				CB4D485109CEE291986BBF18 /* Services */,
+				4211CAC644864893A910F6F2 /* CommunityCreatePostView.swift */,
+				184A535D307090C964A75727 /* CommunityFeedView.swift */,
+				90533F411C469C215397BF9A /* CommunityModerationView.swift */,
+				A94F45A97B502D5EBCF9228B /* CommunityPostDetailView.swift */,
+				10F2CC53672C2CCEFA92B275 /* CommunityProfileView.swift */,
+				6145ECA81043106F6EF7D91A /* CommunityRulesView.swift */,
+			);
+			path = Community;
+			sourceTree = "<group>";
+		};
+		7644F08ADCC4D292C66B1A2E /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				BCBAF09A197FF98B56068848 /* CommentRow.swift */,
+				172F0844A2F37F667AD8C5F9 /* CommunityEmptyStates.swift */,
+				0A1C5BB29F17D32FC16C38D5 /* CommunityFilterChips.swift */,
+				CCA11741656C9B0E520A8014 /* PostCard.swift */,
+				FF3B5437AE1506219424594F /* ReportReasonSheet.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		13809DF00717896C13A4DC0E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3B82ED1B3C1D76EE5917AB30 /* CommunityComment.swift */,
+				9A3A76F4FA6D84C19DABB119 /* CommunityEnums.swift */,
+				55E4D9980909222F1E5DD1C8 /* CommunityPost.swift */,
+				B67DA36FB1DE4FC7982F2BC9 /* CommunityProfile.swift */,
+				567D9A83B65DE309E9382DF3 /* CommunityReport.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		CB4D485109CEE291986BBF18 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B7DA6DE871B4644854A7BD2D /* CommunityModerationService.swift */,
+				CAC4760FF478512AA639E5A8 /* CommunityProfileService.swift */,
+				E4AC7A48AE3C9D1D89DAED0A /* CommunityService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
 		B5B8540DBBC24CDD923D593D /* Ruhsatim */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7EF0099F316E4EB2B5C2BD16 /* Build configuration list for PBXNativeTarget "Ruhsatim" */;
+			packageProductDependencies = (
+				BC08A72FB4C5D1E8E5FFE119 /* Supabase */,
+			);
 			buildPhases = (
 				CF671776595B4BC6946CCCDD /* Sources */,
 				30F28B58B9C148F2A6B8EB0C /* Frameworks */,
@@ -458,6 +562,9 @@
 				en,
 				tr,
 				Base,
+			);
+			packageReferences = (
+				5931FDBBC824A401E4629D2C /* XCRemoteSwiftPackageReference "supabase-swift" */,
 			);
 			mainGroup = F1CF43DAFD4241B9B1F4DB70;
 			productRefGroup = 4E15B7A2088A4B77AFD21461 /* Products */;
@@ -546,6 +653,28 @@
 				CCAT0002CCAT0002CCAT0002 /* CarCatalogService.swift in Sources */,
 				69FF034D0EAD433D956BFDCE /* ReminderRepeatEngine.swift in Sources */,
 				7F96351DFBC84210971A9939 /* RetentionNotificationService.swift in Sources */,
+				FA0EC5BDE270E1A661988B3B /* CommunityCreatePostView.swift in Sources */,
+				39762DB519787236282EFDF1 /* CommunityFeedView.swift in Sources */,
+				8D72147ECB53A4AC3E2D4DCF /* CommunityModerationView.swift in Sources */,
+				9BCDECEC7EDCE7BB35E8AE29 /* CommunityPostDetailView.swift in Sources */,
+				07860DC6FB685B472A228BB6 /* CommunityProfileView.swift in Sources */,
+				30966FC584248E33E03B504C /* CommunityRulesView.swift in Sources */,
+				3300E35820F26DEBAE34D8B7 /* CommentRow.swift in Sources */,
+				2336CEB5BC41218AC5F2B8FC /* CommunityEmptyStates.swift in Sources */,
+				F21C068E443DCD2D99966317 /* CommunityFilterChips.swift in Sources */,
+				18161EA37BAE902FA1E37876 /* PostCard.swift in Sources */,
+				AC350C7B52C3C091CEDBD142 /* ReportReasonSheet.swift in Sources */,
+				8A128467B94BF543DBD633E5 /* CommunityComment.swift in Sources */,
+				D720170EE189493215C1A451 /* CommunityEnums.swift in Sources */,
+				2064E7FA4D845625599CB7A3 /* CommunityPost.swift in Sources */,
+				46C63EE762FDBB17C37F4113 /* CommunityProfile.swift in Sources */,
+				4FDFACF60A322BF674506A60 /* CommunityReport.swift in Sources */,
+				6E4F15EC825DD51789AEA4EF /* CommunityModerationService.swift in Sources */,
+				AE9D2905D838444DDB3772B4 /* CommunityProfileService.swift in Sources */,
+				5D86C6F64B63EC25AFC76308 /* CommunityService.swift in Sources */,
+				BAF1DFDCDD3E58F7E9441214 /* CommunityAuthService.swift in Sources */,
+				71DD89397F1ADA6DFD3236EE /* SupabaseClientProvider.swift in Sources */,
+				5AA1F995EAC2702BA402B5E0 /* SupabaseConfig.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -786,6 +915,24 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+/* Begin XCRemoteSwiftPackageReference section */
+		5931FDBBC824A401E4629D2C /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BC08A72FB4C5D1E8E5FFE119 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5931FDBBC824A401E4629D2C /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DE688E4D /* Project object */;
 }

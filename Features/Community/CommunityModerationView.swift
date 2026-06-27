@@ -50,7 +50,8 @@ struct CommunityModerationView: View {
                             .frame(maxHeight: .infinity)
                     } else if let error = error {
                         ErrorStateView(
-                            message: error,
+                            title: "Yükleme Hatası",
+                            message: "\(error)",
                             retryAction: { Task { await load() } }
                         )
                     } else if reports.isEmpty {

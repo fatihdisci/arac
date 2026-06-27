@@ -27,7 +27,8 @@ struct CommunityPostDetailView: View {
                     .padding(.top, 100)
             } else if let error = error {
                 ErrorStateView(
-                    message: error,
+                    title: "Yükleme Hatası",
+                    message: "\(error)",
                     retryAction: { Task { await load() } }
                 )
             } else if let post = post {

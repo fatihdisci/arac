@@ -73,9 +73,9 @@ struct CommunityEmptyStateView: View {
 
             EmptyStateView(
                 icon: state.icon,
-                title: state.title,
-                description: state.description,
-                actionTitle: state.actionTitle,
+                title: LocalizedStringKey(state.title),
+                description: LocalizedStringKey(state.description),
+                actionTitle: state.actionTitle.map { LocalizedStringKey($0) },
                 action: action ?? {}
             )
 

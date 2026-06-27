@@ -10,7 +10,7 @@ struct CommunityCreatePostView: View {
     var editingPost: CommunityPost? = nil
 
     @State private var title = ""
-    @State private var body = ""
+    @State private var bodyText = ""
     @State private var postType: PostType?
     @State private var selectedTags: Set<String> = []
     @State private var vehicleBrand: String?
@@ -52,12 +52,12 @@ struct CommunityCreatePostView: View {
 
                 // Body
                 Section {
-                    TextEditor(text: $body)
+                    TextEditor(text: $bodyText)
                         .font(AppTypography.body)
                         .foregroundColor(AppColors.textPrimary)
                         .frame(minHeight: 140)
                         .overlay(alignment: .topLeading) {
-                            if body.isEmpty {
+                            if bodyText.isEmpty {
                                 Text("İçerik (20-5000 karakter)")
                                     .font(AppTypography.body)
                                     .foregroundColor(AppColors.textTertiary)
@@ -66,9 +66,9 @@ struct CommunityCreatePostView: View {
                                     .allowsHitTesting(false)
                             }
                         }
-                    Text("\(body.count)/5000")
+                    Text("\(bodyText.count)/5000")
                         .font(AppTypography.caption)
-                        .foregroundColor(body.count > 5000 ? AppColors.critical : AppColors.textTertiary)
+                        .foregroundColor(bodyText.count > 5000 ? AppColors.critical : AppColors.textTertiary)
                 } header: {
                     Text("İçerik")
                 }
@@ -182,7 +182,7 @@ struct CommunityCreatePostView: View {
             .onAppear {
                 if let post = editingPost {
                     title = post.title
-                    body = post.body
+                    bodyText = post.body
                     postType = post.postType
                     selectedTags = Set(post.tags)
                     vehicleBrand = post.vehicleBrand
@@ -202,7 +202,7 @@ struct CommunityCreatePostView: View {
     private func submit() {
         let errors = CommunityPost.validate(
             title: title,
-            body: body,
+            body: bodyText,
             postType: postType,
             tags: Array(selectedTags)
         )
@@ -222,7 +222,7 @@ struct CommunityCreatePostView: View {
                     try await CommunityService.shared.updatePost(
                         id: existing.id,
                         title: title.trimmingCharacters(in: .whitespacesAndNewlines),
-                        body: body.trimmingCharacters(in: .whitespacesAndNewlines),
+                        body: bodyText.trimmingCharacters(in: .whitespacesAndNewlines),
                         postType: postType!,
                         tags: Array(selectedTags),
                         vehicleBrand: showVehicle ? vehicleBrand : nil,
@@ -232,7 +232,7 @@ struct CommunityCreatePostView: View {
                 } else {
                     _ = try await CommunityService.shared.createPost(
                         title: title.trimmingCharacters(in: .whitespacesAndNewlines),
-                        body: body.trimmingCharacters(in: .whitespacesAndNewlines),
+                        body: bodyText.trimmingCharacters(in: .whitespacesAndNewlines),
                         postType: postType!,
                         tags: Array(selectedTags),
                         vehicleBrand: showVehicle ? vehicleBrand : nil,

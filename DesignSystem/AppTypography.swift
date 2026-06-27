@@ -26,6 +26,7 @@ enum AppTypography {
 
     // İkincil
     static var secondary: Font { .subheadline } // 15pt regular
+    static var secondaryMedium: Font { .system(size: 15, weight: .medium) }
     static var secondarySmall: Font { .system(size: 14, weight: .regular) }
 
     // Caption

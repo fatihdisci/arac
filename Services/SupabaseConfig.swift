@@ -1,4 +1,4 @@
-import Foundation
+        import Foundation
 
 // MARK: - Supabase Configuration
 // Supabase bağlantı ayarlarını xcconfig üzerinden okur.

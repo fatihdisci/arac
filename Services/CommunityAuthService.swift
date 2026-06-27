@@ -166,12 +166,12 @@ extension CommunityAuthService: ASAuthorizationControllerDelegate {
         didCompleteWithError error: Error
     ) {
         // Kullanıcı iptal ettiyse hata gösterme.
-        if let authError = error as? ASAuthorizationError,
-           authError.code == .canceled {
-            authError = nil
+        if let asAuthError = error as? ASAuthorizationError,
+           asAuthError.code == .canceled {
+            self.authError = nil
             signInContinuation?.resume(returning: false)
         } else {
-            authError = "Apple ile giriş yapılamadı: \(error.localizedDescription)"
+            self.authError = "Apple ile giriş yapılamadı: \(error.localizedDescription)"
             signInContinuation?.resume(throwing: error)
         }
         signInContinuation = nil
