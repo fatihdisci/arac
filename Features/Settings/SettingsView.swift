@@ -10,9 +10,13 @@ struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var paywallService: PaywallService
+    @EnvironmentObject private var communityAuth: CommunityAuthService
 
     @State private var showPaywall = false
     @State private var showDeleteAllConfirmation = false
+    @State private var showDeleteAccountConfirmation = false
+    @State private var isDeletingAccount = false
+    @State private var deleteAccountError: String?
     @State private var isExporting = false
     @State private var exportMessage: String?
     @State private var demoSeedMessage: String?
@@ -63,6 +67,14 @@ struct SettingsView: View {
                 Button("İptal", role: .cancel) {}
             } message: {
                 Text("Bu işlem geri alınamaz. Tüm araçlar, hatırlatıcılar, masraflar, bakım kayıtları, belgeler ve raporlar kalıcı olarak silinir.")
+            }
+            .confirmationDialog("Hesabı ve verileri sil?", isPresented: $showDeleteAccountConfirmation) {
+                Button("Sil", role: .destructive) {
+                    Task { await deleteAccountAndData() }
+                }
+                Button("Vazgeç", role: .cancel) {}
+            } message: {
+                Text("Bu işlem yerel araç kayıtlarını, belgeleri ve topluluk profil bilgilerini silebilir. Bu işlem geri alınamaz.")
             }
         }
     }
@@ -238,6 +250,27 @@ struct SettingsView: View {
                 showDeleteAllConfirmation = true
             } label: {
                 Label("Tüm Verileri Sil", systemImage: "trash")
+            }
+
+            if communityAuth.isAuthenticated {
+                Button(role: .destructive) {
+                    showDeleteAccountConfirmation = true
+                } label: {
+                    HStack {
+                        Label("Hesabı ve Verileri Sil", systemImage: "person.crop.circle.badge.xmark")
+                        if isDeletingAccount {
+                            Spacer()
+                            ProgressView()
+                        }
+                    }
+                }
+                .disabled(isDeletingAccount)
+
+                if let error = deleteAccountError {
+                    Text(error)
+                        .font(AppTypography.caption)
+                        .foregroundColor(AppColors.critical)
+                }
             }
         } header: {
             Text("Veri Yönetimi")
@@ -548,6 +581,62 @@ struct SettingsView: View {
         }
     }
 
+    private func deleteAccountAndData() async {
+        isDeletingAccount = true
+        deleteAccountError = nil
+
+        do {
+            // 1. Local SwiftData temizliği
+            if let vehicles = try? modelContext.fetch(FetchDescriptor<Vehicle>()) {
+                for v in vehicles { modelContext.delete(v) }
+            }
+            if let reminders = try? modelContext.fetch(FetchDescriptor<Reminder>()) {
+                for r in reminders { modelContext.delete(r) }
+            }
+            if let expenses = try? modelContext.fetch(FetchDescriptor<Expense>()) {
+                for e in expenses { modelContext.delete(e) }
+            }
+            if let services = try? modelContext.fetch(FetchDescriptor<ServiceRecord>()) {
+                for s in services { modelContext.delete(s) }
+            }
+            if let parts = try? modelContext.fetch(FetchDescriptor<PartChange>()) {
+                for p in parts { modelContext.delete(p) }
+            }
+            if let docs = try? modelContext.fetch(FetchDescriptor<VehicleDocument>()) {
+                for d in docs { modelContext.delete(d) }
+            }
+            if let inspections = try? modelContext.fetch(FetchDescriptor<InspectionReport>()) {
+                for i in inspections { modelContext.delete(i) }
+            }
+            if let sales = try? modelContext.fetch(FetchDescriptor<SaleFile>()) {
+                for s in sales { modelContext.delete(s) }
+            }
+
+            // 2. Local belge dosyalarını temizle
+            let docDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                .appendingPathComponent("VehicleDocuments")
+            try? FileManager.default.removeItem(at: docDir)
+
+            // 3. Bildirimleri temizle
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+
+            try? modelContext.save()
+
+            // 4. Topluluk profilini anonimleştir ve çıkış yap
+            if communityAuth.isAuthenticated {
+                try? await communityAuth.deleteAccount()
+            }
+
+            // 5. Pro state'i sıfırla
+            paywallService.disableProForDev()
+
+            dismiss()
+        } catch {
+            deleteAccountError = "Silme işlemi başarısız oldu: \(error.localizedDescription)"
+        }
+        isDeletingAccount = false
+    }
+
     private func deleteAllData() {
         // Tüm SwiftData modellerini tek tek sil
         if let vehicles = try? modelContext.fetch(FetchDescriptor<Vehicle>()) {
@@ -596,4 +685,5 @@ struct SettingsView: View {
 #Preview("Ayarlar") {
     SettingsView()
         .environmentObject(PaywallService.shared)
+        .environmentObject(CommunityAuthService.shared)
 }

@@ -100,6 +100,32 @@ final class CommunityAuthService: NSObject, ObservableObject {
         profile = nil
     }
 
+    /// Hesabı sil: profil anonimleştirilir, post/comment geçmişi korunur,
+    /// auth oturumu kapatılır. Local veri temizliği caller tarafından yapılır.
+    func deleteAccount() async throws {
+        guard let client = client else {
+            throw CommunityServiceError.configMissing
+        }
+
+        guard let userId = currentSession?.user.id else {
+            throw CommunityServiceError.notAuthenticated
+        }
+
+        // Profili anonimleştir (hard delete DEĞIL — moderation bütünlüğü için)
+        try await CommunityProfileService.shared.anonymizeProfile(userId: userId)
+
+        // Supabase auth oturumunu kapat
+        do {
+            try await client.auth.signOut()
+        } catch {
+            // Sign out hatası kritik değil
+        }
+
+        isAuthenticated = false
+        currentSession = nil
+        profile = nil
+    }
+
     // MARK: - Profile
 
     /// Auth sonrası profil fetch et.

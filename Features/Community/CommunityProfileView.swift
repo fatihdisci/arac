@@ -19,6 +19,8 @@ struct CommunityProfileView: View {
     @State private var usernameAvailable: Bool?
 
     @State private var usernameCheckTask: Task<Void, Never>?
+    @State private var showDeleteConfirmation = false
+    @State private var isDeleting = false
 
     private let carCatalog = CarCatalogService.shared
 
@@ -106,6 +108,29 @@ struct CommunityProfileView: View {
                     Text("Profilinde görünen araç etiketi yalnızca marka/model/yıl içerir; plaka bilgisi asla paylaşılmaz.")
                         .foregroundColor(AppColors.textTertiary)
                 }
+
+                // Hesap işlemleri
+                Section {
+                    Button(role: .destructive) {
+                        Task { await communityAuth.signOut() }
+                        dismiss()
+                    } label: {
+                        HStack {
+                            Image(systemName: "rectangle.portrait.and.arrow.right")
+                            Text("Çıkış Yap")
+                        }
+                    }
+
+                    Button(role: .destructive) {
+                        showDeleteConfirmation = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "trash")
+                            Text(isDeleting ? "Siliniyor..." : "Hesabı Sil")
+                        }
+                    }
+                    .disabled(isDeleting)
+                }
             }
             .scrollContentBackground(.hidden)
             .background(Color.appBackground)
@@ -121,7 +146,26 @@ struct CommunityProfileView: View {
                         .disabled(isSaving)
                 }
             }
+            .alert("Hesabı ve verileri sil?", isPresented: $showDeleteConfirmation) {
+                Button("Vazgeç", role: .cancel) {}
+                Button("Sil", role: .destructive) {
+                    Task { await deleteAccount() }
+                }
+            } message: {
+                Text("Bu işlem yerel araç kayıtlarını, belgeleri ve topluluk profil bilgilerini silebilir. Bu işlem geri alınamaz.")
+            }
         }
+    }
+
+    private func deleteAccount() async {
+        isDeleting = true
+        do {
+            try await communityAuth.deleteAccount()
+            dismiss()
+        } catch {
+            validationError = "Hesap silinemedi: \(error.localizedDescription)"
+        }
+        isDeleting = false
     }
 
     private func checkUsername() {
