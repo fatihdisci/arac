@@ -1,6 +1,6 @@
-# GitHub Pages Kurulumu — Garajım
+# GitHub Pages Kurulumu — Arvia
 
-Bu belge, Garajım uygulamasının Gizlilik Politikası ve Kullanım Koşulları sayfalarını GitHub Pages üzerinde yayınlamak için gerekli adımları içerir.
+Bu belge, Arvia uygulamasının Gizlilik Politikası ve Kullanım Koşulları sayfalarını GitHub Pages üzerinde yayınlamak için gerekli adımları içerir.
 
 ## Ön Koşul
 
@@ -23,7 +23,7 @@ Bu belge, Garajım uygulamasının Gizlilik Politikası ve Kullanım Koşulları
 
 - GitHub Pages birkaç dakika içinde siteyi deploy eder.
 - Settings → Pages altında şu URL görünür olacak:
-  `https://fatihdisci.github.io/ruhsatim/`
+  `https://fatihdisci.github.io/arvia/`
 
 ### 3. URL'leri Doğrula
 
@@ -31,16 +31,16 @@ Site yayına girdikten sonra şu sayfalar erişilebilir olmalı:
 
 | Sayfa | URL |
 |---|---|
-| Ana sayfa | `https://fatihdisci.github.io/ruhsatim/` |
-| Gizlilik Politikası | `https://fatihdisci.github.io/ruhsatim/privacy.html` |
-| Kullanım Koşulları | `https://fatihdisci.github.io/ruhsatim/terms.html` |
+| Ana sayfa | `https://fatihdisci.github.io/arvia/` |
+| Gizlilik Politikası | `https://fatihdisci.github.io/arvia/privacy.html` |
+| Kullanım Koşulları | `https://fatihdisci.github.io/arvia/terms.html` |
 
 ### 4. App Store Connect'te Kullan
 
 App Store Connect → App Privacy bölümünde:
 
-- **Privacy Policy URL:** `https://fatihdisci.github.io/ruhsatim/privacy.html`
-- **Terms of Service URL (opsiyonel):** `https://fatihdisci.github.io/ruhsatim/terms.html`
+- **Privacy Policy URL:** `https://fatihdisci.github.io/arvia/privacy.html`
+- **Terms of Service URL (opsiyonel):** `https://fatihdisci.github.io/arvia/terms.html`
 
 ## Dosya Yapısı
 

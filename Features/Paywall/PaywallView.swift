@@ -111,6 +111,7 @@ struct PaywallView: View {
 
     private let privacyURL = URL(string: "https://fatihdisci.github.io/arvia/privacy.html")!
     private let termsURL = URL(string: "https://fatihdisci.github.io/arvia/terms.html")!
+    private let supportURL = URL(string: "https://fatihdisci.github.io/arvia/support.html")!
     private let eulaURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
 
     var body: some View {
@@ -412,6 +413,16 @@ struct PaywallView: View {
 
                 Link(destination: termsURL) {
                     Text("Kullanım Koşulları")
+                        .font(AppTypography.caption)
+                        .foregroundColor(AppColors.textSecondary)
+                }
+
+                Text("•")
+                    .font(AppTypography.caption)
+                    .foregroundColor(AppColors.textTertiary)
+
+                Link(destination: supportURL) {
+                    Text("Destek")
                         .font(AppTypography.caption)
                         .foregroundColor(AppColors.textSecondary)
                 }

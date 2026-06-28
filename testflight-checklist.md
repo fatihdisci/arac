@@ -1,4 +1,4 @@
-# TestFlight Hazırlık Denetimi — Garajım
+# TestFlight Hazırlık Denetimi — Arvia
 
 **Tarih:** 24 Haziran 2026
 **Commit:** `60f13d0`
@@ -87,8 +87,8 @@ var isDevMode: Bool {
 
 | URL | Durum |
 |---|---|
-| `https://fatihdisci.github.io/ruhsatim/privacy.html` | ✅ Canlı GitHub Pages URL |
-| `https://fatihdisci.github.io/ruhsatim/terms.html` | ✅ Canlı GitHub Pages URL |
+| `https://fatihdisci.github.io/arvia/privacy.html` | ✅ Canlı GitHub Pages URL |
+| `https://fatihdisci.github.io/arvia/terms.html` | ✅ Canlı GitHub Pages URL |
 
 > App Store review için privacy policy URL'sinin canlı ve erişilebilir olması zorunlu.
 

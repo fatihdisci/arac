@@ -125,7 +125,7 @@ struct CommunityFeedView: View {
             EmptyStateView(
                 icon: "person.crop.circle.badge.questionmark",
                 title: "Topluluğa katıl",
-                description: "Araç haberlerini, bakım tavsiyelerini ve kullanıcı deneyimlerini okumak için Apple ile giriş yap.",
+                description: "Topluluğu görmek için Apple ile giriş yap.",
                 actionTitle: "Apple ile Giriş Yap",
                 action: {
                     Task { try? await communityAuth.signInWithApple() }

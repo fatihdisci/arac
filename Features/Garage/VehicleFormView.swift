@@ -10,6 +10,7 @@ import UIKit
 struct VehicleFormView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var paywallService: PaywallService
 
     // MARK: Required fields
     @State private var vehicleType: VehicleType = .car
@@ -53,6 +54,7 @@ struct VehicleFormView: View {
     // MARK: Validation
     @State private var validationErrors: [String] = []
     @State private var showErrors = false
+    @State private var showPaywall = false
 
     // MARK: Computed
     private var year: Int? { Int(yearText.trimmingCharacters(in: .whitespaces)) }
@@ -112,6 +114,9 @@ struct VehicleFormView: View {
             }
             .onChange(of: selectedPhotoItem) { _, newItem in
                 if let item = newItem { loadPhotoItem(item) }
+            }
+            .sheet(isPresented: $showPaywall) {
+                PaywallView(feature: .secondVehicle)
             }
         }
     }
@@ -488,12 +493,20 @@ struct VehicleFormView: View {
     private func saveVehicle() {
         let errors = validate()
 
-        if errors.isEmpty {
-            performSave()
-        } else {
+        guard errors.isEmpty else {
             validationErrors = errors
             showErrors = true
+            return
         }
+
+        // Araç limit gate — yeni ekleme modunda kontrol
+        let activeVehicles = (try? modelContext.fetch(FetchDescriptor<Vehicle>()))?.filter { $0.archivedAt == nil } ?? []
+        if !paywallService.canAddVehicle(currentCount: activeVehicles.count) {
+            showPaywall = true
+            return
+        }
+
+        performSave()
     }
 
     private func validate() -> [String] {

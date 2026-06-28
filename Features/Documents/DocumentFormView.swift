@@ -376,9 +376,8 @@ struct DocumentFormView: View {
         }
         if !errors.isEmpty { validationErrors = errors; return }
 
-        let currentVehicleDocumentCount = allDocuments.filter { $0.vehicleId == vehicleId }.count
-        if !isEditing, !paywallService.canSaveNewDocument(currentCount: currentVehicleDocumentCount) {
-            validationErrors = ["Free planda bu araç için en fazla 5 belge ekleyebilirsin. Sınırsız belge için Arvia Pro'ya geç."]
+        if !isEditing, !paywallService.canSaveNewDocument(currentCount: allDocuments.count) {
+            validationErrors = ["Free planda en fazla 5 belge ekleyebilirsin. Sınırsız belge için Arvia Pro'ya geç."]
             showPaywall = true
             return
         }

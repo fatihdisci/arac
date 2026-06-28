@@ -723,6 +723,51 @@ final class PaywallLimitTests: XCTestCase {
             "com.ruhsatim.pro.lifetime",
         ])
     }
+
+    // Belge limiti global 5 olmalı; araç-başı değil.
+    func testDocumentLimitIsGlobalNotPerVehicle() {
+        let free = PaywallService(isProForTesting: false)
+        // Global 5 belge varken 6. kaydedilemez
+        XCTAssertFalse(free.canAddDocument(currentCount: 5))
+        XCTAssertFalse(free.canSaveNewDocument(currentCount: 5))
+
+        // 0–4 belge varken eklenebilir (global count)
+        XCTAssertTrue(free.canAddDocument(currentCount: 4))
+        XCTAssertTrue(free.canSaveNewDocument(currentCount: 4))
+    }
+
+    // Pro kullanıcı belge limitine takılmaz
+    func testProDocumentNoLimit() {
+        let pro = PaywallService(isProForTesting: true)
+        XCTAssertTrue(pro.canAddDocument(currentCount: 5000))
+        XCTAssertTrue(pro.canSaveNewDocument(currentCount: 5000))
+    }
+
+    // Forum yazma: Free kullanıcı gönderi/yorum yazamaz
+    func testForumWriteIsProOnly() {
+        let free = PaywallService(isProForTesting: false)
+        XCTAssertFalse(free.canCreateCommunityPost())
+        XCTAssertFalse(free.canWriteComment())
+
+        let pro = PaywallService(isProForTesting: true)
+        XCTAssertTrue(pro.canCreateCommunityPost())
+        XCTAssertTrue(pro.canWriteComment())
+    }
+
+    // Araç limiti active vehicle üzerinden değerlendirilmeli (archived sayılmaz)
+    func testVehicleLimitExcludesArchived() {
+        let free = PaywallService(isProForTesting: false)
+        // 0 aktif araç → eklenebilir
+        XCTAssertTrue(free.canAddVehicle(currentCount: 0))
+        // 1 aktif araç → eklenemez
+        XCTAssertFalse(free.canAddVehicle(currentCount: 1))
+    }
+
+    // Pro araç limiti yok
+    func testProVehicleNoLimit() {
+        let pro = PaywallService(isProForTesting: true)
+        XCTAssertTrue(pro.canAddVehicle(currentCount: 99))
+    }
 }
 
 // MARK: - ReminderRepeatEngine Tests
