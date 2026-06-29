@@ -1,6 +1,51 @@
 import SwiftUI
 import SwiftData
 
+// MARK: - Flow Layout (LazyVGrid yerine — Form içinde UICollectionView çakışmasını önler)
+
+private struct FlowLayout: Layout {
+    var spacing: CGFloat = 8
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let maxWidth = proposal.width ?? .infinity
+        var x: CGFloat = 0
+        var y: CGFloat = 0
+        var rowHeight: CGFloat = 0
+
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            if x + size.width > maxWidth && x > 0 {
+                x = 0
+                y += rowHeight + spacing
+                rowHeight = 0
+            }
+            rowHeight = max(rowHeight, size.height)
+            x += size.width + spacing
+        }
+        y += rowHeight
+        return CGSize(width: maxWidth, height: max(y, 0))
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let maxWidth = bounds.width
+        var x: CGFloat = bounds.minX
+        var y: CGFloat = bounds.minY
+        var rowHeight: CGFloat = 0
+
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            if x + size.width > maxWidth + bounds.minX && x > bounds.minX {
+                x = bounds.minX
+                y += rowHeight + spacing
+                rowHeight = 0
+            }
+            subview.place(at: CGPoint(x: x, y: y), proposal: .unspecified)
+            rowHeight = max(rowHeight, size.height)
+            x += size.width + spacing
+        }
+    }
+}
+
 // MARK: - Community Create/Edit Post View
 // Gönderi oluşturma ve düzenleme formu. Auth gate ile korunur.
 
@@ -77,7 +122,7 @@ struct CommunityCreatePostView: View {
 
                 // Post type
                 Section {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: AppSpacing.xs) {
+                    FlowLayout(spacing: AppSpacing.xs) {
                         ForEach(PostType.allCases, id: \.self) { type in
                             Button {
                                 postType = type
@@ -90,7 +135,6 @@ struct CommunityCreatePostView: View {
                                 }
                                 .padding(.horizontal, AppSpacing.sm)
                                 .padding(.vertical, AppSpacing.xs)
-                                .frame(maxWidth: .infinity)
                                 .background(
                                     RoundedRectangle(cornerRadius: AppRadius.medium)
                                         .fill(postType == type ? AppColors.accentPrimary : AppColors.surfaceSecondary)
@@ -106,7 +150,7 @@ struct CommunityCreatePostView: View {
 
                 // Tags
                 Section {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 90))], spacing: AppSpacing.xxs) {
+                    FlowLayout(spacing: AppSpacing.xxs) {
                         ForEach(allTags, id: \.self) { tag in
                             Button {
                                 if selectedTags.contains(tag) {
@@ -119,7 +163,6 @@ struct CommunityCreatePostView: View {
                                     .font(AppTypography.caption)
                                     .padding(.horizontal, AppSpacing.sm)
                                     .padding(.vertical, 6)
-                                    .frame(maxWidth: .infinity)
                                     .background(
                                         Capsule()
                                             .fill(selectedTags.contains(tag) ? AppColors.accentPrimary : AppColors.surfaceSecondary)
