@@ -3,6 +3,12 @@ import SwiftUI
 // MARK: - Community Feed View
 // Topluluk ana ekranı. Guest okuyabilir, yazmak için giriş gerekir.
 
+/// Post detay sheet için Identifiable wrapper (UUID'ye extension yerine).
+struct PostDetailTarget: Identifiable {
+    let id = UUID()
+    let postId: UUID
+}
+
 struct CommunityFeedView: View {
     @EnvironmentObject private var communityAuth: CommunityAuthService
     @EnvironmentObject private var paywallService: PaywallService
@@ -14,7 +20,7 @@ struct CommunityFeedView: View {
     @State private var selectedTags: Set<String> = []
     @State private var showProfile = false
     @State private var showCreatePost = false
-    @State private var selectedPostId: UUID?
+    @State private var selectedPostId: PostDetailTarget?
     @State private var showModeration = false
     @State private var showSignInPrompt = false
     @State private var reportTarget: ReportTarget?
@@ -98,8 +104,8 @@ struct CommunityFeedView: View {
             }) {
                 CommunityCreatePostView()
             }
-            .sheet(item: $selectedPostId) { postId in
-                CommunityPostDetailView(postId: postId)
+            .sheet(item: $selectedPostId) { target in
+                CommunityPostDetailView(postId: target.postId)
             }
             .sheet(isPresented: $showModeration) {
                 CommunityModerationView()
@@ -364,7 +370,7 @@ struct CommunityFeedView: View {
                         .listRowBackground(Color.clear)
                         .contentShape(Rectangle())
                         .onTapGesture {
-                            selectedPostId = post.id
+                            selectedPostId = PostDetailTarget(postId: post.id)
                         }
                     }
                 }

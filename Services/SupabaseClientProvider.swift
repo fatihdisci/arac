@@ -38,7 +38,8 @@ final class SupabaseClientProvider {
         }
 
         let options = SupabaseClientOptions(
-            db: SupabaseClientOptions.DatabaseOptions(decoder: decoder)
+            db: SupabaseClientOptions.DatabaseOptions(decoder: decoder),
+            auth: SupabaseClientOptions.AuthOptions(emitLocalSessionAsInitialSession: true)
         )
 
         client = SupabaseClient(
