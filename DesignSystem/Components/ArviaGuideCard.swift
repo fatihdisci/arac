@@ -92,6 +92,22 @@ struct ArviaGuideCard: View {
             return "gauge.with.needle"
         case .overdueReminder:
             return "bell.badge"
+        case .monthlyExpensePrompt:
+            return "turkishlirasign.circle"
+        case .upcomingReminder:
+            return "calendar.badge.clock"
+        case .fuelTypeGuidance:
+            return "fuelpump"
+        case .transmissionGuidance:
+            return "gearshape.2"
+        case .odometerMilestone:
+            return "flag.checkered"
+        case .seasonalGuidance:
+            return "sun.max"
+        case .calendarPeriod:
+            return "calendar"
+        case .quietGoodState:
+            return "checkmark.seal"
         }
     }
 
@@ -109,6 +125,12 @@ struct ArviaGuideCard: View {
             return "checklist"
         case .addInspectionReport:
             return "magnifyingglass"
+        case .addReminder, .addMTVReminder:
+            return "bell.badge"
+        case .addExpense:
+            return "turkishlirasign.circle"
+        case .addFuelExpense:
+            return "fuelpump"
         }
     }
 
@@ -123,4 +145,3 @@ struct ArviaGuideCard: View {
         }
     }
 }
-

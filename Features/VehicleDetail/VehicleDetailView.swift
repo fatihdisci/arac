@@ -25,6 +25,11 @@ struct VehicleDetailView: View {
     @State private var showDeleteConfirmation = false
     @State private var showArchiveConfirmation = false
     @State private var showAddServiceRecord = false
+    @State private var showAddExpense = false
+    @State private var showAddFuelExpense = false
+    @State private var showAddReminder = false
+    @State private var showAddMTVReminder = false
+    @State private var showQuickKmUpdate = false
     @State private var showAddInspection = false
     @State private var showSaleFile = false
     @State private var showAddDocument = false
@@ -94,6 +99,15 @@ struct VehicleDetailView: View {
                     banner
                         .padding(.horizontal, AppSpacing.screenMarginH)
                 }
+
+                vehicleQuickActionsSection
+                    .padding(.horizontal, AppSpacing.screenMarginH)
+
+                monthlySummaryCard
+                    .padding(.horizontal, AppSpacing.screenMarginH)
+
+                nextTasksCard
+                    .padding(.horizontal, AppSpacing.screenMarginH)
 
                 // MARK: Most Important Task
                 if let reminder = mostCriticalReminder {
@@ -179,6 +193,24 @@ struct VehicleDetailView: View {
         }
         .sheet(isPresented: $showAddServiceRecord) {
             ServiceRecordFormView(preselectedVehicleId: vehicle.id)
+        }
+        .sheet(isPresented: $showAddExpense) {
+            ExpenseFormView(preselectedVehicleId: vehicle.id)
+        }
+        .sheet(isPresented: $showAddFuelExpense) {
+            ExpenseFormView(preselectedVehicleId: vehicle.id, preselectedCategory: .fuel)
+        }
+        .sheet(isPresented: $showAddReminder) {
+            ReminderFormView(preselectedVehicleId: vehicle.id)
+        }
+        .sheet(isPresented: $showAddMTVReminder) {
+            ReminderFormView(
+                preselectedVehicleId: vehicle.id,
+                preselectedTemplate: Calendar.current.component(.month, from: Date()) == 7 ? .mtvSecond : .mtvFirst
+            )
+        }
+        .sheet(isPresented: $showQuickKmUpdate) {
+            QuickOdometerUpdateSheet(vehicle: vehicle)
         }
         .sheet(isPresented: $showAddInspection) {
             InspectionReportFormView(preselectedVehicleId: vehicle.id)
@@ -308,12 +340,175 @@ struct VehicleDetailView: View {
         case .openSaleFile:
             handleSaleFileTap()
         case .updateOdometer:
-            showEditSheet = true
+            showQuickKmUpdate = true
         case .openTodos:
             navigationRouter.selectedTab = .todos
         case .addInspectionReport:
             showAddInspection = true
+        case .addReminder:
+            showAddReminder = true
+        case .addMTVReminder:
+            showAddMTVReminder = true
+        case .addExpense:
+            showAddExpense = true
+        case .addFuelExpense:
+            showAddFuelExpense = true
         }
+    }
+
+    // MARK: - Daily Quick Actions
+    private var vehicleQuickActionsSection: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            Text("Hızlı İşlemler")
+                .font(AppTypography.sectionTitle)
+                .foregroundColor(AppColors.textPrimary)
+                .accessibilityAddTraits(.isHeader)
+
+            QuickActionRail(actions: [
+                .init(icon: "gauge.with.needle", label: "Km Güncelle", color: AppColors.vehicle) {
+                    showQuickKmUpdate = true
+                },
+                .init(icon: "turkishlirasign.circle", label: "Masraf Ekle", color: AppColors.accentPrimary) {
+                    showAddExpense = true
+                },
+                .init(icon: "fuelpump", label: "Yakıt Ekle", color: AppColors.warning) {
+                    showAddFuelExpense = true
+                },
+                .init(icon: "doc.text.viewfinder", label: "Belge Ekle", color: AppColors.document) {
+                    showAddDocument = true
+                },
+                .init(icon: "bell.badge", label: "Hatırlatıcı Ekle", color: AppColors.success) {
+                    showAddReminder = true
+                },
+            ])
+            .padding(.horizontal, -AppSpacing.screenMarginH)
+        }
+    }
+
+    // MARK: - Monthly Summary
+    private var monthlySummaryCard: some View {
+        let summary = VehicleInsightService.shared.monthlySummary(expenses: expenses)
+
+        return VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            HStack {
+                Text("Bu Ay")
+                    .font(AppTypography.bodyMedium)
+                    .foregroundColor(AppColors.textPrimary)
+                Spacer()
+                Button("Masraf Ekle") {
+                    showAddExpense = true
+                }
+                .font(AppTypography.captionMedium)
+                .foregroundColor(AppColors.accentPrimary)
+                .frame(minHeight: AppSpacing.minimumTapTarget)
+            }
+
+            if summary.isEmpty {
+                Text("Bu ay henüz masraf kaydı yok.")
+                    .font(AppTypography.secondary)
+                    .foregroundColor(AppColors.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            } else {
+                HStack(alignment: .top, spacing: AppSpacing.md) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(VehicleInsightService.shared.formattedTRY(summary.total))
+                            .font(AppTypography.amount)
+                            .foregroundColor(AppColors.textPrimary)
+                        Text("\(summary.count) masraf kaydı")
+                            .font(AppTypography.caption)
+                            .foregroundColor(AppColors.textSecondary)
+                    }
+
+                    Spacer()
+
+                    if let topCategory = summary.topCategory {
+                        Label(topCategory.displayName, systemImage: topCategory.defaultIcon)
+                            .font(AppTypography.captionMedium)
+                            .foregroundColor(AppColors.accentPrimary)
+                            .padding(.horizontal, AppSpacing.xs)
+                            .padding(.vertical, AppSpacing.xxs)
+                            .background(
+                                RoundedRectangle(cornerRadius: AppRadius.small)
+                                    .fill(AppColors.accentPrimary.opacity(0.08))
+                            )
+                    }
+                }
+            }
+        }
+        .padding(AppSpacing.md)
+        .background(
+            RoundedRectangle(cornerRadius: AppRadius.card)
+                .fill(Color.appSurface)
+        )
+        .subtleShadow()
+        .accessibilityElement(children: .combine)
+    }
+
+    // MARK: - Next Tasks
+    private var nextTasksCard: some View {
+        let tasks = VehicleInsightService.shared.upcomingTasks(
+            reminders: activeReminders,
+            vehicleOdometer: vehicle.currentOdometer
+        )
+
+        return VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            HStack {
+                Text("Sıradaki İşler")
+                    .font(AppTypography.bodyMedium)
+                    .foregroundColor(AppColors.textPrimary)
+                Spacer()
+                Button("Tümünü Gör") {
+                    navigationRouter.selectedTab = .todos
+                }
+                .font(AppTypography.captionMedium)
+                .foregroundColor(AppColors.accentPrimary)
+                .frame(minHeight: AppSpacing.minimumTapTarget)
+            }
+
+            if tasks.isEmpty {
+                HStack(spacing: AppSpacing.sm) {
+                    Image(systemName: "checkmark.circle")
+                        .foregroundColor(AppColors.success)
+                    Text("Yaklaşan bir iş görünmüyor.")
+                        .font(AppTypography.secondary)
+                        .foregroundColor(AppColors.textSecondary)
+                    Spacer()
+                }
+                .frame(minHeight: AppSpacing.minimumTapTarget)
+            } else {
+                VStack(spacing: 0) {
+                    ForEach(Array(tasks.enumerated()), id: \.element.id) { index, task in
+                        HStack(spacing: AppSpacing.sm) {
+                            Circle()
+                                .fill(priorityColor(task.priority))
+                                .frame(width: 8, height: 8)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(task.title)
+                                    .font(AppTypography.secondary)
+                                    .foregroundColor(AppColors.textPrimary)
+                                    .lineLimit(1)
+                                Text(task.relativeText)
+                                    .font(AppTypography.caption)
+                                    .foregroundColor(priorityColor(task.priority))
+                            }
+                            Spacer()
+                        }
+                        .frame(minHeight: AppSpacing.minimumTapTarget)
+
+                        if index < tasks.count - 1 {
+                            Divider()
+                                .padding(.leading, AppSpacing.md)
+                        }
+                    }
+                }
+            }
+        }
+        .padding(AppSpacing.md)
+        .background(
+            RoundedRectangle(cornerRadius: AppRadius.card)
+                .fill(Color.appSurface)
+        )
+        .subtleShadow()
     }
 
     // MARK: - Upcoming Task Empty State
@@ -330,10 +525,10 @@ struct VehicleDetailView: View {
         switch focus {
         case .kmUpdate:
             title = "Kilometre güncelleme"
-            message = "Bu araç için güncel kilometreyi düzenleme ekranından hemen güncelleyebilirsin."
+            message = "Bu araç için güncel kilometreyi hemen güncelleyebilirsin."
             icon = "gauge.with.needle"
             actionTitle = "Km Güncelle"
-            action = { showEditSheet = true }
+            action = { showQuickKmUpdate = true }
         case .fileCompleteness:
             title = "Dosya tamlığı"
             message = "Aşağıdaki Dosya Tamlığı ve Belgeler alanlarından eksik bilgileri tamamlayabilirsin."
@@ -371,6 +566,17 @@ struct VehicleDetailView: View {
             .padding(AppSpacing.md)
             .background(RoundedRectangle(cornerRadius: AppRadius.card).fill(AppColors.accentPrimary.opacity(0.08)))
         )
+    }
+
+    private func priorityColor(_ priority: VehicleInsightPriority) -> Color {
+        switch priority {
+        case .important:
+            return AppColors.critical
+        case .warning:
+            return AppColors.warning
+        case .info:
+            return AppColors.accentPrimary
+        }
     }
 
     // MARK: - Upcoming Task Empty State
@@ -1149,6 +1355,227 @@ struct UpcomingTaskCard: View {
         if reminder.isOverdue { return "\(reminder.daysOverdue) gün gecikti" }
         if reminder.isToday { return "Bugün" }
         return "\(reminder.daysRemaining) gün kaldı"
+    }
+}
+
+// MARK: - Contextual Insight Compact Card
+struct ContextualInsightCompactCard: View {
+    let insight: VehicleInsight
+    let action: () -> Void
+
+    var body: some View {
+        HStack(alignment: .top, spacing: AppSpacing.sm) {
+            Image(systemName: icon)
+                .font(.body)
+                .foregroundColor(color)
+                .frame(width: 32, height: 32)
+                .background(
+                    RoundedRectangle(cornerRadius: AppRadius.small)
+                        .fill(color.opacity(0.1))
+                )
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: AppSpacing.xxs) {
+                Text(insight.title)
+                    .font(AppTypography.bodyMedium)
+                    .foregroundColor(AppColors.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text(insight.body)
+                    .font(AppTypography.caption)
+                    .foregroundColor(AppColors.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Button(insight.action.title, action: action)
+                    .font(AppTypography.captionMedium)
+                    .foregroundColor(AppColors.accentPrimary)
+                    .frame(minHeight: AppSpacing.minimumTapTarget, alignment: .leading)
+            }
+
+            Spacer(minLength: 0)
+        }
+        .padding(AppSpacing.md)
+        .background(
+            RoundedRectangle(cornerRadius: AppRadius.card)
+                .fill(Color.appSurface)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: AppRadius.card)
+                .stroke(color.opacity(0.18), lineWidth: 1)
+        )
+        .subtleShadow()
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(insight.title). \(insight.body). \(insight.action.title)")
+    }
+
+    private var color: Color {
+        switch insight.priority {
+        case .important:
+            return AppColors.critical
+        case .warning:
+            return AppColors.warning
+        case .info:
+            return AppColors.accentPrimary
+        }
+    }
+
+    private var icon: String {
+        switch insight.type {
+        case .overdueReminder:
+            return "exclamationmark.triangle.fill"
+        case .upcomingReminder:
+            return "bell.badge"
+        case .calendarPeriod:
+            return "calendar.badge.clock"
+        case .odometerUpdate:
+            return "gauge.with.needle"
+        case .seasonalGuidance:
+            return "sun.max"
+        case .missingDocument:
+            return "doc.text"
+        case .monthlyExpensePrompt:
+            return "turkishlirasign.circle"
+        case .fuelTypeGuidance:
+            return "fuelpump"
+        case .transmissionGuidance:
+            return "gearshape.2"
+        case .odometerMilestone:
+            return "flag.checkered"
+        case .maintenance:
+            return "wrench.and.screwdriver"
+        case .quietGoodState:
+            return "checkmark.seal"
+        case .saleFileReadiness:
+            return "doc.richtext"
+        }
+    }
+}
+
+// MARK: - Quick Odometer Update Sheet
+struct QuickOdometerUpdateSheet: View {
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+
+    let vehicle: Vehicle
+
+    @State private var odometerText: String
+    @State private var errorMessage: String?
+    @State private var showLowerConfirmation = false
+    @State private var pendingLowerValue: Int?
+    @FocusState private var isInputFocused: Bool
+
+    init(vehicle: Vehicle) {
+        self.vehicle = vehicle
+        _odometerText = State(initialValue: vehicle.currentOdometer > 0 ? String(vehicle.currentOdometer) : "")
+    }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    HStack {
+                        Text("Mevcut km")
+                            .foregroundColor(AppColors.textSecondary)
+                        Spacer()
+                        Text(vehicle.odometerDisplay)
+                            .font(AppTypography.bodyMedium)
+                            .foregroundColor(AppColors.textPrimary)
+                    }
+
+                    HStack(spacing: AppSpacing.sm) {
+                        Image(systemName: "gauge.with.needle")
+                            .foregroundColor(AppColors.textTertiary)
+                        TextField("Yeni km", text: $odometerText)
+                            .keyboardType(.numberPad)
+                            .focused($isInputFocused)
+                    }
+                } footer: {
+                    Text("Güncel kilometre, bakım ve masraf takibini daha doğru hale getirir.")
+                        .font(AppTypography.caption)
+                        .foregroundColor(AppColors.textTertiary)
+                }
+                .listRowBackground(Color.appSurface)
+
+                if let errorMessage {
+                    Section {
+                        Label(errorMessage, systemImage: "exclamationmark.circle.fill")
+                            .font(AppTypography.secondary)
+                            .foregroundColor(AppColors.critical)
+                    }
+                    .listRowBackground(AppColors.criticalBackground)
+                }
+            }
+            .scrollContentBackground(.hidden)
+            .background(Color.appBackground)
+            .navigationTitle("Kilometreyi Güncelle")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("İptal") { dismiss() }
+                        .foregroundColor(AppColors.textSecondary)
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Kaydet", action: validateAndSave)
+                        .font(AppTypography.bodyMedium)
+                        .foregroundColor(AppColors.accentPrimary)
+                }
+            }
+            .onAppear {
+                isInputFocused = true
+            }
+            .confirmationDialog("Daha düşük km kaydedilsin mi?", isPresented: $showLowerConfirmation) {
+                Button("Daha düşük km ile kaydet") {
+                    if let pendingLowerValue {
+                        save(pendingLowerValue)
+                    }
+                }
+                Button("İptal", role: .cancel) {}
+            } message: {
+                Text("Yeni km mevcut km'den düşük. Bunu yalnızca önceki kaydı düzeltmek istiyorsan onayla.")
+            }
+        }
+    }
+
+    private func validateAndSave() {
+        errorMessage = nil
+        let result = VehicleInsightService.shared.validateOdometerInput(
+            odometerText,
+            currentOdometer: vehicle.currentOdometer,
+            allowLowerValue: false
+        )
+
+        switch result {
+        case .valid:
+            if let value = VehicleInsightService.shared.parsedOdometer(odometerText) {
+                save(value)
+            }
+        case .empty:
+            errorMessage = "Yeni kilometre değerini girmelisin."
+        case .invalid:
+            errorMessage = "Geçerli bir kilometre değeri girmelisin."
+        case .negative:
+            errorMessage = "Km sıfırdan küçük olamaz."
+        case .lowerNeedsConfirmation:
+            pendingLowerValue = VehicleInsightService.shared.parsedOdometer(odometerText)
+            showLowerConfirmation = true
+        }
+    }
+
+    private func save(_ value: Int) {
+        Task {
+            do {
+                try await VehicleContextRefreshService.updateCurrentOdometer(
+                    vehicle: vehicle,
+                    newOdometer: value,
+                    context: modelContext
+                )
+                let generator = UINotificationFeedbackGenerator()
+                generator.notificationOccurred(.success)
+                dismiss()
+            } catch {
+                errorMessage = "Kaydedilemedi: \(error.localizedDescription)"
+            }
+        }
     }
 }
 

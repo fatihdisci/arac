@@ -528,10 +528,10 @@ final class VehicleInsightServiceTests: XCTestCase {
         VehicleInsightService(calendar: calendar, now: now)
     }
 
-    func testEmptyDataDoesNotCrashAndRespectsVisibleLimit() {
+    func testTodayGarageSummaryDoesNotCrashWithEmptyData() {
         let vehicle = Vehicle(brand: "Renault", model: "Clio")
 
-        let insights = service.insights(
+        let insights = service.garageSummary(
             for: vehicle,
             reminders: [],
             expenses: [],
@@ -573,7 +573,7 @@ final class VehicleInsightServiceTests: XCTestCase {
         XCTAssertTrue(insights.contains { $0.type == .missingDocument && $0.action == .addDocument })
     }
 
-    func testNoInspectionReportCreatesSaleReadinessInsight() {
+    func testNoExpensesThisMonthCreatesMonthlyExpensePrompt() {
         let vehicleId = UUID()
         let insights = service.insights(
             for: Vehicle(id: vehicleId, currentOdometer: 42_000),
@@ -585,7 +585,7 @@ final class VehicleInsightServiceTests: XCTestCase {
             maxVisible: 10
         )
 
-        XCTAssertTrue(insights.contains { $0.type == .saleFileReadiness && $0.action == .addInspectionReport })
+        XCTAssertTrue(insights.contains { $0.type == .monthlyExpensePrompt && $0.action == .addExpense })
     }
 
     func testOverdueReminderCreatesOverdueInsight() {
@@ -612,6 +612,210 @@ final class VehicleInsightServiceTests: XCTestCase {
         XCTAssertTrue(insights.contains { $0.type == .overdueReminder && $0.action == .openTodos })
     }
 
+    func testOverdueReminderAppearsBeforeUpcomingReminder() {
+        let vehicleId = UUID()
+        let overdue = Reminder(
+            vehicleId: vehicleId,
+            type: .inspection,
+            title: "Geciken",
+            dueDate: calendar.date(byAdding: .day, value: -1, to: now),
+            priority: .warning
+        )
+        let upcoming = Reminder(
+            vehicleId: vehicleId,
+            type: .casco,
+            title: "Yaklaşan",
+            dueDate: calendar.date(byAdding: .day, value: 7, to: now),
+            priority: .critical
+        )
+
+        let insights = service.insights(
+            for: Vehicle(id: vehicleId, currentOdometer: 42_000),
+            reminders: [upcoming, overdue],
+            expenses: [expense(vehicleId: vehicleId, amount: 100)],
+            serviceRecords: [serviceRecord(vehicleId: vehicleId)],
+            documents: [document(vehicleId: vehicleId)],
+            inspectionReports: [inspection(vehicleId: vehicleId)],
+            maxVisible: 10
+        )
+
+        XCTAssertEqual(insights.first?.type, .overdueReminder)
+    }
+
+    func testUpcomingReminderWithinFourteenDaysCreatesDailyInsight() {
+        let vehicleId = UUID()
+        let reminder = Reminder(
+            vehicleId: vehicleId,
+            type: .trafficInsurance,
+            title: "Trafik Sigortası",
+            dueDate: calendar.date(byAdding: .day, value: 14, to: now),
+            priority: .warning
+        )
+
+        let insights = service.insights(
+            for: Vehicle(id: vehicleId, currentOdometer: 42_000),
+            reminders: [reminder],
+            expenses: [expense(vehicleId: vehicleId, amount: 100)],
+            serviceRecords: [serviceRecord(vehicleId: vehicleId)],
+            documents: [document(vehicleId: vehicleId)],
+            inspectionReports: [inspection(vehicleId: vehicleId)],
+            maxVisible: 10
+        )
+
+        XCTAssertTrue(insights.contains { $0.type == .upcomingReminder && $0.action == .openTodos })
+    }
+
+    func testMonthlySummaryTotalCalculationIsCorrect() {
+        let vehicleId = UUID()
+        let previousMonth = calendar.date(byAdding: .month, value: -1, to: now)!
+        let summary = service.monthlySummary(expenses: [
+            expense(vehicleId: vehicleId, category: .fuel, amount: 700, date: now),
+            expense(vehicleId: vehicleId, category: .service, amount: 1_300, date: now),
+            expense(vehicleId: vehicleId, category: .fuel, amount: 500, date: previousMonth),
+        ])
+
+        XCTAssertEqual(summary.total, 2_000, accuracy: 0.01)
+        XCTAssertEqual(summary.count, 2)
+        XCTAssertEqual(summary.topCategory, .service)
+    }
+
+    func testQuickKmUpdateValidationRejectsInvalidInput() {
+        XCTAssertEqual(service.validateOdometerInput("", currentOdometer: 10_000, allowLowerValue: false), .empty)
+        XCTAssertEqual(service.validateOdometerInput("abc", currentOdometer: 10_000, allowLowerValue: false), .invalid)
+        XCTAssertEqual(service.validateOdometerInput("-1", currentOdometer: 10_000, allowLowerValue: false), .negative)
+        XCTAssertEqual(service.validateOdometerInput("9000", currentOdometer: 10_000, allowLowerValue: false), .lowerNeedsConfirmation)
+    }
+
+    func testQuickKmUpdateAllowsEqualOrHigherKm() {
+        XCTAssertEqual(service.validateOdometerInput("10000", currentOdometer: 10_000, allowLowerValue: false), .valid)
+        XCTAssertEqual(service.validateOdometerInput("10001", currentOdometer: 10_000, allowLowerValue: false), .valid)
+        XCTAssertEqual(service.validateOdometerInput("9000", currentOdometer: 10_000, allowLowerValue: true), .valid)
+    }
+
+    func testFuelTypeDieselCreatesSafeMaintenanceTrackingInsight() {
+        let vehicleId = UUID()
+        let insights = service.insights(
+            for: Vehicle(id: vehicleId, fuelType: .diesel, currentOdometer: 42_000),
+            reminders: [],
+            expenses: [expense(vehicleId: vehicleId, amount: 100)],
+            serviceRecords: [serviceRecord(vehicleId: vehicleId)],
+            documents: [document(vehicleId: vehicleId)],
+            inspectionReports: [inspection(vehicleId: vehicleId)],
+            maxVisible: 10
+        )
+
+        let diesel = insights.first { $0.type == .fuelTypeGuidance }
+        XCTAssertNotNil(diesel)
+        XCTAssertTrue(diesel?.body.contains("takip etmek faydalı olabilir") == true)
+        XCTAssertFalse(diesel?.body.localizedCaseInsensitiveContains("kesin") == true)
+    }
+
+    func testTransmissionAutomaticCreatesSafeTransmissionHistoryInsight() {
+        let vehicleId = UUID()
+        let insights = service.insights(
+            for: Vehicle(id: vehicleId, transmissionType: .automatic, currentOdometer: 42_000),
+            reminders: [],
+            expenses: [expense(vehicleId: vehicleId, amount: 100)],
+            serviceRecords: [serviceRecord(vehicleId: vehicleId)],
+            documents: [document(vehicleId: vehicleId)],
+            inspectionReports: [inspection(vehicleId: vehicleId)],
+            maxVisible: 10
+        )
+
+        let transmission = insights.first { $0.type == .transmissionGuidance }
+        XCTAssertEqual(transmission?.body, "Otomatik vitesli araçlarda şanzıman bakım geçmişini kayıt altında tutmak faydalı olabilir.")
+    }
+
+    func testCurrentSeasonCreatesSafeSeasonalInsight() {
+        let vehicleId = UUID()
+        let insights = service.insights(
+            for: Vehicle(id: vehicleId, currentOdometer: 42_000),
+            reminders: [],
+            expenses: [expense(vehicleId: vehicleId, amount: 100)],
+            serviceRecords: [serviceRecord(vehicleId: vehicleId)],
+            documents: [document(vehicleId: vehicleId)],
+            inspectionReports: [inspection(vehicleId: vehicleId)],
+            maxVisible: 10
+        )
+
+        let seasonal = insights.first { $0.type == .seasonalGuidance }
+        XCTAssertEqual(seasonal?.title, "Yaz dönemi kontrolü")
+        XCTAssertTrue(seasonal?.body.contains("faydalı olabilir") == true)
+    }
+
+    func testMTVCalendarPeriodCreatesSafeInsightInJanuaryAndJuly() {
+        let january = calendar.date(from: DateComponents(year: 2026, month: 1, day: 10, hour: 12))!
+        let july = calendar.date(from: DateComponents(year: 2026, month: 7, day: 10, hour: 12))!
+        let vehicle = Vehicle(currentOdometer: 42_000)
+
+        let januaryInsights = VehicleInsightService(calendar: calendar, now: january).insights(
+            for: vehicle,
+            reminders: [],
+            expenses: [expense(vehicleId: vehicle.id, amount: 100, date: january)],
+            serviceRecords: [serviceRecord(vehicleId: vehicle.id)],
+            documents: [document(vehicleId: vehicle.id)],
+            inspectionReports: [inspection(vehicleId: vehicle.id)],
+            maxVisible: 10
+        )
+        let julyInsights = VehicleInsightService(calendar: calendar, now: july).insights(
+            for: vehicle,
+            reminders: [],
+            expenses: [expense(vehicleId: vehicle.id, amount: 100, date: july)],
+            serviceRecords: [serviceRecord(vehicleId: vehicle.id)],
+            documents: [document(vehicleId: vehicle.id)],
+            inspectionReports: [inspection(vehicleId: vehicle.id)],
+            maxVisible: 10
+        )
+
+        XCTAssertTrue(januaryInsights.contains { $0.type == .calendarPeriod && $0.action == .addMTVReminder })
+        XCTAssertTrue(julyInsights.contains { $0.type == .calendarPeriod && $0.action == .addMTVReminder })
+    }
+
+    func testMTVCopyDoesNotContainForbiddenWords() {
+        let january = calendar.date(from: DateComponents(year: 2026, month: 1, day: 10, hour: 12))!
+        let vehicle = Vehicle(currentOdometer: 42_000)
+        let insight = VehicleInsightService(calendar: calendar, now: january).insights(
+            for: vehicle,
+            reminders: [],
+            expenses: [expense(vehicleId: vehicle.id, amount: 100, date: january)],
+            serviceRecords: [serviceRecord(vehicleId: vehicle.id)],
+            documents: [document(vehicleId: vehicle.id)],
+            inspectionReports: [inspection(vehicleId: vehicle.id)],
+            maxVisible: 10
+        ).first { $0.type == .calendarPeriod }
+
+        let copy = "\(insight?.title ?? "") \(insight?.body ?? "")".lowercased()
+        XCTAssertFalse(copy.contains("resmi"))
+        XCTAssertFalse(copy.contains("öde"))
+        XCTAssertFalse(copy.contains("garanti"))
+    }
+
+    func testPriorityOrderPutsOverdueBeforeSeasonalAndCalendarSuggestions() {
+        let january = calendar.date(from: DateComponents(year: 2026, month: 1, day: 10, hour: 12))!
+        let januaryService = VehicleInsightService(calendar: calendar, now: january)
+        let vehicleId = UUID()
+        let overdue = Reminder(
+            vehicleId: vehicleId,
+            type: .inspection,
+            title: "Geciken",
+            dueDate: calendar.date(byAdding: .day, value: -1, to: january),
+            priority: .info
+        )
+
+        let insights = januaryService.insights(
+            for: Vehicle(id: vehicleId, currentOdometer: 42_000),
+            reminders: [overdue],
+            expenses: [expense(vehicleId: vehicleId, amount: 100, date: january)],
+            serviceRecords: [serviceRecord(vehicleId: vehicleId)],
+            documents: [document(vehicleId: vehicleId)],
+            inspectionReports: [inspection(vehicleId: vehicleId)],
+            maxVisible: 10
+        )
+
+        XCTAssertEqual(insights.first?.type, .overdueReminder)
+        XCTAssertLessThan(insights.firstIndex { $0.type == .overdueReminder }!, insights.firstIndex { $0.type == .calendarPeriod }!)
+    }
+
     func testDefaultVisibleInsightsNeverExceedThree() {
         let vehicle = Vehicle(currentOdometer: 0)
 
@@ -634,6 +838,31 @@ final class VehicleInsightServiceTests: XCTestCase {
         }
     }
 
+    @MainActor
+    func testKmUpdateRefreshPathCallsRefreshLogic() async throws {
+        let container = try ModelContainer(
+            for: Vehicle.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+        )
+        let context = ModelContext(container)
+        let vehicle = Vehicle(currentOdometer: 10_000)
+        context.insert(vehicle)
+        try context.save()
+
+        var refreshCallCount = 0
+        try await VehicleContextRefreshService.updateCurrentOdometer(
+            vehicle: vehicle,
+            newOdometer: 12_000,
+            context: context,
+            notificationRefresh: { _ in
+                refreshCallCount += 1
+            }
+        )
+
+        XCTAssertEqual(vehicle.currentOdometer, 12_000)
+        XCTAssertEqual(refreshCallCount, 1)
+    }
+
     private func serviceRecord(vehicleId: UUID) -> ServiceRecord {
         ServiceRecord(vehicleId: vehicleId, serviceType: .periodic, date: now, odometer: 40_000)
     }
@@ -644,6 +873,15 @@ final class VehicleInsightServiceTests: XCTestCase {
 
     private func inspection(vehicleId: UUID) -> InspectionReport {
         InspectionReport(vehicleId: vehicleId, providerName: "Ekspertiz", reportDate: now, odometer: 41_000)
+    }
+
+    private func expense(
+        vehicleId: UUID,
+        category: ExpenseCategory = .fuel,
+        amount: Double,
+        date: Date? = nil
+    ) -> Expense {
+        Expense(vehicleId: vehicleId, category: category, amount: amount, date: date ?? now)
     }
 }
 

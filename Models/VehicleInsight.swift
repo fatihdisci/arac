@@ -39,6 +39,14 @@ enum VehicleInsightType: String, CaseIterable {
     case saleFileReadiness
     case odometerUpdate
     case overdueReminder
+    case monthlyExpensePrompt
+    case upcomingReminder
+    case fuelTypeGuidance
+    case transmissionGuidance
+    case odometerMilestone
+    case seasonalGuidance
+    case calendarPeriod
+    case quietGoodState
 }
 
 enum VehicleInsightPriority: String {
@@ -59,6 +67,10 @@ enum VehicleInsightAction: String, CaseIterable {
     case updateOdometer
     case openTodos
     case addInspectionReport
+    case addReminder
+    case addMTVReminder
+    case addExpense
+    case addFuelExpense
 
     var title: String {
         switch self {
@@ -74,6 +86,14 @@ enum VehicleInsightAction: String, CaseIterable {
             return "Yapılacaklara Git"
         case .addInspectionReport:
             return "Ekspertiz Ekle"
+        case .addReminder:
+            return "Hatırlatıcı Ekle"
+        case .addMTVReminder:
+            return "MTV Hatırlatıcısı Ekle"
+        case .addExpense:
+            return "Masraf Ekle"
+        case .addFuelExpense:
+            return "Yakıt Ekle"
         }
     }
 
@@ -91,7 +111,38 @@ enum VehicleInsightAction: String, CaseIterable {
             return "todosTab"
         case .addInspectionReport:
             return "inspectionReportForm"
+        case .addReminder:
+            return "reminderForm"
+        case .addMTVReminder:
+            return "mtvReminderForm"
+        case .addExpense:
+            return "expenseForm"
+        case .addFuelExpense:
+            return "fuelExpenseForm"
         }
     }
 }
 
+struct VehicleUpcomingTask: Identifiable, Equatable {
+    let id: UUID
+    let title: String
+    let relativeText: String
+    let priority: VehicleInsightPriority
+    let reminderId: UUID
+}
+
+struct MonthlyExpenseSummary: Equatable {
+    let total: Double
+    let count: Int
+    let topCategory: ExpenseCategory?
+
+    var isEmpty: Bool { count == 0 }
+}
+
+enum QuickOdometerValidationResult: Equatable {
+    case valid
+    case empty
+    case invalid
+    case negative
+    case lowerNeedsConfirmation
+}

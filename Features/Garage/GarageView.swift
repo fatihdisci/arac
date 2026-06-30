@@ -14,6 +14,10 @@ struct GarageView: View {
     @Query(filter: #Predicate<Reminder> { $0.statusRaw != "completed" },
            sort: \Reminder.dueDate)
     private var activeReminders: [Reminder]
+    @Query private var allExpenses: [Expense]
+    @Query private var allServiceRecords: [ServiceRecord]
+    @Query(sort: \VehicleDocument.createdAt, order: .reverse) private var allDocuments: [VehicleDocument]
+    @Query private var allInspectionReports: [InspectionReport]
 
     @State private var showAddVehicle = false
     @State private var showPaywall = false
@@ -25,6 +29,9 @@ struct GarageView: View {
     @State private var showAddService = false
     @State private var showAddDocument = false
     @State private var showAddReminder = false
+    @State private var showAddMTVReminder = false
+    @State private var showAddFuelExpense = false
+    @State private var showQuickKmUpdate = false
     @State private var showSaleFile = false
     @State private var paywallFeature: PaywallView.PaywallFeature = .secondVehicle
     @State private var activeVehicleIndex = 0
@@ -100,6 +107,9 @@ struct GarageView: View {
             .sheet(isPresented: $showAddExpense) {
                 ExpenseFormView(preselectedVehicleId: currentVehicle?.id)
             }
+            .sheet(isPresented: $showAddFuelExpense) {
+                ExpenseFormView(preselectedVehicleId: currentVehicle?.id, preselectedCategory: .fuel)
+            }
             .sheet(isPresented: $showAddService) {
                 ServiceRecordFormView(preselectedVehicleId: currentVehicle?.id)
             }
@@ -108,6 +118,17 @@ struct GarageView: View {
             }
             .sheet(isPresented: $showAddReminder) {
                 ReminderFormView(preselectedVehicleId: currentVehicle?.id)
+            }
+            .sheet(isPresented: $showAddMTVReminder) {
+                ReminderFormView(
+                    preselectedVehicleId: currentVehicle?.id,
+                    preselectedTemplate: Calendar.current.component(.month, from: Date()) == 7 ? .mtvSecond : .mtvFirst
+                )
+            }
+            .sheet(isPresented: $showQuickKmUpdate) {
+                if let vehicle = currentVehicle {
+                    QuickOdometerUpdateSheet(vehicle: vehicle)
+                }
             }
             .sheet(isPresented: $showSaleFile) {
                 if let vehicle = currentVehicle {
@@ -209,9 +230,14 @@ struct GarageView: View {
                     .padding(.horizontal, AppSpacing.screenMarginH)
                 }
 
-                // 2. Quick Actions — Hızlı Oluştur
+                // 2. Bugün Garajında
+                if let vehicle = currentVehicle {
+                    todayGarageSection(vehicle: vehicle)
+                }
+
+                // 3. Quick Actions — Hızlı İşlemler
                 VStack(alignment: .leading, spacing: AppSpacing.sm) {
-                    SectionHeader(title: "Hızlı Oluştur")
+                    SectionHeader(title: "Hızlı İşlemler")
 
                     Text("Seçili araç için hızlıca kayıt oluştur.")
                         .font(AppTypography.caption)
@@ -221,7 +247,7 @@ struct GarageView: View {
                     quickActionRail
                 }
 
-                // 3. Dosyanı Tamamla Checklist (eksik kriter varsa göster)
+                // 4. Dosyanı Tamamla Checklist (eksik kriter varsa göster)
                 if let vehicle = currentVehicle {
                     let checklistItemsDone = checklistDoneCount(vehicle)
                     if checklistItemsDone < 5 {
@@ -235,7 +261,7 @@ struct GarageView: View {
                     }
                 }
 
-                // 4. Dossier Completeness
+                // 5. Dossier Completeness
                 if let vehicle = currentVehicle {
                     DossierCompletenessCard(
                         score: computeFileScore(for: vehicle),
@@ -245,12 +271,12 @@ struct GarageView: View {
                     .padding(.horizontal, AppSpacing.screenMarginH)
                 }
 
-                // 5. Recent activity preview
+                // 6. Recent activity preview
                 if let vehicle = currentVehicle {
                     recentActivitySection(vehicle: vehicle)
                 }
 
-                // 5. Archived vehicles
+                // 7. Archived vehicles
                 if !archivedVehicles.isEmpty {
                     archivedSection
                 }
@@ -400,22 +426,55 @@ struct GarageView: View {
     // MARK: - Quick Action Rail
     private var quickActionRail: some View {
         QuickActionRail(actions: [
-            .init(icon: "turkishlirasign.circle", label: "Masraf", color: AppColors.accentPrimary) {
+            .init(icon: "gauge.with.needle", label: "Km Güncelle", color: AppColors.vehicle) {
+                showQuickKmUpdate = true
+            },
+            .init(icon: "turkishlirasign.circle", label: "Masraf Ekle", color: AppColors.accentPrimary) {
                 showAddExpense = true
             },
-            .init(icon: "wrench.and.screwdriver", label: "Bakım", color: AppColors.warning) {
-                showAddService = true
+            .init(icon: "fuelpump", label: "Yakıt Ekle", color: AppColors.warning) {
+                showAddFuelExpense = true
             },
-            .init(icon: "doc.text.viewfinder", label: "Belge", color: AppColors.document) {
+            .init(icon: "doc.text.viewfinder", label: "Belge Ekle", color: AppColors.document) {
                 showAddDocument = true
             },
-            .init(icon: "bell.badge", label: "Hatırlatıcı", color: AppColors.vehicle) {
+            .init(icon: "bell.badge", label: "Hatırlatıcı Ekle", color: AppColors.success) {
                 showAddReminder = true
             },
-            .init(icon: "doc.richtext", label: "Satış", color: AppColors.success) {
-                showSaleFile = true
-            },
         ])
+    }
+
+    private func todayGarageSection(vehicle: Vehicle) -> some View {
+        let insights = VehicleInsightService.shared.garageSummary(
+            for: vehicle,
+            reminders: activeReminders.filter { $0.vehicleId == vehicle.id },
+            expenses: expenses(for: vehicle),
+            serviceRecords: services(for: vehicle),
+            documents: documents(for: vehicle),
+            inspectionReports: inspectionReports(for: vehicle)
+        )
+
+        return VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            VStack(alignment: .leading, spacing: AppSpacing.xxs) {
+                Text("Bugün Garajında")
+                    .font(AppTypography.sectionTitle)
+                    .foregroundColor(AppColors.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
+                Text("Aracınla ilgili bugün dikkat etmen gerekenler.")
+                    .font(AppTypography.caption)
+                    .foregroundColor(AppColors.textSecondary)
+            }
+            .padding(.horizontal, AppSpacing.screenMarginH)
+
+            VStack(spacing: AppSpacing.sm) {
+                ForEach(insights) { insight in
+                    ContextualInsightCompactCard(insight: insight) {
+                        handleContextAction(insight.action)
+                    }
+                }
+            }
+            .padding(.horizontal, AppSpacing.screenMarginH)
+        }
     }
 
     // MARK: - Recent Activity
@@ -562,15 +621,56 @@ struct GarageView: View {
     }
 
     private func recentExpenses(for vehicle: Vehicle) -> [Expense] {
-        (try? modelContext.fetch(FetchDescriptor<Expense>()))?.filter { $0.vehicleId == vehicle.id } ?? []
+        expenses(for: vehicle)
     }
 
     private func recentServices(for vehicle: Vehicle) -> [ServiceRecord] {
-        (try? modelContext.fetch(FetchDescriptor<ServiceRecord>()))?.filter { $0.vehicleId == vehicle.id } ?? []
+        services(for: vehicle)
     }
 
     private func recentDocuments(for vehicle: Vehicle) -> [VehicleDocument] {
-        (try? modelContext.fetch(FetchDescriptor<VehicleDocument>()))?.filter { $0.vehicleId == vehicle.id } ?? []
+        documents(for: vehicle)
+    }
+
+    private func expenses(for vehicle: Vehicle) -> [Expense] {
+        allExpenses.filter { $0.vehicleId == vehicle.id }
+    }
+
+    private func services(for vehicle: Vehicle) -> [ServiceRecord] {
+        allServiceRecords.filter { $0.vehicleId == vehicle.id }
+    }
+
+    private func documents(for vehicle: Vehicle) -> [VehicleDocument] {
+        allDocuments.filter { $0.vehicleId == vehicle.id }
+    }
+
+    private func inspectionReports(for vehicle: Vehicle) -> [InspectionReport] {
+        allInspectionReports.filter { $0.vehicleId == vehicle.id }
+    }
+
+    private func handleContextAction(_ action: VehicleInsightAction) {
+        switch action {
+        case .updateOdometer:
+            showQuickKmUpdate = true
+        case .addExpense:
+            showAddExpense = true
+        case .addFuelExpense:
+            showAddFuelExpense = true
+        case .addDocument:
+            showAddDocument = true
+        case .addReminder:
+            showAddReminder = true
+        case .addMTVReminder:
+            showAddMTVReminder = true
+        case .addServiceRecord:
+            showAddService = true
+        case .openTodos:
+            navigationRouter.selectedTab = .todos
+        case .openSaleFile:
+            showSaleFile = true
+        case .addInspectionReport:
+            showSaleFile = true
+        }
     }
 
     private func hasReminderType(_ vehicle: Vehicle, _ type: ReminderType) -> Bool {

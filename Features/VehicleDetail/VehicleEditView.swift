@@ -501,7 +501,7 @@ struct VehicleEditView: View {
             try modelContext.save()
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.success)
-            Task { await NotificationRefreshService.refreshAll(context: modelContext) }
+            Task { await VehicleContextRefreshService.refreshAfterVehicleContextChange(context: modelContext) }
         } catch {
             validationErrors = ["Kaydedilemedi: \(error.localizedDescription)"]
             return false

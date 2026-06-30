@@ -25,7 +25,7 @@ struct ExpenseFormView: View {
 
     @State private var validationErrors: [String] = []
 
-    init(existingExpense: Expense? = nil, preselectedVehicleId: UUID? = nil) {
+    init(existingExpense: Expense? = nil, preselectedVehicleId: UUID? = nil, preselectedCategory: ExpenseCategory? = nil) {
         self.existingExpense = existingExpense
         if let e = existingExpense {
             _selectedCategory = State(initialValue: e.category)
@@ -37,6 +37,11 @@ struct ExpenseFormView: View {
             _selectedVehicleId = State(initialValue: e.vehicleId)
         } else if let vid = preselectedVehicleId {
             _selectedVehicleId = State(initialValue: vid)
+            if let preselectedCategory {
+                _selectedCategory = State(initialValue: preselectedCategory)
+            }
+        } else if let preselectedCategory {
+            _selectedCategory = State(initialValue: preselectedCategory)
         }
     }
 
@@ -272,6 +277,7 @@ struct ExpenseFormView: View {
             try modelContext.save()
             let impact = UINotificationFeedbackGenerator()
             impact.notificationOccurred(.success)
+            Task { await VehicleContextRefreshService.refreshAfterVehicleContextChange(context: modelContext) }
             dismiss()
         } catch {
             validationErrors = ["Kaydedilemedi: \(error.localizedDescription)"]

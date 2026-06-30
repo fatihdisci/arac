@@ -37,7 +37,7 @@ struct ReminderFormView: View {
 
     @State private var validationErrors: [String] = []
 
-    init(existingReminder: Reminder? = nil, preselectedVehicleId: UUID? = nil) {
+    init(existingReminder: Reminder? = nil, preselectedVehicleId: UUID? = nil, preselectedTemplate: ReminderType? = nil) {
         self.existingReminder = existingReminder
         if let r = existingReminder {
             _selectedTemplate = State(initialValue: r.type)
@@ -52,6 +52,11 @@ struct ReminderFormView: View {
             _notes = State(initialValue: r.notes)
         } else if let vid = preselectedVehicleId {
             _selectedVehicleId = State(initialValue: vid)
+            if let preselectedTemplate {
+                _selectedTemplate = State(initialValue: preselectedTemplate)
+            }
+        } else if let preselectedTemplate {
+            _selectedTemplate = State(initialValue: preselectedTemplate)
         }
     }
 
@@ -320,7 +325,7 @@ struct ReminderFormView: View {
                 impact.notificationOccurred(.success)
                 // Eski bildirimi iptal edip yenisini planla; retention bildirimlerini de yenile
                 NotificationService.shared.cancelReminder(existing)
-                Task { await NotificationRefreshService.refreshAll(context: modelContext) }
+                Task { await VehicleContextRefreshService.refreshAfterVehicleContextChange(context: modelContext) }
                 dismiss()
             } catch {
                 validationErrors = ["Kaydedilemedi: \(error.localizedDescription)"]
@@ -343,7 +348,7 @@ struct ReminderFormView: View {
                 try modelContext.save()
                 let impact = UINotificationFeedbackGenerator()
                 impact.notificationOccurred(.success)
-                Task { await NotificationRefreshService.refreshAll(context: modelContext) }
+                Task { await VehicleContextRefreshService.refreshAfterVehicleContextChange(context: modelContext) }
                 dismiss()
             } catch {
                 validationErrors = ["Kaydedilemedi: \(error.localizedDescription)"]

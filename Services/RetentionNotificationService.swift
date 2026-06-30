@@ -475,3 +475,23 @@ enum NotificationRefreshService {
         return fileScores
     }
 }
+
+@MainActor
+enum VehicleContextRefreshService {
+    static func updateCurrentOdometer(
+        vehicle: Vehicle,
+        newOdometer: Int,
+        context: ModelContext,
+        notificationRefresh: @escaping (ModelContext) async -> Void = { context in
+            await NotificationRefreshService.refreshAll(context: context)
+        }
+    ) async throws {
+        vehicle.currentOdometer = newOdometer
+        try context.save()
+        await notificationRefresh(context)
+    }
+
+    static func refreshAfterVehicleContextChange(context: ModelContext) async {
+        await NotificationRefreshService.refreshAll(context: context)
+    }
+}
