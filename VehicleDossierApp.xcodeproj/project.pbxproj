@@ -675,9 +675,7 @@
 				BBBB0001BBBB0001BBBB0001 /* PrivacyInfo.xcprivacy in Resources */,
 				CCAT0006CCAT0006CCAT0006 /* CarCatalog.tr.json in Resources */,
 				8C7FFCB7FFF845AA8EE42147 /* ShareSheet.swift in Sources */,
-				938026983DF74919BBB96424 /* DataExportService.swift in Sources */,
 				F86C454CA71F4ECA9B06D43C /* ShareSheet.swift in Sources */,
-				47BEBA6379DF4E79B5CA2759 /* DataExportServiceTests.swift in Sources */,
 );
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -779,7 +777,6 @@
 				71DD89397F1ADA6DFD3236EE /* SupabaseClientProvider.swift in Sources */,
 				5AA1F995EAC2702BA402B5E0 /* SupabaseConfig.swift in Sources */,
 							8C7FFCB7FFF845AA8EE42147 /* ShareSheet.swift in Sources */,
-				938026983DF74919BBB96424 /* DataExportService.swift in Sources */,
 				F86C454CA71F4ECA9B06D43C /* ShareSheet.swift in Sources */,
 );
 			runOnlyForDeploymentPostprocessing = 0;
@@ -789,8 +786,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C8FCA87C42B54C109FB322DD /* ModelTests.swift in Sources */,
-							47BEBA6379DF4E79B5CA2759 /* DataExportServiceTests.swift in Sources */,
-);
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
