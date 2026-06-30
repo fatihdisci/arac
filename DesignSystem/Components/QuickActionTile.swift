@@ -22,25 +22,33 @@ struct QuickActionTile: View {
         }) {
             VStack(spacing: AppSpacing.xs) {
                 Image(systemName: icon)
-                    .font(.system(size: 22, weight: .regular))
+                    .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(color)
-                    .frame(width: 40, height: 40)
+                    .frame(width: 36, height: 36)
                     .background(
-                        RoundedRectangle(cornerRadius: AppRadius.medium)
-                            .fill(color.opacity(0.1))
+                        Circle()
+                            .fill(color.opacity(0.11))
                     )
 
                 Text(label)
-                    .font(.system(size: 10, weight: .medium))
+                    .font(.system(size: 11, weight: .medium))
                     .foregroundColor(AppColors.textPrimary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.75)
             }
             .frame(maxWidth: .infinity)
-            .frame(minHeight: AppSpacing.minimumTapTarget)
+            .frame(minHeight: 72)
             .padding(.vertical, AppSpacing.xs)
+            .background(
+                RoundedRectangle(cornerRadius: AppRadius.medium)
+                    .fill(Color.appSurface)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: AppRadius.medium)
+                    .stroke(color.opacity(0.08), lineWidth: 1)
+            )
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(PlainCardButtonStyle())
         .accessibilityLabel(label)
         .accessibilityHint("\(label) eklemek için çift tıkla")
         .accessibilityAddTraits(.isButton)
@@ -62,7 +70,7 @@ struct QuickActionRail: View {
     }
 
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: AppSpacing.xs) {
             ForEach(actions) { action in
                 QuickActionTile(
                     icon: action.icon,

@@ -84,9 +84,17 @@ struct VehicleDetailView: View {
             serviceRecords: serviceRecords,
             documents: documents,
             inspectionReports: inspectionReports,
-            saleFiles: saleFiles
+            saleFiles: saleFiles,
+            displayContext: .vehicleDetailGuide(excludingReminderIds: Set(upcomingTasks.map(\.reminderId)))
         )
         .filter { !dismissedGuideInsightIDs.contains($0.id) }
+    }
+
+    private var upcomingTasks: [VehicleUpcomingTask] {
+        VehicleInsightService.shared.upcomingTasks(
+            reminders: activeReminders,
+            vehicleOdometer: vehicle.currentOdometer
+        )
     }
 
     var body: some View {
@@ -108,14 +116,6 @@ struct VehicleDetailView: View {
 
                 nextTasksCard
                     .padding(.horizontal, AppSpacing.screenMarginH)
-
-                // MARK: Most Important Task
-                if let reminder = mostCriticalReminder {
-                    UpcomingTaskCard(reminder: reminder)
-                        .padding(.horizontal, AppSpacing.screenMarginH)
-                } else {
-                    upcomingTaskEmptyState
-                }
 
                 // MARK: File Completeness
                 fileCompletenessCard
@@ -359,10 +359,16 @@ struct VehicleDetailView: View {
     // MARK: - Daily Quick Actions
     private var vehicleQuickActionsSection: some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
-            Text("Hızlı İşlemler")
-                .font(AppTypography.sectionTitle)
-                .foregroundColor(AppColors.textPrimary)
-                .accessibilityAddTraits(.isHeader)
+            HStack {
+                Text("Hızlı İşlemler")
+                    .font(AppTypography.cardTitle)
+                    .foregroundColor(AppColors.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
+                Spacer()
+                Text("Araç dosyası")
+                    .font(AppTypography.captionMedium)
+                    .foregroundColor(AppColors.textTertiary)
+            }
 
             QuickActionRail(actions: [
                 .init(icon: "gauge.with.needle", label: "Km Güncelle", color: AppColors.vehicle) {
@@ -383,6 +389,11 @@ struct VehicleDetailView: View {
             ])
             .padding(.horizontal, -AppSpacing.screenMarginH)
         }
+        .padding(AppSpacing.sm)
+        .background(
+            RoundedRectangle(cornerRadius: AppRadius.card)
+                .fill(AppColors.backgroundSecondary.opacity(0.7))
+        )
     }
 
     // MARK: - Monthly Summary
@@ -446,11 +457,6 @@ struct VehicleDetailView: View {
 
     // MARK: - Next Tasks
     private var nextTasksCard: some View {
-        let tasks = VehicleInsightService.shared.upcomingTasks(
-            reminders: activeReminders,
-            vehicleOdometer: vehicle.currentOdometer
-        )
-
         return VStack(alignment: .leading, spacing: AppSpacing.sm) {
             HStack {
                 Text("Sıradaki İşler")
@@ -465,7 +471,7 @@ struct VehicleDetailView: View {
                 .frame(minHeight: AppSpacing.minimumTapTarget)
             }
 
-            if tasks.isEmpty {
+            if upcomingTasks.isEmpty {
                 HStack(spacing: AppSpacing.sm) {
                     Image(systemName: "checkmark.circle")
                         .foregroundColor(AppColors.success)
@@ -477,7 +483,7 @@ struct VehicleDetailView: View {
                 .frame(minHeight: AppSpacing.minimumTapTarget)
             } else {
                 VStack(spacing: 0) {
-                    ForEach(Array(tasks.enumerated()), id: \.element.id) { index, task in
+                    ForEach(Array(upcomingTasks.enumerated()), id: \.element.id) { index, task in
                         HStack(spacing: AppSpacing.sm) {
                             Circle()
                                 .fill(priorityColor(task.priority))
@@ -495,7 +501,7 @@ struct VehicleDetailView: View {
                         }
                         .frame(minHeight: AppSpacing.minimumTapTarget)
 
-                        if index < tasks.count - 1 {
+                        if index < upcomingTasks.count - 1 {
                             Divider()
                                 .padding(.leading, AppSpacing.md)
                         }
@@ -506,7 +512,16 @@ struct VehicleDetailView: View {
         .padding(AppSpacing.md)
         .background(
             RoundedRectangle(cornerRadius: AppRadius.card)
-                .fill(Color.appSurface)
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            Color.appSurface,
+                            AppColors.warning.opacity(0.055),
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
         )
         .subtleShadow()
     }
@@ -608,42 +623,68 @@ struct VehicleDetailView: View {
     private var fileCompletenessCard: some View {
         let score = computeFileScore()
 
-        return HStack(spacing: AppSpacing.md) {
-            // Skor halkası
-            ZStack {
-                Circle()
-                    .stroke(scoreColor(score).opacity(0.2), lineWidth: 6)
-                    .frame(width: 56, height: 56)
+        return VStack(alignment: .leading, spacing: AppSpacing.md) {
+            HStack(alignment: .center, spacing: AppSpacing.md) {
+                ZStack {
+                    Circle()
+                        .stroke(scoreColor(score).opacity(0.16), lineWidth: 7)
+                        .frame(width: 66, height: 66)
 
-                Circle()
-                    .trim(from: 0, to: CGFloat(score) / 100.0)
-                    .stroke(scoreColor(score), style: StrokeStyle(lineWidth: 6, lineCap: .round))
-                    .frame(width: 56, height: 56)
-                    .rotationEffect(.degrees(-90))
-                    .animation(.easeOut(duration: 0.8), value: score)
+                    Circle()
+                        .trim(from: 0, to: CGFloat(score) / 100.0)
+                        .stroke(scoreColor(score), style: StrokeStyle(lineWidth: 7, lineCap: .round))
+                        .frame(width: 66, height: 66)
+                        .rotationEffect(.degrees(-90))
+                        .animation(.easeOut(duration: 0.75), value: score)
 
-                Text("%\(score)")
-                    .font(AppTypography.captionMedium)
-                    .foregroundColor(scoreColor(score))
+                    Text("%\(score)")
+                        .font(AppTypography.cardTitleSmall)
+                        .foregroundColor(scoreColor(score))
+                }
+
+                VStack(alignment: .leading, spacing: AppSpacing.xxs) {
+                    Text("Dosya Tamlığı")
+                        .font(AppTypography.bodyMedium)
+                        .foregroundColor(AppColors.textPrimary)
+                    Text(scoreDescription(score))
+                        .font(AppTypography.caption)
+                        .foregroundColor(AppColors.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+
+                Spacer()
             }
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Dosya Tamlığı")
-                    .font(AppTypography.bodyMedium)
-                    .foregroundColor(AppColors.textPrimary)
-                Text(scoreDescription(score))
-                    .font(AppTypography.caption)
-                    .foregroundColor(AppColors.textSecondary)
+            HStack(spacing: AppSpacing.xs) {
+                completenessChip(icon: "car.fill", title: vehicle.year == nil ? "Yıl eksik" : "Kimlik tamam", isComplete: vehicle.year != nil)
+                completenessChip(icon: "gauge.with.needle", title: vehicle.currentOdometer == 0 ? "Km eksik" : "Km var", isComplete: vehicle.currentOdometer > 0)
+                completenessChip(icon: "doc.text", title: documents.isEmpty ? "Belge bekliyor" : "Belge var", isComplete: !documents.isEmpty)
             }
-
-            Spacer()
         }
         .padding(AppSpacing.md)
         .background(
             RoundedRectangle(cornerRadius: AppRadius.card)
-                .fill(Color.appSurface)
+                .fill(AppColors.accentPrimary.opacity(0.055))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: AppRadius.card)
+                .stroke(AppColors.accentPrimary.opacity(0.12), lineWidth: 1)
         )
         .subtleShadow()
+    }
+
+    private func completenessChip(icon: String, title: String, isComplete: Bool) -> some View {
+        Label(title, systemImage: icon)
+            .font(AppTypography.captionMedium)
+            .foregroundColor(isComplete ? AppColors.success : AppColors.textSecondary)
+            .lineLimit(1)
+            .minimumScaleFactor(0.78)
+            .padding(.horizontal, AppSpacing.xs)
+            .padding(.vertical, 6)
+            .background(
+                Capsule()
+                    .fill((isComplete ? AppColors.success : AppColors.textTertiary).opacity(0.1))
+            )
     }
 
     // MARK: - Documents Section (Belgeler)
@@ -1361,51 +1402,83 @@ struct UpcomingTaskCard: View {
 // MARK: - Contextual Insight Compact Card
 struct ContextualInsightCompactCard: View {
     let insight: VehicleInsight
+    var prominence: Prominence = .secondary
     let action: () -> Void
 
+    enum Prominence {
+        case primary
+        case secondary
+    }
+
     var body: some View {
-        HStack(alignment: .top, spacing: AppSpacing.sm) {
-            Image(systemName: icon)
-                .font(.body)
-                .foregroundColor(color)
-                .frame(width: 32, height: 32)
-                .background(
-                    RoundedRectangle(cornerRadius: AppRadius.small)
-                        .fill(color.opacity(0.1))
-                )
-                .accessibilityHidden(true)
+        VStack(alignment: .leading, spacing: prominence == .primary ? AppSpacing.md : AppSpacing.sm) {
+            HStack(alignment: .top, spacing: AppSpacing.sm) {
+                Image(systemName: icon)
+                    .font(prominence == .primary ? .title3 : .body)
+                    .foregroundColor(color)
+                    .frame(width: prominence == .primary ? 42 : 32, height: prominence == .primary ? 42 : 32)
+                    .background(
+                        RoundedRectangle(cornerRadius: AppRadius.medium)
+                            .fill(color.opacity(prominence == .primary ? 0.15 : 0.1))
+                    )
+                    .accessibilityHidden(true)
 
-            VStack(alignment: .leading, spacing: AppSpacing.xxs) {
-                Text(insight.title)
-                    .font(AppTypography.bodyMedium)
-                    .foregroundColor(AppColors.textPrimary)
-                    .fixedSize(horizontal: false, vertical: true)
+                VStack(alignment: .leading, spacing: AppSpacing.xxs) {
+                    Text(insight.title)
+                        .font(prominence == .primary ? AppTypography.cardTitle : AppTypography.bodyMedium)
+                        .foregroundColor(AppColors.textPrimary)
+                        .fixedSize(horizontal: false, vertical: true)
 
-                Text(insight.body)
-                    .font(AppTypography.caption)
-                    .foregroundColor(AppColors.textSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                    Text(insight.body)
+                        .font(prominence == .primary ? AppTypography.secondarySmall : AppTypography.caption)
+                        .foregroundColor(AppColors.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
 
-                Button(insight.action.title, action: action)
-                    .font(AppTypography.captionMedium)
-                    .foregroundColor(AppColors.accentPrimary)
-                    .frame(minHeight: AppSpacing.minimumTapTarget, alignment: .leading)
+                Spacer(minLength: 0)
             }
 
-            Spacer(minLength: 0)
+            Button {
+                action()
+            } label: {
+                HStack(spacing: AppSpacing.xs) {
+                    Text(insight.action.title)
+                        .font(AppTypography.captionMedium)
+                    Image(systemName: "arrow.right")
+                        .font(.caption2.weight(.semibold))
+                }
+                .foregroundColor(prominence == .primary ? AppColors.textOnAccent : AppColors.accentPrimary)
+                .padding(.horizontal, prominence == .primary ? AppSpacing.sm : 0)
+                .frame(minHeight: AppSpacing.minimumTapTarget, alignment: .leading)
+                .background(
+                    Capsule()
+                        .fill(prominence == .primary ? color : Color.clear)
+                )
+            }
+            .buttonStyle(.plain)
         }
-        .padding(AppSpacing.md)
+        .padding(prominence == .primary ? AppSpacing.md : AppSpacing.sm)
         .background(
-            RoundedRectangle(cornerRadius: AppRadius.card)
-                .fill(Color.appSurface)
+            RoundedRectangle(cornerRadius: prominence == .primary ? AppRadius.heroCard : AppRadius.card)
+                .fill(backgroundFill)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: AppRadius.card)
-                .stroke(color.opacity(0.18), lineWidth: 1)
+            RoundedRectangle(cornerRadius: prominence == .primary ? AppRadius.heroCard : AppRadius.card)
+                .stroke(color.opacity(prominence == .primary ? 0.2 : 0.12), lineWidth: 1)
         )
         .subtleShadow()
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(insight.title). \(insight.body). \(insight.action.title)")
+    }
+
+    private var backgroundFill: LinearGradient {
+        LinearGradient(
+            colors: prominence == .primary
+                ? [Color.appSurface, color.opacity(0.095)]
+                : [Color.appSurface, AppColors.backgroundSecondary.opacity(0.45)],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
     }
 
     private var color: Color {

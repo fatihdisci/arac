@@ -8,6 +8,7 @@ import SwiftUI
 
 struct VehicleHeroHeader: View {
     let vehicle: Vehicle
+    @State private var appeared = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -23,13 +24,17 @@ struct VehicleHeroHeader: View {
         )
         .elevatedShadow()
         .padding(.horizontal, AppSpacing.screenMarginH)
+        .opacity(appeared ? 1 : 0)
+        .offset(y: appeared ? 0 : 10)
+        .animation(.easeOut(duration: 0.32), value: appeared)
+        .onAppear { appeared = true }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(accessibilityText)
     }
 
     // MARK: - Photo Area
     private var photoArea: some View {
-        ZStack {
+        ZStack(alignment: .bottomLeading) {
             if let photoFileName = vehicle.photoFileName,
                let image = VehiclePhotoStorageService.shared.loadPhoto(fileName: photoFileName) {
                 Image(uiImage: image)
@@ -54,6 +59,20 @@ struct VehicleHeroHeader: View {
                     .font(.system(size: 56, weight: .light))
                     .foregroundColor(.white.opacity(0.7))
             }
+
+            LinearGradient(
+                colors: [.clear, .black.opacity(0.36)],
+                startPoint: .center,
+                endPoint: .bottom
+            )
+
+            Text("Araç Dosyası")
+                .font(AppTypography.captionMedium)
+                .foregroundColor(.white.opacity(0.86))
+                .padding(.horizontal, AppSpacing.sm)
+                .padding(.vertical, 7)
+                .background(Capsule().fill(.black.opacity(0.22)))
+                .padding(AppSpacing.md)
         }
         .frame(height: 180)
         .clipShape(
@@ -68,28 +87,32 @@ struct VehicleHeroHeader: View {
 
     // MARK: - Info Area
     private var infoArea: some View {
-        VStack(alignment: .leading, spacing: AppSpacing.xs) {
-            // Plaka — ana görsel çapa
-            Text(vehicle.plate.isEmpty ? "—" : vehicle.plate)
-                .plateTextStyle()
-                .foregroundColor(AppColors.textPrimary)
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            HStack(alignment: .top, spacing: AppSpacing.sm) {
+                VStack(alignment: .leading, spacing: AppSpacing.xxs) {
+                    Text(vehicle.nickname.isEmpty ? vehicle.fullName : vehicle.nickname)
+                        .font(AppTypography.sectionTitle)
+                        .foregroundColor(AppColors.textPrimary)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.82)
 
-            // Marka + Model + Yıl
-            HStack(alignment: .firstTextBaseline, spacing: AppSpacing.xs) {
-                Text(vehicle.fullName)
-                    .font(AppTypography.sectionTitle)
-                    .foregroundColor(AppColors.textPrimary)
-
-                if let year = vehicle.year {
-                    Text("·")
-                        .foregroundColor(AppColors.textTertiary)
-                    Text(String(year))
-                        .font(AppTypography.cardTitle)
+                    Text(vehicle.nickname.isEmpty ? vehicle.yearDisplay : vehicle.fullName)
+                        .font(AppTypography.secondary)
                         .foregroundColor(AppColors.textSecondary)
+                        .lineLimit(1)
                 }
+
+                Spacer()
+
+                Text(vehicle.plate.isEmpty ? "Plaka yok" : vehicle.plate)
+                    .font(.system(size: 15, weight: .semibold, design: .monospaced))
+                    .tracking(0.8)
+                    .foregroundColor(AppColors.textPrimary)
+                    .padding(.horizontal, AppSpacing.xs)
+                    .padding(.vertical, 7)
+                    .background(Capsule().fill(AppColors.backgroundSecondary))
             }
 
-            // Km + Yakıt + Vites badge'leri
             HStack(spacing: AppSpacing.sm) {
                 infoBadge(icon: "gauge.with.needle", text: vehicle.odometerDisplay)
 
@@ -105,19 +128,6 @@ struct VehicleHeroHeader: View {
                 if vehicle.usageType != .personal {
                     infoBadge(icon: "briefcase", text: vehicle.usageType.displayName)
                 }
-            }
-
-            // Nickname
-            if !vehicle.nickname.isEmpty {
-                HStack(spacing: AppSpacing.xxs) {
-                    Image(systemName: "heart.fill")
-                        .font(.caption2)
-                        .foregroundColor(AppColors.accentPrimary)
-                    Text(vehicle.nickname)
-                        .font(AppTypography.secondary)
-                        .foregroundColor(AppColors.accentPrimary)
-                }
-                .padding(.top, AppSpacing.xxs)
             }
         }
         .padding(AppSpacing.md)

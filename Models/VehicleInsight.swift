@@ -60,6 +60,11 @@ enum VehicleInsightSource: String {
     case aiGenerated
 }
 
+enum VehicleInsightDisplayContext {
+    case garageDaily
+    case vehicleDetailGuide(excludingReminderIds: Set<UUID> = [])
+}
+
 enum VehicleInsightAction: String, CaseIterable {
     case addServiceRecord
     case addDocument

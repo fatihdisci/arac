@@ -21,17 +21,26 @@ struct ArviaGuideCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
             HStack(alignment: .top, spacing: AppSpacing.sm) {
-                Image(systemName: iconName)
-                    .font(.body)
-                    .foregroundColor(priorityColor)
-                    .frame(width: 34, height: 34)
-                    .background(
-                        RoundedRectangle(cornerRadius: AppRadius.small)
-                            .fill(priorityColor.opacity(0.12))
-                    )
-                    .accessibilityHidden(true)
+                VStack(spacing: AppSpacing.xxs) {
+                    Image(systemName: iconName)
+                        .font(.body.weight(.semibold))
+                        .foregroundColor(priorityColor)
+                        .frame(width: 38, height: 38)
+                        .background(
+                            Circle()
+                                .fill(priorityColor.opacity(0.12))
+                        )
+                        .accessibilityHidden(true)
+
+                    RoundedRectangle(cornerRadius: AppRadius.capsule)
+                        .fill(priorityColor.opacity(0.24))
+                        .frame(width: 2, height: 28)
+                }
 
                 VStack(alignment: .leading, spacing: AppSpacing.xxs) {
+                    Text("Rehber notu")
+                        .font(AppTypography.captionMedium)
+                        .foregroundColor(priorityColor)
                     Text(insight.title)
                         .font(AppTypography.bodyMedium)
                         .foregroundColor(AppColors.textPrimary)
@@ -60,22 +69,35 @@ struct ArviaGuideCard: View {
                 Spacer()
 
                 if let dismissAction {
-                    Button("Daha sonra", action: dismissAction)
-                        .font(AppTypography.captionMedium)
-                        .foregroundColor(AppColors.textTertiary)
-                        .frame(minHeight: AppSpacing.minimumTapTarget)
+                    Button(action: dismissAction) {
+                        Label("Daha sonra", systemImage: "clock")
+                            .font(AppTypography.captionMedium)
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundColor(AppColors.textTertiary)
+                    .frame(minHeight: AppSpacing.minimumTapTarget)
                 }
             }
         }
         .padding(AppSpacing.md)
         .background(
             RoundedRectangle(cornerRadius: AppRadius.card)
-                .fill(Color.appSurface)
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            Color.appSurface,
+                            priorityColor.opacity(0.055),
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
         )
         .overlay(
             RoundedRectangle(cornerRadius: AppRadius.card)
                 .stroke(priorityColor.opacity(insight.priority == .info ? 0.14 : 0.28), lineWidth: 1)
         )
+        .subtleShadow()
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(insight.title). \(insight.body). \(insight.action.title)")
     }

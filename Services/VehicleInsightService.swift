@@ -25,7 +25,8 @@ struct VehicleInsightService {
         documents: [VehicleDocument],
         inspectionReports: [InspectionReport],
         saleFiles: [SaleFile] = [],
-        maxVisible: Int = Self.defaultVisibleLimit
+        maxVisible: Int = Self.defaultVisibleLimit,
+        displayContext: VehicleInsightDisplayContext = .vehicleDetailGuide()
     ) -> [VehicleInsight] {
         Array(contextualInsights(
             for: vehicle,
@@ -34,7 +35,8 @@ struct VehicleInsightService {
             serviceRecords: serviceRecords,
             documents: documents,
             inspectionReports: inspectionReports,
-            includeQuietState: true
+            includeQuietState: true,
+            displayContext: displayContext
         ).prefix(maxVisible))
     }
 
@@ -54,7 +56,8 @@ struct VehicleInsightService {
             serviceRecords: serviceRecords,
             documents: documents,
             inspectionReports: inspectionReports,
-            includeQuietState: true
+            includeQuietState: true,
+            displayContext: .garageDaily
         ).prefix(maxVisible))
     }
 
@@ -132,7 +135,8 @@ struct VehicleInsightService {
         serviceRecords: [ServiceRecord],
         documents: [VehicleDocument],
         inspectionReports: [InspectionReport],
-        includeQuietState: Bool
+        includeQuietState: Bool,
+        displayContext: VehicleInsightDisplayContext
     ) -> [VehicleInsight] {
         var generated: [VehicleInsight] = []
 
@@ -169,13 +173,37 @@ struct VehicleInsightService {
             generated.append(quietGoodStateInsight())
         }
 
-        return deduplicated(generated)
+        return deduplicated(filtered(generated, for: displayContext))
             .sorted { lhs, rhs in
                 if insightRank(lhs) == insightRank(rhs) {
                     return lhs.title < rhs.title
                 }
                 return insightRank(lhs) < insightRank(rhs)
             }
+    }
+
+    private func filtered(_ insights: [VehicleInsight], for displayContext: VehicleInsightDisplayContext) -> [VehicleInsight] {
+        switch displayContext {
+        case .garageDaily:
+            let dailyTypes: Set<VehicleInsightType> = [
+                .overdueReminder,
+                .upcomingReminder,
+                .calendarPeriod,
+                .odometerUpdate,
+                .quietGoodState,
+                .seasonalGuidance,
+            ]
+            let urgent = insights.filter { dailyTypes.contains($0.type) && $0.type != .seasonalGuidance }
+            if urgent.isEmpty {
+                return insights.filter { $0.type == .seasonalGuidance || $0.type == .quietGoodState }
+            }
+            return urgent
+        case .vehicleDetailGuide(let excludingReminderIds):
+            return insights.filter { insight in
+                guard let reminderId = insight.relatedReminderId else { return true }
+                return !excludingReminderIds.contains(reminderId)
+            }
+        }
     }
 
     private func overdueReminderInsights(_ reminders: [Reminder], vehicleOdometer: Int) -> [VehicleInsight] {

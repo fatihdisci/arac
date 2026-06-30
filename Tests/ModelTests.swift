@@ -831,6 +831,92 @@ final class VehicleInsightServiceTests: XCTestCase {
         XCTAssertLessThanOrEqual(insights.count, 3)
     }
 
+    func testGarageDailyContextExcludesFuelAndTransmissionGuidance() {
+        let vehicleId = UUID()
+        let insights = service.garageSummary(
+            for: Vehicle(id: vehicleId, fuelType: .diesel, transmissionType: .automatic, currentOdometer: 42_000),
+            reminders: [],
+            expenses: [expense(vehicleId: vehicleId, amount: 100)],
+            serviceRecords: [serviceRecord(vehicleId: vehicleId)],
+            documents: [document(vehicleId: vehicleId)],
+            inspectionReports: [inspection(vehicleId: vehicleId)],
+            maxVisible: 10
+        )
+
+        XCTAssertFalse(insights.contains { $0.type == .fuelTypeGuidance })
+        XCTAssertFalse(insights.contains { $0.type == .transmissionGuidance })
+        XCTAssertLessThanOrEqual(insights.count, 3)
+    }
+
+    func testVehicleDetailGuideIncludesVehicleSpecificGuidance() {
+        let vehicleId = UUID()
+        let insights = service.insights(
+            for: Vehicle(id: vehicleId, fuelType: .diesel, transmissionType: .automatic, currentOdometer: 42_000),
+            reminders: [],
+            expenses: [expense(vehicleId: vehicleId, amount: 100)],
+            serviceRecords: [serviceRecord(vehicleId: vehicleId)],
+            documents: [document(vehicleId: vehicleId)],
+            inspectionReports: [inspection(vehicleId: vehicleId)],
+            maxVisible: 10,
+            displayContext: .vehicleDetailGuide()
+        )
+
+        XCTAssertTrue(insights.contains { $0.type == .fuelTypeGuidance })
+        XCTAssertTrue(insights.contains { $0.type == .transmissionGuidance })
+        XCTAssertTrue(insights.contains { $0.type == .seasonalGuidance })
+    }
+
+    func testVehicleDetailGuideExcludesReminderAlreadyShownInUpcomingTasks() {
+        let vehicleId = UUID()
+        let reminder = Reminder(
+            vehicleId: vehicleId,
+            type: .trafficInsurance,
+            title: "Trafik Sigortası",
+            dueDate: calendar.date(byAdding: .day, value: 3, to: now),
+            priority: .warning
+        )
+        let tasks = service.upcomingTasks(reminders: [reminder], vehicleOdometer: 42_000)
+
+        let insights = service.insights(
+            for: Vehicle(id: vehicleId, currentOdometer: 42_000),
+            reminders: [reminder],
+            expenses: [expense(vehicleId: vehicleId, amount: 100)],
+            serviceRecords: [serviceRecord(vehicleId: vehicleId)],
+            documents: [document(vehicleId: vehicleId)],
+            inspectionReports: [inspection(vehicleId: vehicleId)],
+            maxVisible: 10,
+            displayContext: .vehicleDetailGuide(excludingReminderIds: Set(tasks.map(\.reminderId)))
+        )
+
+        XCTAssertFalse(insights.contains { $0.relatedReminderId == reminder.id })
+        XCTAssertTrue(insights.contains { $0.type == .seasonalGuidance })
+    }
+
+    func testGarageDailyVisibleLimitRemainsOneToThreeCards() {
+        let vehicleId = UUID()
+        let reminders = (0..<5).map { offset in
+            Reminder(
+                vehicleId: vehicleId,
+                type: .inspection,
+                title: "İş \(offset)",
+                dueDate: calendar.date(byAdding: .day, value: -offset - 1, to: now),
+                priority: .critical
+            )
+        }
+
+        let insights = service.garageSummary(
+            for: Vehicle(id: vehicleId, currentOdometer: 42_000),
+            reminders: reminders,
+            expenses: [],
+            serviceRecords: [],
+            documents: [],
+            inspectionReports: []
+        )
+
+        XCTAssertGreaterThanOrEqual(insights.count, 1)
+        XCTAssertLessThanOrEqual(insights.count, 3)
+    }
+
     func testInsightActionsMapToValidDestinations() {
         for action in VehicleInsightAction.allCases {
             XCTAssertFalse(action.title.isEmpty)
