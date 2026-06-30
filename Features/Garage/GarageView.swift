@@ -275,12 +275,13 @@ struct GarageView: View {
                     .fill(Color.appSurface)
             )
             .clipShape(RoundedRectangle(cornerRadius: AppRadius.heroCard, style: .continuous))
-            .shadow(color: AppColors.textPrimary.opacity(0.08), radius: 18, x: 0, y: 10)
-            .shadow(color: AppColors.textPrimary.opacity(0.035), radius: 4, x: 0, y: 1)
             .overlay(
                 RoundedRectangle(cornerRadius: AppRadius.heroCard, style: .continuous)
                     .stroke(AppColors.border.opacity(0.42), lineWidth: 0.5)
             )
+            .compositingGroup()
+            .shadow(color: AppColors.textPrimary.opacity(0.08), radius: 18, x: 0, y: 10)
+            .shadow(color: AppColors.textPrimary.opacity(0.035), radius: 4, x: 0, y: 1)
             .accessibilityElement(children: .contain)
             .accessibilityLabel("\\(vehicle.plate), \\(vehicle.fullName), \\(vehicle.odometerDisplay)")
     }
