@@ -270,20 +270,19 @@ struct GarageView: View {
     /// (tek araçta doğrudan, çoklu araçta TabView içinde).
     private func heroCardContent(vehicle: Vehicle) -> some View {
         heroCardInner(vehicle: vehicle)
-        .background(
-            RoundedRectangle(cornerRadius: AppRadius.heroCard)
-                .fill(Color.appSurface)
-        )
-        .clipShape(RoundedRectangle(cornerRadius: AppRadius.heroCard, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: AppRadius.heroCard, style: .continuous)
-                .stroke(AppColors.border.opacity(0.42), lineWidth: 0.5)
-        )
-        .shadow(color: AppColors.textPrimary.opacity(0.08), radius: 18, x: 0, y: 10)
-        .shadow(color: AppColors.textPrimary.opacity(0.035), radius: 4, x: 0, y: 1)
-        .compositingGroup()
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel("\(vehicle.plate), \(vehicle.fullName), \(vehicle.odometerDisplay)")
+            .background(
+                RoundedRectangle(cornerRadius: AppRadius.heroCard, style: .continuous)
+                    .fill(Color.appSurface)
+            )
+            .clipShape(RoundedRectangle(cornerRadius: AppRadius.heroCard, style: .continuous))
+            .shadow(color: AppColors.textPrimary.opacity(0.08), radius: 18, x: 0, y: 10)
+            .shadow(color: AppColors.textPrimary.opacity(0.035), radius: 4, x: 0, y: 1)
+            .overlay(
+                RoundedRectangle(cornerRadius: AppRadius.heroCard, style: .continuous)
+                    .stroke(AppColors.border.opacity(0.42), lineWidth: 0.5)
+            )
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("\\(vehicle.plate), \\(vehicle.fullName), \\(vehicle.odometerDisplay)")
     }
 
     private func heroCardInner(vehicle: Vehicle) -> some View {
