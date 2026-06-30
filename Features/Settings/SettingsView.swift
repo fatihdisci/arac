@@ -19,6 +19,8 @@ struct SettingsView: View {
     @State private var deleteAccountError: String?
     @State private var isExporting = false
     @State private var exportMessage: String?
+    @State private var exportURL: URL?
+    @State private var showShareSheet = false
     // Privacy & Terms URL'leri — GitHub Pages canlı URL'leri
     private let privacyURL = URL(string: "https://fatihdisci.github.io/arvia/privacy.html")!
     private let termsURL = URL(string: "https://fatihdisci.github.io/arvia/terms.html")!
@@ -75,6 +77,11 @@ struct SettingsView: View {
                 Button("Vazgeç", role: .cancel) {}
             } message: {
                 Text("Bu işlem yerel araç kayıtlarını, belgeleri ve topluluk profil bilgilerini silebilir. Bu işlem geri alınamaz.")
+            }
+            .sheet(isPresented: $showShareSheet) {
+                if let url = exportURL {
+                    ShareSheet(activityItems: [url])
+                }
             }
         }
     }
@@ -432,150 +439,24 @@ struct SettingsView: View {
 
     private func exportData() {
         isExporting = true
-        // Gerçek JSON export — araç, hatırlatıcı, masraf, bakım, belge ve ekspertiz verileri.
+        exportMessage = nil
+        exportURL = nil
+        showShareSheet = false
+
         DispatchQueue.global(qos: .userInitiated).async {
-            // Fetch tüm verileri ana context'te yap
-            DispatchQueue.main.async {
-                let vehicles = (try? modelContext.fetch(FetchDescriptor<Vehicle>())) ?? []
-                let reminders = (try? modelContext.fetch(FetchDescriptor<Reminder>())) ?? []
-                let expenses = (try? modelContext.fetch(FetchDescriptor<Expense>())) ?? []
-                let services = (try? modelContext.fetch(FetchDescriptor<ServiceRecord>())) ?? []
-                let documents = (try? modelContext.fetch(FetchDescriptor<VehicleDocument>())) ?? []
-                let inspections = (try? modelContext.fetch(FetchDescriptor<InspectionReport>())) ?? []
-                let saleFiles = (try? modelContext.fetch(FetchDescriptor<SaleFile>())) ?? []
+            do {
+                let result = try DataExportService.export(context: modelContext)
 
-                var export: [String: Any] = [:]
-
-                export["vehicles"] = vehicles.map { v in
-                    [
-                        "id": v.id.uuidString,
-                        "plate": v.plate,
-                        "brand": v.brand,
-                        "model": v.model,
-                        "year": v.year as Any,
-                        "currentOdometer": v.currentOdometer,
-                        "fuelType": v.fuelTypeRaw,
-                        "usageType": v.usageTypeRaw,
-                        "createdAt": v.createdAt.ISO8601Format(),
-                        "archivedAt": v.archivedAt?.ISO8601Format() as Any,
-                    ] as [String: Any]
+                DispatchQueue.main.async {
+                    isExporting = false
+                    exportURL = result.url
+                    exportMessage = "Veriler dışa aktarıldı. Paylaşım sayfası açılıyor..."
+                    showShareSheet = true
                 }
-
-                export["reminders"] = reminders.map { r in
-                    [
-                        "id": r.id.uuidString,
-                        "vehicleId": r.vehicleId.uuidString,
-                        "title": r.title,
-                        "type": r.typeRaw,
-                        "dueDate": r.dueDate?.ISO8601Format() as Any,
-                        "dueOdometer": r.dueOdometer as Any,
-                        "repeatRule": r.repeatRuleRaw as Any,
-                        "priority": r.priorityRaw,
-                        "status": r.statusRaw,
-                        "completedAt": r.completedAt?.ISO8601Format() as Any,
-                        "createdAt": r.createdAt.ISO8601Format(),
-                    ] as [String: Any]
-                }
-
-                export["expenses"] = expenses.map { e in
-                    [
-                        "id": e.id.uuidString,
-                        "vehicleId": e.vehicleId.uuidString,
-                        "category": e.categoryRaw,
-                        "amount": e.amount,
-                        "currency": e.currencyCode,
-                        "date": e.date.ISO8601Format(),
-                        "odometer": e.odometer as Any,
-                        "vendorName": e.vendorName as Any,
-                        "note": e.note,
-                    ] as [String: Any]
-                }
-
-                export["serviceRecords"] = services.map { s in
-                    [
-                        "id": s.id.uuidString,
-                        "vehicleId": s.vehicleId.uuidString,
-                        "serviceType": s.serviceTypeRaw,
-                        "date": s.date.ISO8601Format(),
-                        "odometer": s.odometer as Any,
-                        "vendorName": s.vendorName as Any,
-                        "laborCost": s.laborCost as Any,
-                        "partsCost": s.partsCost as Any,
-                        "totalCost": s.totalCost as Any,
-                        "oilType": s.oilType as Any,
-                        "notes": s.notes,
-                    ] as [String: Any]
-                }
-
-                export["documents"] = documents.map { d in
-                    [
-                        "id": d.id.uuidString,
-                        "vehicleId": d.vehicleId.uuidString,
-                        "type": d.typeRaw,
-                        "title": d.title,
-                        "originalFileName": d.originalFileName as Any,
-                        "issueDate": d.issueDate?.ISO8601Format() as Any,
-                        "expiryDate": d.expiryDate?.ISO8601Format() as Any,
-                        "includeInSaleFile": d.includeInSaleFile,
-                    ] as [String: Any]
-                }
-
-                export["inspectionReports"] = inspections.map { i in
-                    [
-                        "id": i.id.uuidString,
-                        "vehicleId": i.vehicleId.uuidString,
-                        "providerName": i.providerName,
-                        "reportDate": i.reportDate.ISO8601Format(),
-                        "odometer": i.odometer as Any,
-                        "summary": i.summary,
-                        "includeInSaleFile": i.includeInSaleFile,
-                    ] as [String: Any]
-                }
-
-                export["saleFiles"] = saleFiles.map { sf in
-                    [
-                        "id": sf.id.uuidString,
-                        "vehicleId": sf.vehicleId.uuidString,
-                        "title": sf.title,
-                        "createdAt": sf.createdAt.ISO8601Format(),
-                        "hasPDF": sf.generatedPDFFileName != nil,
-                    ] as [String: Any]
-                }
-
-                export["exportDate"] = Date().ISO8601Format()
-                export["appVersion"] = AppEnvironment.appVersion
-                export["vehicleCount"] = vehicles.count
-                export["reminderCount"] = reminders.count
-                export["expenseCount"] = expenses.count
-                export["serviceCount"] = services.count
-                export["saleFileCount"] = saleFiles.count
-                export["note"] = "Belge dosyaları (PDF/fotoğraf) JSON içine dahil edilmez."
-
-                if let jsonData = try? JSONSerialization.data(withJSONObject: export, options: .prettyPrinted) {
-
-                    let tempURL = FileManager.default.temporaryDirectory
-                        .appendingPathComponent("arvia-export-\(Date().ISO8601Format().prefix(10)).json")
-                    try? jsonData.write(to: tempURL)
-
-                    DispatchQueue.main.async {
-                        isExporting = false
-                        exportMessage = "Veriler dışa aktarıldı. Paylaşım sayfası açılıyor..."
-
-                        // Share sheet
-                        let activityVC = UIActivityViewController(
-                            activityItems: [tempURL],
-                            applicationActivities: nil
-                        )
-                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                           let root = windowScene.windows.first?.rootViewController {
-                            root.present(activityVC, animated: true)
-                        }
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        isExporting = false
-                        exportMessage = "Dışa aktarma başarısız oldu."
-                    }
+            } catch {
+                DispatchQueue.main.async {
+                    isExporting = false
+                    exportMessage = "Dışa aktarma başarısız oldu. Lütfen tekrar dene."
                 }
             }
         }
