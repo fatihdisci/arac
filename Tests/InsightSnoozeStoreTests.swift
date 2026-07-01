@@ -62,10 +62,11 @@ final class InsightSnoozeStoreTests: XCTestCase {
         XCTAssertTrue(store.isSnoozed(vehicleId: vehicleA, insightId: insightA.id))
         XCTAssertTrue(store.isSnoozed(vehicleId: vehicleB, insightId: insightB.id))
 
-        // Vehicle B snooze doesn't affect vehicle A's insight
+        // Same insight ID can be snoozed independently per vehicle.
         let aSnoozed = store.snoozedInsightIDs(for: vehicleA)
         XCTAssertTrue(aSnoozed.contains(insightA.id))
-        XCTAssertFalse(aSnoozed.contains(insightB.id))
+        XCTAssertFalse(store.isSnoozed(vehicleId: UUID(), insightId: insightA.id))
+        XCTAssertEqual(store.allEntries().map(\.vehicleId).sorted(), [vehicleA.uuidString.lowercased(), vehicleB.uuidString.lowercased()].sorted())
     }
 
     // MARK: - Snooze Durations
