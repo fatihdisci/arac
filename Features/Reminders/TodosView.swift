@@ -139,5 +139,28 @@ struct TodosView: View {
     }
 }
 
-#Preview("Yapılacaklar — Boş") { TodosView() }
-#Preview("Yapılacaklar — Dolu") { TodosView().modelContainer(MockDataProvider.previewContainer) }
+#Preview("Yapılacaklar — Boş") {
+    TodosView()
+        .modelContainer(MockDataProvider.emptyPreviewContainer)
+        .environmentObject(AppNavigationRouter.shared)
+}
+
+#Preview("Yapılacaklar — Dolu") {
+    TodosView()
+        .modelContainer(MockDataProvider.previewContainer)
+        .environmentObject(AppNavigationRouter.shared)
+}
+
+#Preview("Yapılacaklar — Dolu Dark") {
+    TodosView()
+        .modelContainer(MockDataProvider.previewContainer)
+        .environmentObject(AppNavigationRouter.shared)
+        .preferredColorScheme(.dark)
+}
+
+#Preview("Yapılacaklar — Dynamic Type") {
+    TodosView()
+        .modelContainer(MockDataProvider.previewContainer)
+        .environmentObject(AppNavigationRouter.shared)
+        .environment(\.dynamicTypeSize, .accessibility1)
+}

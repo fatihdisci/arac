@@ -1696,17 +1696,29 @@ struct RecentRecordItem: Identifiable {
 // MARK: - Preview
 #Preview("Araç Detay — Dolu Veri") {
     let vehicle = MockDataProvider.previewVehicle()
-    return NavigationStack {
+    NavigationStack {
         VehicleDetailView(vehicle: vehicle)
             .modelContainer(MockDataProvider.previewContainer)
+            .environmentObject(AppNavigationRouter.shared)
     }
 }
 
 #Preview("Araç Detay — Dark Mode") {
     let vehicle = MockDataProvider.previewVehicle()
-    return NavigationStack {
+    NavigationStack {
         VehicleDetailView(vehicle: vehicle)
             .modelContainer(MockDataProvider.previewContainer)
+            .environmentObject(AppNavigationRouter.shared)
     }
     .preferredColorScheme(.dark)
+}
+
+#Preview("Araç Detay — Dynamic Type") {
+    let vehicle = MockDataProvider.previewVehicle()
+    NavigationStack {
+        VehicleDetailView(vehicle: vehicle)
+            .modelContainer(MockDataProvider.previewContainer)
+            .environmentObject(AppNavigationRouter.shared)
+    }
+    .environment(\.dynamicTypeSize, .accessibility1)
 }

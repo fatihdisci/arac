@@ -487,3 +487,9 @@ struct PaywallView: View {
     PaywallView(feature: .secondVehicle)
         .environmentObject(PaywallService.shared)
 }
+
+#Preview("Paywall — Dark") {
+    PaywallView(feature: .secondVehicle)
+        .environmentObject(PaywallService.shared)
+        .preferredColorScheme(.dark)
+}

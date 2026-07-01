@@ -211,37 +211,3 @@ struct VehicleCard: View {
     .background(Color.appBackground)
     .preferredColorScheme(.dark)
 }
-
-// MARK: - Preview Helpers
-extension MockDataProvider {
-    @MainActor
-    static func previewVehicle() -> Vehicle {
-        Vehicle(
-            nickname: "Beyaz Şahin",
-            plate: "34 ABC 123",
-            brand: "Toyota",
-            model: "Corolla",
-            year: 2020,
-            fuelType: .gasoline,
-            transmissionType: .automatic,
-            currentOdometer: 78500,
-            purchaseDate: DateComponents(calendar: .current, year: 2020, month: 3, day: 15).date,
-            purchasePrice: 285_000
-        )
-    }
-
-    @MainActor
-    static func previewVehicle2() -> Vehicle {
-        Vehicle(
-            plate: "06 CD 456",
-            brand: "Renault",
-            model: "Clio",
-            year: 2018,
-            fuelType: .diesel,
-            transmissionType: .manual,
-            currentOdometer: 142000,
-            purchasePrice: 165_000,
-            usageType: .company
-        )
-    }
-}

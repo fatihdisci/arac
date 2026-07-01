@@ -2,12 +2,20 @@ import Foundation
 import SwiftData
 
 // MARK: - Mock Data Provider
-// SwiftUI Preview'ları ve geliştirme için gerçekçi Türkçe veri seti.
+// Preview-only seed data. Production runtime does not call this provider.
 enum MockDataProvider {
+    static let selectedVehicleId = UUID(uuidString: "A1000000-0000-0000-0000-000000000001")!
+    static let secondaryVehicleId = UUID(uuidString: "A2000000-0000-0000-0000-000000000002")!
+    static let tertiaryVehicleId = UUID(uuidString: "A3000000-0000-0000-0000-000000000003")!
 
     // MARK: Container
     @MainActor
-    static var previewContainer: ModelContainer = {
+    static var previewContainer: ModelContainer {
+        makePreviewContainer()
+    }
+
+    @MainActor
+    static func makePreviewContainer(populated: Bool = true) -> ModelContainer {
         let schema = Schema([
             Vehicle.self,
             Reminder.self,
@@ -21,12 +29,19 @@ enum MockDataProvider {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         do {
             let container = try ModelContainer(for: schema, configurations: config)
-            insertMockData(into: container)
+            if populated {
+                insertMockData(into: container)
+            }
             return container
         } catch {
             fatalError("Mock ModelContainer başlatılamadı: \(error)")
         }
-    }()
+    }
+
+    @MainActor
+    static var emptyPreviewContainer: ModelContainer {
+        makePreviewContainer(populated: false)
+    }
 
     @MainActor
     static func insertMockData(into container: ModelContainer) {
@@ -34,7 +49,7 @@ enum MockDataProvider {
 
         // ---- Araç 1 ----
         let vehicle1 = Vehicle(
-            id: UUID(uuidString: "A1000000-0000-0000-0000-000000000001")!,
+            id: selectedVehicleId,
             nickname: "Beyaz Şahin",
             plate: "34 ABC 123",
             brand: "Toyota",
@@ -52,7 +67,7 @@ enum MockDataProvider {
 
         // ---- Araç 2 ----
         let vehicle2 = Vehicle(
-            id: UUID(uuidString: "A2000000-0000-0000-0000-000000000002")!,
+            id: secondaryVehicleId,
             nickname: "Mavi",
             plate: "06 CD 456",
             brand: "Renault",
@@ -68,12 +83,30 @@ enum MockDataProvider {
         )
         context.insert(vehicle2)
 
+        // ---- Araç 3 ----
+        let vehicle3 = Vehicle(
+            id: tertiaryVehicleId,
+            nickname: "Hafta Sonu",
+            plate: "35 EFG 789",
+            brand: "BMW",
+            model: "320i",
+            year: 2016,
+            fuelType: .gasoline,
+            transmissionType: .automatic,
+            currentOdometer: 96500,
+            purchaseDate: DateComponents(calendar: .current, year: 2023, month: 5, day: 20).date,
+            purchaseOdometer: 84200,
+            purchasePrice: 1_125_000,
+            usageType: .personal
+        )
+        context.insert(vehicle3)
+
         let calendar = Calendar.current
         let today = Date()
 
         // ---- Reminder'lar (Araç 1) ----
         let reminder1 = Reminder(
-            id: UUID(uuidString: "R1000000-0000-0000-0000-000000000001")!,
+            id: UUID(uuidString: "B1000000-0000-0000-0000-000000000001")!,
             vehicleId: vehicle1.id,
             type: .inspection,
             title: "Muayene",
@@ -83,7 +116,7 @@ enum MockDataProvider {
         context.insert(reminder1)
 
         let reminder2 = Reminder(
-            id: UUID(uuidString: "R2000000-0000-0000-0000-000000000002")!,
+            id: UUID(uuidString: "B2000000-0000-0000-0000-000000000002")!,
             vehicleId: vehicle1.id,
             type: .trafficInsurance,
             title: "Trafik Sigortası",
@@ -93,18 +126,17 @@ enum MockDataProvider {
         context.insert(reminder2)
 
         let reminder3 = Reminder(
-            id: UUID(uuidString: "R3000000-0000-0000-0000-000000000003")!,
+            id: UUID(uuidString: "B3000000-0000-0000-0000-000000000003")!,
             vehicleId: vehicle1.id,
             type: .oilChange,
             title: "Yağ Değişimi",
-            dueDate: calendar.date(byAdding: .day, value: 0, to: today), // bugün
             dueOdometer: 80000,
             priority: .warning
         )
         context.insert(reminder3)
 
         let reminder4 = Reminder(
-            id: UUID(uuidString: "R4000000-0000-0000-0000-000000000004")!,
+            id: UUID(uuidString: "B4000000-0000-0000-0000-000000000004")!,
             vehicleId: vehicle1.id,
             type: .mtvFirst,
             title: "MTV 1. Taksit",
@@ -115,7 +147,7 @@ enum MockDataProvider {
 
         // ---- Reminder'lar (Araç 2) ----
         let reminder5 = Reminder(
-            id: UUID(uuidString: "R5000000-0000-0000-0000-000000000005")!,
+            id: UUID(uuidString: "B5000000-0000-0000-0000-000000000005")!,
             vehicleId: vehicle2.id,
             type: .timingBelt,
             title: "Triger Değişimi",
@@ -124,6 +156,16 @@ enum MockDataProvider {
             priority: .critical
         )
         context.insert(reminder5)
+
+        let reminder6 = Reminder(
+            id: UUID(uuidString: "B6000000-0000-0000-0000-000000000006")!,
+            vehicleId: vehicle3.id,
+            type: .custom,
+            title: "Lastik basınç kontrolü",
+            dueDate: calendar.date(byAdding: .day, value: 18, to: today),
+            priority: .info
+        )
+        context.insert(reminder6)
 
         // ---- Masraflar (Araç 1) ----
         let expense1 = Expense(
@@ -196,7 +238,7 @@ enum MockDataProvider {
 
         // ---- Servis Kayıtları (Araç 1) ----
         let service1 = ServiceRecord(
-            id: UUID(uuidString: "S1000000-0000-0000-0000-000000000001")!,
+            id: UUID(uuidString: "C1000000-0000-0000-0000-000000000001")!,
             vehicleId: vehicle1.id,
             serviceType: .periodic,
             date: calendar.date(byAdding: .day, value: -365, to: today)!,
@@ -214,7 +256,7 @@ enum MockDataProvider {
         context.insert(service1)
 
         let service2 = ServiceRecord(
-            id: UUID(uuidString: "S2000000-0000-0000-0000-000000000002")!,
+            id: UUID(uuidString: "C2000000-0000-0000-0000-000000000002")!,
             vehicleId: vehicle1.id,
             serviceType: .brake,
             date: calendar.date(byAdding: .day, value: -120, to: today)!,
@@ -229,7 +271,7 @@ enum MockDataProvider {
 
         // ---- Değişen Parçalar ----
         let part1 = PartChange(
-            id: UUID(uuidString: "P1000000-0000-0000-0000-000000000001")!,
+            id: UUID(uuidString: "C3000000-0000-0000-0000-000000000003")!,
             serviceRecordId: service1.id,
             partType: .oil,
             brand: "Castrol",
@@ -238,7 +280,7 @@ enum MockDataProvider {
         context.insert(part1)
 
         let part2 = PartChange(
-            id: UUID(uuidString: "P2000000-0000-0000-0000-000000000002")!,
+            id: UUID(uuidString: "C4000000-0000-0000-0000-000000000004")!,
             serviceRecordId: service1.id,
             partType: .oilFilter,
             brand: "Mann",
@@ -247,7 +289,7 @@ enum MockDataProvider {
         context.insert(part2)
 
         let part3 = PartChange(
-            id: UUID(uuidString: "P3000000-0000-0000-0000-000000000003")!,
+            id: UUID(uuidString: "C5000000-0000-0000-0000-000000000005")!,
             serviceRecordId: service2.id,
             partType: .brakePad,
             brand: "Bosch",
@@ -256,7 +298,7 @@ enum MockDataProvider {
         context.insert(part3)
 
         let part4 = PartChange(
-            id: UUID(uuidString: "P4000000-0000-0000-0000-000000000004")!,
+            id: UUID(uuidString: "C6000000-0000-0000-0000-000000000006")!,
             serviceRecordId: service2.id,
             partType: .brakeDisc,
             brand: "Bosch",
@@ -301,7 +343,7 @@ enum MockDataProvider {
 
         // ---- Ekspertiz Raporu ----
         let inspection1 = InspectionReport(
-            id: UUID(uuidString: "I1000000-0000-0000-0000-000000000001")!,
+            id: UUID(uuidString: "A4000000-0000-0000-0000-000000000004")!,
             vehicleId: vehicle1.id,
             providerName: "EksperPlus",
             branchName: "Kadıköy",
@@ -326,5 +368,143 @@ enum MockDataProvider {
         context.insert(saleFile1)
 
         try? context.save()
+    }
+
+    @MainActor
+    static func previewVehicle() -> Vehicle {
+        Vehicle(
+            id: selectedVehicleId,
+            nickname: "Beyaz Şahin",
+            plate: "34 ABC 123",
+            brand: "Toyota",
+            model: "Corolla",
+            year: 2020,
+            fuelType: .gasoline,
+            transmissionType: .automatic,
+            currentOdometer: 78500,
+            purchaseDate: DateComponents(calendar: .current, year: 2020, month: 3, day: 15).date,
+            purchaseOdometer: 0,
+            purchasePrice: 285_000,
+            usageType: .personal
+        )
+    }
+
+    @MainActor
+    static func previewVehicle2() -> Vehicle {
+        Vehicle(
+            id: secondaryVehicleId,
+            nickname: "Mavi",
+            plate: "06 CD 456",
+            brand: "Renault",
+            model: "Clio",
+            year: 2018,
+            fuelType: .diesel,
+            transmissionType: .manual,
+            currentOdometer: 142000,
+            purchaseDate: DateComponents(calendar: .current, year: 2018, month: 8, day: 1).date,
+            purchaseOdometer: 85000,
+            purchasePrice: 165_000,
+            usageType: .personal
+        )
+    }
+
+    @MainActor
+    static func previewVehicle3() -> Vehicle {
+        Vehicle(
+            id: tertiaryVehicleId,
+            nickname: "Hafta Sonu",
+            plate: "35 EFG 789",
+            brand: "BMW",
+            model: "320i",
+            year: 2016,
+            fuelType: .gasoline,
+            transmissionType: .automatic,
+            currentOdometer: 96500,
+            purchaseDate: DateComponents(calendar: .current, year: 2023, month: 5, day: 20).date,
+            purchaseOdometer: 84200,
+            purchasePrice: 1_125_000,
+            usageType: .personal
+        )
+    }
+
+    static func previewCommunityPosts() -> [CommunityPost] {
+        let now = Date()
+        return [
+            CommunityPost(
+                id: UUID(uuidString: "A5000000-0000-0000-0000-000000000005")!,
+                authorId: UUID(uuidString: "A6000000-0000-0000-0000-000000000006")!,
+                title: "Corolla için 80 bin bakımında nelere dikkat ediyorsunuz?",
+                body: "Yetkili servis ve özel servis fiyatları arasında ciddi fark var. Yağ, filtreler ve fren kontrolü dışında atlamamam gereken bir kalem var mı?",
+                postType: .question,
+                tags: ["Bakım", "Servis/Usta"],
+                vehicleBrand: "Toyota",
+                vehicleModel: "Corolla",
+                vehicleYear: 2020,
+                isPinned: false,
+                isHidden: false,
+                likeCount: 18,
+                commentCount: 7,
+                saveCount: 4,
+                deletedAt: nil,
+                deletedBy: nil,
+                createdAt: now.addingTimeInterval(-2_400),
+                updatedAt: now.addingTimeInterval(-2_400),
+                authorUsername: "garajnotlari",
+                authorDisplayName: "Garaj Notları",
+                authorAvatarURL: nil,
+                authorIsVerified: true,
+                authorRole: .user
+            ),
+            CommunityPost(
+                id: UUID(uuidString: "A7000000-0000-0000-0000-000000000007")!,
+                authorId: UUID(uuidString: "A8000000-0000-0000-0000-000000000008")!,
+                title: "Ekspertiz raporunda boya kalınlığı yorumu",
+                body: "Sol arka kapıda lokal boya çıktı ama şasi ve direklerde işlem yok. Satış dosyasına ekspertiz özetini eklemek güven açısından iyi olur mu?",
+                postType: .experience,
+                tags: ["Ekspertiz", "İkinci El"],
+                vehicleBrand: "Renault",
+                vehicleModel: "Clio",
+                vehicleYear: 2018,
+                isPinned: false,
+                isHidden: false,
+                likeCount: 31,
+                commentCount: 12,
+                saveCount: 9,
+                deletedAt: nil,
+                deletedBy: nil,
+                createdAt: now.addingTimeInterval(-18_000),
+                updatedAt: now.addingTimeInterval(-18_000),
+                authorUsername: "ikincielrehberi",
+                authorDisplayName: "İkinci El Rehberi",
+                authorAvatarURL: nil,
+                authorIsVerified: false,
+                authorRole: .moderator
+            ),
+            CommunityPost(
+                id: UUID(uuidString: "A9000000-0000-0000-0000-000000000009")!,
+                authorId: UUID(uuidString: "AA000000-0000-0000-0000-000000000010")!,
+                title: "Kış lastiği saklama deneyimi",
+                body: "Lastikleri poşette değil, kuru ve serin alanda dik şekilde saklamaya başladım. Diş derinliği ve üretim tarihini de Arvia notlarına eklemek takipte işe yarıyor.",
+                postType: .advice,
+                tags: ["Lastik", "Bakım"],
+                vehicleBrand: "BMW",
+                vehicleModel: "320i",
+                vehicleYear: 2016,
+                isPinned: false,
+                isHidden: false,
+                likeCount: 24,
+                commentCount: 5,
+                saveCount: 11,
+                deletedAt: nil,
+                deletedBy: nil,
+                createdAt: now.addingTimeInterval(-86_000),
+                updatedAt: now.addingTimeInterval(-86_000),
+                authorUsername: "haftasonugaraji",
+                authorDisplayName: "Hafta Sonu Garajı",
+                authorAvatarURL: nil,
+                authorIsVerified: false,
+                authorRole: .user
+            )
+        ]
     }
 }

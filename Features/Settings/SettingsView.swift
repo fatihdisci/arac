@@ -567,6 +567,15 @@ struct SettingsView: View {
 // MARK: - Preview
 #Preview("Ayarlar") {
     SettingsView()
+        .modelContainer(MockDataProvider.previewContainer)
         .environmentObject(PaywallService.shared)
         .environmentObject(CommunityAuthService.shared)
+}
+
+#Preview("Ayarlar — Dark") {
+    SettingsView()
+        .modelContainer(MockDataProvider.previewContainer)
+        .environmentObject(PaywallService.shared)
+        .environmentObject(CommunityAuthService.shared)
+        .preferredColorScheme(.dark)
 }

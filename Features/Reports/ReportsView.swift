@@ -492,3 +492,9 @@ struct ReportsView: View {
         .modelContainer(MockDataProvider.previewContainer)
         .preferredColorScheme(.dark)
 }
+
+#Preview("Raporlar — Dynamic Type") {
+    ReportsView()
+        .modelContainer(MockDataProvider.previewContainer)
+        .environment(\.dynamicTypeSize, .accessibility1)
+}

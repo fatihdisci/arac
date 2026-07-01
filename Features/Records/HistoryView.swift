@@ -509,7 +509,13 @@ struct HistoryView: View {
     }
 }
 
-#Preview("Geçmiş") {
+#Preview("Geçmiş — Dolu") {
     HistoryView()
         .modelContainer(MockDataProvider.previewContainer)
+}
+
+#Preview("Geçmiş — Dark") {
+    HistoryView()
+        .modelContainer(MockDataProvider.previewContainer)
+        .preferredColorScheme(.dark)
 }

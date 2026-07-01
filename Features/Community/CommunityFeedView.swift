@@ -12,6 +12,7 @@ struct PostDetailTarget: Identifiable {
 struct CommunityFeedView: View {
     @EnvironmentObject private var communityAuth: CommunityAuthService
     @EnvironmentObject private var paywallService: PaywallService
+    private let previewPosts: [CommunityPost]?
 
     @State private var posts: [CommunityPost] = []
     @State private var isLoading = true
@@ -31,10 +32,16 @@ struct CommunityFeedView: View {
     @State private var profileValidationError: String?
     @State private var isCreatingProfile = false
 
+    init(previewPosts: [CommunityPost]? = nil) {
+        self.previewPosts = previewPosts
+        _posts = State(initialValue: previewPosts ?? [])
+        _isLoading = State(initialValue: previewPosts == nil)
+    }
+
     var body: some View {
         NavigationStack {
             Group {
-                if !communityAuth.isCommunityAvailable {
+                if previewPosts == nil && !communityAuth.isCommunityAvailable {
                     configMissingView
                 } else if communityAuth.isSigningIn {
                     signingInView
@@ -390,6 +397,13 @@ struct CommunityFeedView: View {
     // MARK: - Actions
 
     private func loadPosts() async {
+        if let previewPosts {
+            posts = filteredPreviewPosts(previewPosts)
+            isLoading = false
+            error = nil
+            return
+        }
+
         isLoading = true
         error = nil
         do {
@@ -401,12 +415,23 @@ struct CommunityFeedView: View {
     }
 
     private func refreshPosts() async {
+        if let previewPosts {
+            posts = filteredPreviewPosts(previewPosts)
+            error = nil
+            return
+        }
+
         do {
             posts = try await CommunityService.shared.fetchPosts(type: selectedType)
             error = nil
         } catch {
             // Keep existing posts on refresh error
         }
+    }
+
+    private func filteredPreviewPosts(_ source: [CommunityPost]) -> [CommunityPost] {
+        guard let selectedType else { return source }
+        return source.filter { $0.postType == selectedType }
     }
 
     private func handleLike(_ post: CommunityPost) async {
@@ -526,4 +551,17 @@ struct CommunityFeedView: View {
     CommunityFeedView()
         .environmentObject(CommunityAuthService.shared)
         .environmentObject(PaywallService.shared)
+}
+
+#Preview("Topluluk — Dolu") {
+    CommunityFeedView(previewPosts: MockDataProvider.previewCommunityPosts())
+        .environmentObject(CommunityAuthService.shared)
+        .environmentObject(PaywallService.shared)
+}
+
+#Preview("Topluluk — Dolu Dark") {
+    CommunityFeedView(previewPosts: MockDataProvider.previewCommunityPosts())
+        .environmentObject(CommunityAuthService.shared)
+        .environmentObject(PaywallService.shared)
+        .preferredColorScheme(.dark)
 }
