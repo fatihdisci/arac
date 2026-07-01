@@ -38,13 +38,17 @@ struct OwnershipInsightCard: View {
                 .minimumScaleFactor(0.65)
                 .monospacedDigit()
 
-            // Subtitle
+            // Subtitle — reserved line keeps 2×2 grid heights aligned
             if let subtitle {
                 Text(subtitle)
                     .font(AppTypography.caption)
                     .foregroundColor(AppColors.textSecondary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
+            } else {
+                Text(" ")
+                    .font(AppTypography.caption)
+                    .accessibilityHidden(true)
             }
         }
         .padding(AppSpacing.sm)
